@@ -1,0 +1,6 @@
+testing:
+  variables:
+    GIT_SUBMODULE_STRATEGY: recursive
+  script:
+    - git submodule update --remote
+    - bash testing_repo/test.sh $CI_COMMIT_REF_NAME
