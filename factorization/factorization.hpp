@@ -1,6 +1,6 @@
 #pragma once
-#include <vector>
-#include <cmath>
+#include<vector>
+#include<cmath>
 
 std::vector<int> Factorize(int number) {
   std::vector<int> factors;
