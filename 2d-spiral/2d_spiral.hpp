@@ -1,5 +1,5 @@
 int** MakeSpiral(int n) {
-  int** spiral = new int* [n];
+  int** spiral = new int*[n];
   for (int i = 0; i < n; ++i) {
     spiral[i] = new int[n];
   }
