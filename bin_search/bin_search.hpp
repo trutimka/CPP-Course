@@ -6,8 +6,7 @@ int* LowerBound(int* first, const int* last, int value) {
   while (first != last) {
     if (*mid < value) {
       first = ++mid;
-    }
-    else {
+    } else {
       last = mid;
     }
     dist = last - first;
