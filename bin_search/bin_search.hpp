@@ -1,6 +1,6 @@
 #pragma once
 
-int* LowerBound(const int* first, const int* last, int value) {
+int* LowerBound(int* first, const int* last, int value) {
   int dist = last - first;
   int* mid = first + dist / 2;
   while (first != last) {
