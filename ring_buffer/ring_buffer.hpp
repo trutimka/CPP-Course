@@ -13,20 +13,19 @@ public:
   size_t Size() const { return cur_size_; }
 
   bool Empty() const { 
-    if (cur_size_ == 0) return true;
+    if (cur_size_ == 0) { return true; }
     return false;
   }
 
   bool TryPush(int element) {
     if (cur_size_ == size_) {
       return false;
-    } else {
-      buffer_[end_] = element;
-      ++end_;
-      end_ %= size_;
-      ++cur_size_;
-      return true;
     }
+    buffer_[end_] = element;
+    ++end_;
+    end_ %= size_;
+    ++cur_size_;
+    return true;
   }
 
   bool TryPop(int* element) {
@@ -36,9 +35,8 @@ public:
       begin_ %= size_;
       --cur_size_;
       return true;
-    } else {
-      return false;
     }
+    return false;
   }
 private:
   std::vector<int> buffer_;
