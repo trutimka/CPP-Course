@@ -20,8 +20,7 @@ public:
   bool TryPush(int element) {
     if (cur_size_ == size_) {
       return false;
-    }
-    else {
+    } else {
       buffer_[end_] = element;
       ++end_;
       end_ %= size_;
@@ -37,8 +36,7 @@ public:
       begin_ %= size_;
       --cur_size_;
       return true;
-    }
-    else {
+    } else {
       return false;
     }
   }
