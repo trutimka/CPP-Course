@@ -35,6 +35,7 @@ class RingBuffer {
     }
     return false;
   }
+
  private:
   std::vector<int> buffer_;
   size_t begin_ = 0;
