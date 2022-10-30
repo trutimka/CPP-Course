@@ -4,7 +4,7 @@
 #include <vector>
 
 class RingBuffer {
-public:
+ public:
   explicit RingBuffer(size_t capacity) {
     size_ = capacity;
     buffer_.resize(capacity);
@@ -12,9 +12,7 @@ public:
 
   size_t Size() const { return cur_size_; }
 
-  bool Empty() const { 
-    return cur_size_ == 0;
-  }
+  bool Empty() const { return cur_size_ == 0; }
 
   bool TryPush(int element) {
     if (cur_size_ == size_) {
@@ -37,7 +35,7 @@ public:
     }
     return false;
   }
-private:
+ private:
   std::vector<int> buffer_;
   size_t begin_ = 0;
   size_t end_ = 0;
