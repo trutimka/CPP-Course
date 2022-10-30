@@ -13,8 +13,7 @@ public:
   size_t Size() const { return cur_size_; }
 
   bool Empty() const { 
-    if (cur_size_ == 0) { return true; }
-    return false;
+    return cur_size_ == 0;
   }
 
   bool TryPush(int element) {
