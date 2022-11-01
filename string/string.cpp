@@ -133,18 +133,18 @@ const char* String::Data() const { return data_; }
 
 String operator+(String k_first, String k_second) {
   String str;
-  str.size_ = first.size_ + second.size_;
+  str.size_ = k_first.size_ + k_second.size_;
   str.capacity_ = str.size_;
   str.data_ = new char[str.size_ + 1];
-  memcpy(str.data_, first.data_, first.size_);
-  for (size_t i = first.size_; i < str.size_; ++i) {
-    str.data_[i] = second.data_[i - first.size_];
+  memcpy(str.data_, k_first.data_, k_first.size_);
+  for (size_t i = k_first.size_; i < str.size_; ++i) {
+    str.data_[i] = k_second.data_[i - k_first.size_];
   }
   return str;
 }
 String operator+=(String& first, String k_second) {
   size_t temp_size = first.size_;
-  first.size_ += second.size_;
+  first.size_ += k_second.size_;
   if (first.size_ >= first.capacity_) {
     char* temp_data = first.data_;
     first.data_ = new char[first.size_ + 1];
@@ -152,8 +152,8 @@ String operator+=(String& first, String k_second) {
     memcpy(first.data_, temp_data, temp_size);
     delete[] temp_data;
   }
-  for (size_t i = 0; i < second.size_; ++i) {
-    first.data_[i + temp_size] = second.data_[i];
+  for (size_t i = 0; i < k_second.size_; ++i) {
+    first.data_[i + temp_size] = k_second.data_[i];
   }
   first.data_[first.size_] = '\0';
   return first;
@@ -180,9 +180,7 @@ std::vector<String> String::Split(const String& delim) {
   for (size_t i = start; i < size_; ++i) {
     size_t j = 0;
     for (j; j < delim.size_; ++j) {
-      if ((i + j) >= size_ || data_[i + j] != delim.data_[j]) {
-        break;
-      }
+      if ((i + j) >= size_ || data_[i + j] != delim.data_[j]) { break; }
     }
     if (j == delim.size_) {
       size_t temp_size = i - start;
@@ -210,7 +208,7 @@ std::vector<String> String::Split(const String& delim) {
 
 String String::Join(const std::vector<String>& strings) {
   String str;
-  if (strings.size() != 0) {
+  if (!strings.empty()) {
     str = strings[0];
   }
   for (size_t i = 1; i < strings.size(); ++i) {
