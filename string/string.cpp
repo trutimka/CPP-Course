@@ -195,6 +195,9 @@ String operator*=(String& k_first, int n) {
 }
 
 std::vector<String> String::Split(const String& delim) {
+  if (this->Empty()) {
+    return { "" };
+  }
   std::vector<String> vec;
   size_t start = 0;
   for (size_t i = start, j = 0; i < size_; ++i) {
