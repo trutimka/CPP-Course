@@ -232,6 +232,7 @@ String String::ChangeEnd(size_t start) {
     data[size_ - start] = '\0';
     return String(data);
   }
+  return String();
 }
 
 String String::Join(const std::vector<String>& strings) {
