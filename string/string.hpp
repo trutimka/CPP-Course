@@ -32,7 +32,7 @@ public:
   size_t Capacity() const;
   const char* Data() const;
   bool operator<(const String& right) const {
-    return strcmp(data_, right.data_) > 0);
+    return strcmp(data_, right.data_) > 0;
   }
   bool operator<=(const String& right) const {
     return strcmp(data_, right.data_) >= 0;
