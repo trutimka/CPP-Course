@@ -200,7 +200,8 @@ std::vector<String> String::Split(const String& delim) {
   }
   std::vector<String> vec;
   size_t start = 0;
-  for (size_t i = start, j = 0; i < size_; ++i) {
+  for (size_t i = start; i < size_; ++i) {
+    size_t j = 0;
     for (; j < delim.size_; ++j) {
       if ((i + j) >= size_ || data_[i + j] != delim.data_[j]) {
         break;
