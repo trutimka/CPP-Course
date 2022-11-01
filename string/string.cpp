@@ -197,8 +197,7 @@ String operator*=(String& k_first, int n) {
 std::vector<String> String::Split(const String& delim) {
   std::vector<String> vec;
   size_t start = 0;
-  for (size_t i = start; i < size_; ++i) {
-    size_t j = 0;
+  for (size_t i = start, j = 0; i < size_; ++i) {
     for (; j < delim.size_; ++j) {
       if ((i + j) >= size_ || data_[i + j] != delim.data_[j]) {
         break;
@@ -210,18 +209,19 @@ std::vector<String> String::Split(const String& delim) {
         temp_data[k - start] = data_[k];
       }
       temp_data[i - start] = '\0';
-      String str(temp_data);
+      vec.push_back(String(temp_data));
       delete[] temp_data;
-      vec.push_back(str);
       start = i + j;
     }
   }
-  if (start != size_) {
+  if (start < size_) {
     char* data = new char[size_ - start + 1];
-    memcpy(data, data_ + start, size_ - start);
+    for (size_t i = start; i < size_; ++i) {
+      data[i - start] = data_[i];
+    }
     data[size_ - start] = '\0';
-    delete[] data;
     vec.push_back(String(data));
+    delete[] data;
   }
   return vec;
 }
