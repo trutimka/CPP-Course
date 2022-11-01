@@ -48,7 +48,8 @@ void String::PushBack(char c) {
     delete[] temp;
     data_[size_] = c;
     ++size_;
-  } else {
+  }
+  else {
     data_[size_] = c;
     ++size_;
   }
@@ -217,16 +218,21 @@ std::vector<String> String::Split(const String& delim) {
       start = i + j;
     }
   }
+  if (!this->ChangeEnd(start).Empty()) {
+    vec.push_back(this->ChangeEnd(start));
+  }
+  return vec;
+}
+
+String String::ChangeEnd(size_t start) {
   if (start < size_) {
     char* data = new char[size_ - start + 1];
     for (size_t i = start; i < size_; ++i) {
       data[i - start] = data_[i];
     }
     data[size_ - start] = '\0';
-    vec.push_back(String(data));
-    delete[] data;
+    return String(data);
   }
-  return vec;
 }
 
 String String::Join(const std::vector<String>& strings) {

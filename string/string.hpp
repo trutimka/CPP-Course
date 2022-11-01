@@ -7,7 +7,7 @@
 #include <vector>
 
 class String {
- public:
+public:
   String() = default;
   explicit String(size_t size, char c);
   String(const char* str);
@@ -54,7 +54,7 @@ class String {
   bool operator!=(const String& right) const { return !(*this == right); }
 
   friend String operator+(String k_first, String k_second);
-  String operator+=(String k_second) {
+  String& operator+=(String k_second) {
     size_t temp_size = size_;
     size_ += k_second.size_;
     if (size_ >= capacity_) {
@@ -77,8 +77,10 @@ class String {
   std::vector<String> Split(const String& delim = " ");
   String Join(const std::vector<String>& strings);
 
- private:
+private:
   size_t size_ = 0;
   size_t capacity_ = 0;
   char* data_ = NULL;
+
+  String ChangeEnd(size_t start);
 };
