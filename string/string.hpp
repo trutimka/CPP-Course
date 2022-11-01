@@ -54,7 +54,7 @@ class String {
   bool operator!=(const String& right) const { return !(*this == right); }
 
   friend String operator+(String k_first, String k_second);
-  String operator+=(String k_second) {
+  String& operator+=(String k_second) {
     size_t temp_size = size_;
     size_ += k_second.size_;
     if (size_ >= capacity_) {
