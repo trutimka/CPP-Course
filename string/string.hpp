@@ -56,7 +56,7 @@ class String {
   friend String operator+(String k_first, String k_second);
   friend String operator+=(String& first, String k_second);
 
-  String& operator*(size_t n) {
+  String& operator*(int n) const {
     char* temp_data = new char[size_];
     memcpy(temp_data, data_, size_);
     size_t temp_size = size_;
