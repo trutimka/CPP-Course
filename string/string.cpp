@@ -176,7 +176,7 @@ std::vector<String> String::Split(const String& delim) {
   size_t start = 0;
   for (size_t i = start; i < size_; ++i) {
     size_t j = 0;
-    for (j; j < delim.size_; ++j) {
+    for (; j < delim.size_; ++j) {
       if ((i + j) >= size_ || data_[i + j] != delim.data_[j]) {
         break;
       }
