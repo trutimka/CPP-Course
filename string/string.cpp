@@ -41,7 +41,9 @@ void String::PushBack(char c) {
     capacity_ *= 2;
     char* temp = data_;
     data_ = new char[capacity_ + 1];
-    memcpy(data_, temp, size_);
+    if (temp != NULL) {
+      memcpy(data_, temp, size_);
+    }
 
     delete[] temp;
     data_[size_] = c;

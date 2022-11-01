@@ -41,7 +41,7 @@ class String {
   bool operator>(const String& right) const { return !(*this <= right); }
   bool operator>=(const String& right) const { return !(*this < right); }
   bool operator==(const String& right) const {
-    if (size_ == right.size_ && capacity_ == right.capacity_) {
+    if (size_ == right.size_) {
       for (size_t i = 0; i < size_; ++i) {
         if (data_[i] != right[i]) {
           return false;
