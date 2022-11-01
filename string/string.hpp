@@ -32,15 +32,19 @@ class String {
   size_t Size() const;
   size_t Capacity() const;
   const char* Data() const;
-  bool operator<(const String& right) const { return strcmp(data_, right.data_) > 0; }
-  bool operator<=(const String& right) const { return strcmp(data_, right.data_) >= 0; }
+  bool operator<(const String& right) const {
+    return strcmp(data_, right.data_) > 0;
+  }
+  bool operator<=(const String& right) const {
+    return strcmp(data_, right.data_) >= 0;
+  }
   bool operator>(const String& right) const { return !(*this <= right); }
   bool operator>=(const String& right) const { return !(*this < right); }
   bool operator==(const String& right) const {
     if (size_ == right.size_ && capacity_ == right.capacity_) {
       for (size_t i = 0; i < size_; ++i) {
-        if (data_[i] != right[i]) { 
-          return false; 
+        if (data_[i] != right[i]) {
+          return false;
         }
       }
       return true;
