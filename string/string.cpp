@@ -8,15 +8,19 @@ String::String(size_t size, char c) : size_(size), capacity_(size) {
   data_[size] = '\0';
 }
 String::String(char const* str) {
+  if (data_ != NULL) {
+    delete[] data_;
+  }
   capacity_ = strlen(str);
   size_ = capacity_;
   data_ = new char[capacity_ + 1];
-  for (size_t i = 0; i < size_; ++i) {
-    data_[i] = str[i];
-  }
+  memcpy(data_, str, size_);
   data_[size_] = '\0';
 }
 String::String(const String& obj) {
+  if (data_ != NULL) {
+    delete[] data_;
+  }
   size_ = obj.size_;
   capacity_ = obj.capacity_;
   delete[] data_;
