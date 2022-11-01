@@ -186,6 +186,25 @@ friend String operator*(String k_first, int n) {
   return str;
 }
 
+String operator*=(String& k_first, int n) {
+  char* temp_data = new char[k_first];
+  memcpy(temp_data, k_first.data_, k_first.size_);
+  size_t temp_size = k_first.size_;
+  k_first.size_ *= n;
+  if (k_first.size_ >= k_first.capacity_) {
+    k_first.data_ = new char[k_first.size_ + 1];
+    memcpy(k_first.data_, temp_data, temp_size);
+    k_first.capacity_ = k_first.size_;
+  }
+  for (size_t i = 0; i < n; ++i) {
+    for (size_t j = 0; j < temp_size; ++j) {
+      k_first.data_[temp_size * (i + 1) + j] = temp_data[j];
+    }
+  }
+  k_first.data_[k_first.size_] = '\0';
+  return k_first;
+}
+
 std::vector<String> String::Split(const String& delim) {
   std::vector<String> vec;
   size_t start = 0;

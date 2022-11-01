@@ -56,25 +56,7 @@ class String {
   friend String operator+(String k_first, String k_second);
   friend String operator+=(String& first, String k_second);
   friend String operator*(String k_first, int n);
-  String& operator*(int n) {
-    char* temp_data = new char[size_];
-    memcpy(temp_data, data_, size_);
-    size_t temp_size = size_;
-    size_ *= n;
-    if (size_ >= capacity_) {
-      data_ = new char[size_ + 1];
-      memcpy(data_, temp_data, temp_size);
-      capacity_ = size_;
-    }
-    for (size_t i = 0; i < n; ++i) {
-      for (size_t j = 0; j < temp_size; ++j) {
-        data_[temp_size * (i + 1) + j] = temp_data[j];
-      }
-    }
-    data_[size_] = '\0';
-    return *this;
-  }
-  String& operator*=(int n) { return (*this * n); }
+  friend String operator*=(String& k_first, int n);
   friend std::ostream& operator<<(std::ostream& out, const String& str);
   friend std::istream& operator>>(std::istream& in, String& str);
   std::vector<String> Split(const String& delim = " ");
