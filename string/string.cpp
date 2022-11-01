@@ -231,7 +231,9 @@ String String::ChangeEnd(size_t start) {
       data[i - start] = data_[i];
     }
     data[size_ - start] = '\0';
-    return String(data);
+    String str(data);
+    delete[] data;
+    return str;
   }
   return String("-1");
 }
