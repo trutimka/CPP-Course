@@ -11,7 +11,9 @@ String::String(char const* str) {
   capacity_ = strlen(str);
   size_ = capacity_;
   data_ = new char[capacity_ + 1];
-  memcpy(data_, str, size_);
+  for (size_t i = 0; i < size_; ++i) {
+    data_[i] = str[i];
+  }
   data_[size_] = '\0';
 }
 String::String(const String& obj) {
