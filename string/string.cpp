@@ -48,8 +48,7 @@ void String::PushBack(char c) {
     delete[] temp;
     data_[size_] = c;
     ++size_;
-  }
-  else {
+  } else {
     data_[size_] = c;
     ++size_;
   }
@@ -197,7 +196,7 @@ String operator*=(String& k_first, int n) {
 
 std::vector<String> String::Split(const String& delim) {
   if (this->Empty()) {
-    return { "" };
+    return {""};
   }
   std::vector<String> vec;
   size_t start = 0;

@@ -7,7 +7,7 @@
 #include <vector>
 
 class String {
-public:
+ public:
   String() = default;
   explicit String(size_t size, char c);
   String(const char* str);
@@ -77,7 +77,7 @@ public:
   std::vector<String> Split(const String& delim = " ");
   String Join(const std::vector<String>& strings);
 
-private:
+ private:
   size_t size_ = 0;
   size_t capacity_ = 0;
   char* data_ = NULL;
