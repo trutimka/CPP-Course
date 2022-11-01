@@ -131,7 +131,7 @@ size_t String::Size() const { return size_; }
 size_t String::Capacity() const { return capacity_; }
 const char* String::Data() const { return data_; }
 
-String operator+(const String first, const String second) {
+String operator+(String kFirst, String kSecond) {
   String str;
   str.size_ = first.size_ + second.size_;
   str.capacity_ = str.size_;
@@ -142,7 +142,7 @@ String operator+(const String first, const String second) {
   }
   return str;
 }
-String operator+=(String& first, const String second) {
+String operator+=(String& first, String kSecond) {
   size_t temp_size = first.size_;
   first.size_ += second.size_;
   if (first.size_ >= first.capacity_) {

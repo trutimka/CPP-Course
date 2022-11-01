@@ -32,12 +32,10 @@ public:
   size_t Capacity() const;
   const char* Data() const;
   bool operator<(const String& right) const {
-    if (strcmp(data_, right.data_) > 0) { return true; }
-    return false;
+    return strcmp(data_, right.data_) > 0);
   }
   bool operator<=(const String& right) const {
-    if (strcmp(data_, right.data_) >= 0) { return true; }
-    return false;
+    return strcmp(data_, right.data_) >= 0;
   }
   bool operator>(const String& right) const {
     return !(*this <= right);
@@ -58,8 +56,8 @@ public:
     return !(*this == right);
   }
 
-  friend String operator+(const String first, const String second);
-  friend String operator+=(String& first, const String second);
+  friend String operator+(String kFirst, String kSecond);
+  friend String operator+=(String& first, String kSecond);
 
   String& operator*(size_t n) {
     char* temp_data = new char[size_];
