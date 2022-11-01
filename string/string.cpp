@@ -182,12 +182,12 @@ friend String operator*(String k_first, int n) {
       str.data_[k_first.size_ * (i + 1) + j] = k_first.data_[j];
     }
   }
-  str.data_[size_] = '\0';
+  str.data_[str.size_] = '\0';
   return str;
 }
 
 String operator*=(String& k_first, int n) {
-  char* temp_data = new char[k_first];
+  char* temp_data = new char[k_first.size_];
   memcpy(temp_data, k_first.data_, k_first.size_);
   size_t temp_size = k_first.size_;
   k_first.size_ *= n;
