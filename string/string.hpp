@@ -2,11 +2,12 @@
 
 #include <stdio.h>
 #include <string.h>
+
 #include <iostream>
 #include <vector>
 
 class String {
-public:
+ public:
   String() = default;
   explicit String(size_t size, char c);
   String(const char* str);
@@ -31,30 +32,22 @@ public:
   size_t Size() const;
   size_t Capacity() const;
   const char* Data() const;
-  bool operator<(const String& right) const {
-    return strcmp(data_, right.data_) > 0;
-  }
-  bool operator<=(const String& right) const {
-    return strcmp(data_, right.data_) >= 0;
-  }
-  bool operator>(const String& right) const {
-    return !(*this <= right);
-  }
-  bool operator>=(const String& right) const {
-    return !(*this < right);
-  }
+  bool operator<(const String& right) const { return strcmp(data_, right.data_) > 0; }
+  bool operator<=(const String& right) const { return strcmp(data_, right.data_) >= 0; }
+  bool operator>(const String& right) const { return !(*this <= right); }
+  bool operator>=(const String& right) const { return !(*this < right); }
   bool operator==(const String& right) const {
     if (size_ == right.size_ && capacity_ == right.capacity_) {
       for (size_t i = 0; i < size_; ++i) {
-        if (data_[i] != right[i]) { return false; }
+        if (data_[i] != right[i]) { 
+          return false; 
+        }
       }
       return true;
     }
     return false;
   }
-  bool operator!=(const String& right) const {
-    return !(*this == right);
-  }
+  bool operator!=(const String& right) const { return !(*this == right); }
 
   friend String operator+(String k_first, String k_second);
   friend String operator+=(String& first, String k_second);
@@ -77,15 +70,13 @@ public:
     data_[size_] = '\0';
     return *this;
   }
-  String& operator*=(int n) {
-    return (*this * n);
-  }
+  String& operator*=(int n) { return (*this * n); }
   friend std::ostream& operator<<(std::ostream& out, const String& str);
   friend std::istream& operator>>(std::istream& in, String& str);
   std::vector<String> Split(const String& delim = " ");
   String Join(const std::vector<String>& strings);
 
-private:
+ private:
   size_t size_ = 0;
   size_t capacity_ = 0;
   char* data_ = NULL;

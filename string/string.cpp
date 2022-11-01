@@ -31,15 +31,13 @@ String& String::operator=(const String& obj) {
   data_[capacity_] = '\0';
   return *this;
 }
-String::~String() {
-  delete[] data_;
-}
-void String::Clear() {
-  size_ = 0;
-}
+String::~String() { delete[] data_; }
+void String::Clear() { size_ = 0; }
 void String::PushBack(char c) {
   if (size_ >= capacity_) {
-    if (capacity_ == 0) { capacity_ = 1; }
+    if (capacity_ == 0) {
+      capacity_ = 1;
+    }
     capacity_ *= 2;
     char* temp = data_;
     data_ = new char[capacity_ + 1];
@@ -48,8 +46,7 @@ void String::PushBack(char c) {
     delete[] temp;
     data_[size_] = c;
     ++size_;
-  }
-  else {
+  } else {
     data_[size_] = c;
     ++size_;
   }
@@ -180,15 +177,16 @@ std::vector<String> String::Split(const String& delim) {
   for (size_t i = start; i < size_; ++i) {
     size_t j = 0;
     for (j; j < delim.size_; ++j) {
-      if ((i + j) >= size_ || data_[i + j] != delim.data_[j]) { break; }
+      if ((i + j) >= size_ || data_[i + j] != delim.data_[j]) {
+        break;
+      }
     }
     if (j == delim.size_) {
-      size_t temp_size = i - start;
-      char* temp_data = new char[temp_size + 1];
+      char* temp_data = new char[i - start + 1];
       for (size_t k = start; k < i; ++k) {
         temp_data[k - start] = data_[k];
       }
-      temp_data[temp_size] = '\0';
+      temp_data[i - start] = '\0';
       String str(temp_data);
       delete[] temp_data;
       vec.push_back(str);
@@ -199,9 +197,8 @@ std::vector<String> String::Split(const String& delim) {
     char* data = new char[size_ - start + 1];
     memcpy(data, data_ + start, size_ - start);
     data[size_ - start] = '\0';
-    String str(data);
     delete[] data;
-    vec.push_back(str);
+    vec.push_back(String(data));
   }
   return vec;
 }
