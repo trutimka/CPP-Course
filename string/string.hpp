@@ -10,7 +10,7 @@ class String {
  public:
   String() = default;
   explicit String(size_t size, char c);
-  String(const char* str);
+  String(char const* str);
   String(const String& obj);
   String& operator=(const String& obj);
   ~String();
