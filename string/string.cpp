@@ -13,7 +13,6 @@ String::String(const char* str) {
   data_ = new char[capacity_ + 1];
   memcpy(data_, str, size_);
   data_[size_] = '\0';
-  delete[] str;
 }
 String::String(const String& obj) {
   size_ = obj.size_;
