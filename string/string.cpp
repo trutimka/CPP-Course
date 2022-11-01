@@ -191,6 +191,7 @@ String operator*=(String& k_first, int n) {
     }
   }
   k_first.data_[k_first.size_] = '\0';
+  delete[] temp_data;
   return k_first;
 }
 
