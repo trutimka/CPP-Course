@@ -8,7 +8,6 @@ String::String(size_t size, char c) : size_(size), capacity_(size) {
   data_[size] = '\0';
 }
 String::String(char const* str) {
-  delete[] data_;
   capacity_ = strlen(str);
   size_ = capacity_;
   data_ = new char[capacity_ + 1];
@@ -16,7 +15,6 @@ String::String(char const* str) {
   data_[size_] = '\0';
 }
 String::String(const String& obj) {
-  delete[] data_;
   size_ = obj.size_;
   capacity_ = obj.capacity_;
   delete[] data_;
@@ -136,6 +134,7 @@ String operator+(String k_first, String k_second) {
   String str;
   str.size_ = k_first.size_ + k_second.size_;
   str.capacity_ = str.size_;
+  delete[] str.data_;
   str.data_ = new char[str.size_ + 1];
   memcpy(str.data_, k_first.data_, k_first.size_);
   for (size_t i = k_first.size_; i < str.size_; ++i) {
@@ -164,6 +163,7 @@ String operator*(String k_first, int n) {
     String str;
     str.size_ = k_first.size_ * n;
     str.capacity_ = str.size_;
+    delete[] str.data_;
     str.data_ = new char[str.size_ + 1];
     memcpy(str.data_, k_first.data_, k_first.size_);
     for (int i = 0; i < n - 1; ++i) {
