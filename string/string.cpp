@@ -171,7 +171,7 @@ std::istream& operator>>(std::istream& in, String& str) {
   return in;
 }
 
-friend String operator*(String k_first, int n) {
+String operator*(String k_first, int n) {
   String str;
   str.size_ = k_first.size_ * n;
   str.capacity_ = str.size_;
