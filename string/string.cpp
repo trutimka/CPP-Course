@@ -171,6 +171,21 @@ std::istream& operator>>(std::istream& in, String& str) {
   return in;
 }
 
+friend String operator*(String k_first, int n) {
+  String str;
+  str.size_ = k_first.size_ * n;
+  str.capacity_ = str.size_;
+  str.data_ = new char[str.size_ + 1];
+  memcpy(str.data_, k_first.data_, k_first.size_);
+  for (size_t i = 0; i < n; ++i) {
+    for (size_t j = 0; j < k_first.size_; ++j) {
+      str.data_[k_first.size_ * (i + 1) + j] = k_first.data_[j];
+    }
+  }
+  str.data_[size_] = '\0';
+  return str;
+}
+
 std::vector<String> String::Split(const String& delim) {
   std::vector<String> vec;
   size_t start = 0;
