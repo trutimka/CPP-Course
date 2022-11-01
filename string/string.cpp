@@ -218,7 +218,7 @@ std::vector<String> String::Split(const String& delim) {
       start = i + j;
     }
   }
-  if (!this->ChangeEnd(start).Empty()) {
+  if (this->ChangeEnd(start) != "-1") {
     vec.push_back(this->ChangeEnd(start));
   }
   return vec;
@@ -233,7 +233,7 @@ String String::ChangeEnd(size_t start) {
     data[size_ - start] = '\0';
     return String(data);
   }
-  return String();
+  return String("-1");
 }
 
 String String::Join(const std::vector<String>& strings) {
