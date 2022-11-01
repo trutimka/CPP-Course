@@ -139,22 +139,6 @@ String operator+(String k_first, String k_second) {
   }
   return str;
 }
-String operator+=(String& first, String k_second) {
-  size_t temp_size = first.size_;
-  first.size_ += k_second.size_;
-  if (first.size_ >= first.capacity_) {
-    char* temp_data = first.data_;
-    first.data_ = new char[first.size_ + 1];
-    first.capacity_ = first.size_;
-    memcpy(first.data_, temp_data, temp_size);
-    delete[] temp_data;
-  }
-  for (size_t i = 0; i < k_second.size_; ++i) {
-    first.data_[i + temp_size] = k_second.data_[i];
-  }
-  first.data_[first.size_] = '\0';
-  return first;
-}
 
 std::ostream& operator<<(std::ostream& out, const String& str) {
   for (size_t i = 0; i < str.size_; ++i) {

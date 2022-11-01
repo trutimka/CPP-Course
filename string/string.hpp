@@ -54,7 +54,22 @@ class String {
   bool operator!=(const String& right) const { return !(*this == right); }
 
   friend String operator+(String k_first, String k_second);
-  friend String operator+=(String& first, String k_second);
+  String operator+=(String k_second) {
+    size_t temp_size = size_;
+    size_ += k_second.size_;
+    if (size_ >= capacity_) {
+      char* temp_data = data_;
+      data_ = new char[size_ + 1];
+      capacity_ = size_;
+      memcpy(data_, temp_data, temp_size);
+      delete[] temp_data;
+    }
+    for (size_t i = 0; i < k_second.size_; ++i) {
+      data_[i + temp_size] = k_second.data_[i];
+    }
+    data_[size_] = '\0';
+    return *this;
+  }
   friend String operator*(String k_first, int n);
   friend String operator*=(String& k_first, int n);
   friend std::ostream& operator<<(std::ostream& out, const String& str);
