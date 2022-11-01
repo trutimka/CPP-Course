@@ -56,8 +56,8 @@ public:
     return !(*this == right);
   }
 
-  friend String operator+(String kFirst, String kSecond);
-  friend String operator+=(String& first, String kSecond);
+  friend String operator+(String k_first, String k_second);
+  friend String operator+=(String& first, String k_second);
 
   String& operator*(size_t n) {
     char* temp_data = new char[size_];
