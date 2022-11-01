@@ -177,7 +177,7 @@ String operator*(String k_first, int n) {
   str.capacity_ = str.size_;
   str.data_ = new char[str.size_ + 1];
   memcpy(str.data_, k_first.data_, k_first.size_);
-  for (size_t i = 0; i < n; ++i) {
+  for (int i = 0; i < n; ++i) {
     for (size_t j = 0; j < k_first.size_; ++j) {
       str.data_[k_first.size_ * (i + 1) + j] = k_first.data_[j];
     }
@@ -196,7 +196,7 @@ String operator*=(String& k_first, int n) {
     memcpy(k_first.data_, temp_data, temp_size);
     k_first.capacity_ = k_first.size_;
   }
-  for (size_t i = 0; i < n; ++i) {
+  for (int i = 0; i < n; ++i) {
     for (size_t j = 0; j < temp_size; ++j) {
       k_first.data_[temp_size * (i + 1) + j] = temp_data[j];
     }
