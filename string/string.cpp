@@ -225,7 +225,7 @@ std::vector<String> String::Split(const String& delim) {
 }
 
 String String::ChangeEnd(size_t start) {
-  if (start < size_) {
+  if (start <= size_) {
     char* data = new char[size_ - start + 1];
     for (size_t i = start; i < size_; ++i) {
       data[i - start] = data_[i];
