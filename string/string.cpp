@@ -8,9 +8,7 @@ String::String(size_t size, char c) : size_(size), capacity_(size) {
   data_[size] = '\0';
 }
 String::String(char const* str) {
-  if (data_ != NULL) {
-    delete[] data_;
-  }
+  delete[] data_;
   capacity_ = strlen(str);
   size_ = capacity_;
   data_ = new char[capacity_ + 1];
@@ -18,9 +16,7 @@ String::String(char const* str) {
   data_[size_] = '\0';
 }
 String::String(const String& obj) {
-  if (data_ != NULL) {
-    delete[] data_;
-  }
+  delete[] data_;
   size_ = obj.size_;
   capacity_ = obj.capacity_;
   delete[] data_;
