@@ -256,6 +256,5 @@ String String::Join(const std::vector<String>& strings) {
     str += (*this);
     str += strings[i];
   }
-  delete[] data_;
   return str;
 }
