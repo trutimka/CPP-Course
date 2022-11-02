@@ -11,7 +11,9 @@ String::String(char const* str) {
   capacity_ = strlen(str);
   size_ = capacity_;
   data_ = new char[capacity_ + 1];
-  memcpy(data_, str, size_);
+  for (size_t i = 0; i < capacity_; ++i) {
+    data_[i] = str[i];
+  }
   data_[size_] = '\0';
 }
 String::String(const String& obj) {
@@ -19,7 +21,9 @@ String::String(const String& obj) {
   capacity_ = obj.capacity_;
   delete[] data_;
   data_ = new char[capacity_ + 1];
-  memcpy(data_, obj.data_, capacity_);
+  for (size_t i = 0; i < capacity_; ++i) {
+    data_[i] = obj.data_[i];
+  }
   data_[capacity_] = '\0';
 }
 String& String::operator=(const String& obj) {
@@ -27,7 +31,9 @@ String& String::operator=(const String& obj) {
   capacity_ = obj.capacity_;
   delete[] data_;
   data_ = new char[capacity_ + 1];
-  memcpy(data_, obj.data_, capacity_);
+  for (size_t i = 0; i < capacity_; ++i) {
+    data_[i] = obj.data_[i];
+  }
   data_[capacity_] = '\0';
   return *this;
 }
