@@ -248,7 +248,6 @@ String String::ChangeEnd(size_t start) {
 }
 
 String String::Join(const std::vector<String>& strings) {
-  delete[] data_;
   String str;
   if (!strings.empty()) {
     str = strings[0];
@@ -257,5 +256,6 @@ String String::Join(const std::vector<String>& strings) {
     str += (*this);
     str += strings[i];
   }
+  delete[] data_;
   return str;
 }
