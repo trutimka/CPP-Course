@@ -104,7 +104,9 @@ void String::Reserve(size_t new_cap) {
   if (new_cap > capacity_) {
     char* temp = data_;
     data_ = new char[new_cap + 1];
-    memcpy(data_, temp, size_);
+    for (size_t i = 0; i < size_; ++i) {
+      data_[i] = temp[i];
+    }
     delete[] temp;
     capacity_ = new_cap;
     data_[size_] = '\0';
