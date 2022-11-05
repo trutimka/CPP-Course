@@ -20,7 +20,7 @@ String::String(const char* str) {
   for (size_t i = 0; i < capacity_; ++i) {
     data_[i] = str[i];
   }
-  //data_[size_] = '\0';
+  // data_[size_] = '\0';
 }
 String::String(const String& obj) {
   size_ = obj.size_;
