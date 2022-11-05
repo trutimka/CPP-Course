@@ -8,7 +8,7 @@
 
 class String {
  public:
-  String() = default;
+  String();
   explicit String(size_t size, char c);
   String(char const* str);
   String(const String& obj);

@@ -1,5 +1,11 @@
 #include "string.hpp"
 
+String::String() {
+  size_ = 0;
+  capacity_ = 0;
+  data_ = new char[1];
+  data_[0] = '\0';
+}
 String::String(size_t size, char c) : size_(size), capacity_(size) {
   data_ = new char[size + 1];
   for (size_t i = 0; i < size; ++i) {
