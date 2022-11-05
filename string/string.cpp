@@ -13,7 +13,7 @@ String::String(size_t size, char c) : size_(size), capacity_(size) {
   }
   data_[size] = '\0';
 }
-String::String(char const* str) {
+String::String(const char* str) {
   capacity_ = strlen(str);
   size_ = capacity_;
   data_ = new char[capacity_ + 1];
