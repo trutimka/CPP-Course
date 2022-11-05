@@ -73,9 +73,9 @@ void String::PopBack() {
   }
 }
 void String::Resize(size_t new_size) {
-  if (new_size > capacity_) {
+  if (new_size >= capacity_) {
     char* temp = data_;
-    data_ = new char[new_size];
+    data_ = new char[new_size + 1];
     memcpy(data_, temp, size_);
     delete[] temp;
     capacity_ = new_size;
@@ -84,6 +84,7 @@ void String::Resize(size_t new_size) {
     data_[i] = '\0';
   }
   size_ = new_size;
+  data_[size_] = '\0';
 }
 void String::Resize(size_t new_size, char c) {
   if (new_size >= capacity_) {
@@ -113,7 +114,9 @@ void String::ShrinkToFit() {
   capacity_ = size_;
   char* temp = data_;
   data_ = new char[capacity_ + 1];
-  memcpy(data_, temp, capacity_);
+  for (size_t i = 0; i < capacity_; ++i) {
+    data_[i] = temp[i];
+  }
   data_[capacity_] = '\0';
   delete[] temp;
 }
@@ -186,7 +189,7 @@ String operator*(String k_first, int n) {
     str.data_[str.size_] = '\0';
     return str;
   }
-  return String();
+  return String("");
 }
 
 String operator*=(String& k_first, int n) {
