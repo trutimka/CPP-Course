@@ -16,11 +16,11 @@ String::String(size_t size, char c) : size_(size), capacity_(size) {
 String::String(const char* str) {
   capacity_ = strlen(str);
   size_ = capacity_;
-  data_ = new char[capacity_];
+  data_ = new char[capacity_ + 1];
   for (size_t i = 0; i < capacity_; ++i) {
     data_[i] = str[i];
   }
-  // data_[size_] = '\0';
+  data_[size_] = '\0';
 }
 String::String(const String& obj) {
   size_ = obj.size_;
