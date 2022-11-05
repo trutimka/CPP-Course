@@ -16,7 +16,7 @@ String::String(size_t size, char c) : size_(size), capacity_(size) {
 String::String(const char* str) {
   capacity_ = strlen(str);
   size_ = capacity_;
-  data_ = new char[capacity_ + 1];
+  data_ = new char[capacity_];
   for (size_t i = 0; i < capacity_; ++i) {
     data_[i] = str[i];
   }
