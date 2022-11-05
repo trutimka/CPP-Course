@@ -47,10 +47,10 @@ String::~String() { delete[] data_; }
 void String::Clear() { size_ = 0; }
 void String::PushBack(char c) {
   if (size_ >= capacity_) {
+    capacity_ *= 2;
     if (capacity_ == 0) {
       capacity_ = 1;
     }
-    capacity_ *= 2;
     char* temp = data_;
     data_ = new char[capacity_ + 1];
     if (temp != NULL) {
