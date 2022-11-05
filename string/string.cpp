@@ -200,6 +200,7 @@ String operator*=(String& k_first, int n) {
   size_t temp_size = k_first.size_;
   k_first.size_ *= n;
   if (k_first.size_ >= k_first.capacity_) {
+    delete[] k_first.data_;
     k_first.data_ = new char[k_first.size_ + 1];
     memcpy(k_first.data_, temp_data, temp_size);
     k_first.capacity_ = k_first.size_;
