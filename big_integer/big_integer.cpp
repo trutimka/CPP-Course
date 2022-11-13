@@ -2,10 +2,11 @@
 
 int HelpLoop(int x, std::string s) {
   int n = 0;
+  const int kCf = 10;
   for (int k = 0; k < x; ++k) {
     n += (s[k] - '0');
     if (k != x - 1) {
-      n *= 10;
+      n *= kCf;
     }
   }
   return n;
@@ -290,10 +291,10 @@ std::ostream& operator<<(std::ostream& out, const BigInt& obj) {
     if (n == 0) {
       n = 1;
     }
-    const int cf = 10;
-    while (n < obj.kBase / cf) {
+    const int kCf = 10;
+    while (n < obj.kBase / kCf) {
       out << '0';
-      n *= cf;
+      n *= kCf;
     }
     out << obj.numbers_[i];
   }
