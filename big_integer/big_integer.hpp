@@ -44,7 +44,7 @@ public:
 private:
   std::vector<int> numbers_;
   int minus_ = 0;
-  int base_ = 1e9;
-  int num_digs_ = 9;
-  void remove_zeros();
+  const int base_ = 1e9;
+  const int num_digs_ = 9;
+  void RemoveZeros();
 };
