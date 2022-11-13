@@ -8,7 +8,7 @@
 class BigInt {
  public:
   BigInt();
-  BigInt(std::string& str);
+  explicit BigInt(std::string str);
   BigInt(int64_t num);
   BigInt(const BigInt& other);
   BigInt& operator=(const BigInt& other);
