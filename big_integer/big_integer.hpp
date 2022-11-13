@@ -1,6 +1,50 @@
 #pragma once
+
+#include <algorithm>
+#include <iostream>
+#include <string>
 #include <vector>
 
 class BigInt {
-    /* Not Implemented */
+public:
+  BigInt() = default;
+  explicit BigInt(std::string& str);
+  BigInt(int64_t num);
+  BigInt(const BigInt& other);
+  BigInt& operator=(const BigInt& other);
+  BigInt operator+(BigInt obj);
+  BigInt operator-(BigInt obj);
+  BigInt operator*(BigInt obj);
+  BigInt operator/(BigInt obj);
+  BigInt operator%(BigInt obj);
+  BigInt& operator+=(BigInt obj);
+  BigInt& operator-=(BigInt obj);
+  BigInt& operator*=(BigInt obj);
+  BigInt& operator/=(BigInt obj);
+  BigInt& operator%=(BigInt obj);
+
+  bool operator==(BigInt& second);
+  bool operator!=(BigInt& second);
+  bool operator<=(BigInt& second);
+  bool operator>=(BigInt& second);
+  bool operator<(BigInt& second);
+  bool operator>(BigInt& second);
+
+  BigInt operator-();
+  BigInt& operator++();
+  BigInt operator++(int);
+  BigInt& operator--();
+  BigInt operator--(int);
+
+  friend std::ostream& operator<<(std::ostream& out, const BigInt& obj);
+  friend std::istream& operator>>(std::istream& in, BigInt& obj);
+
+  size_t Size();
+
+private:
+  std::vector<int> numbers_;
+  int minus_ = 0;
+  int base_ = 1e9;
+  int num_digs_ = 9;
+  void remove_zeros();
 };
