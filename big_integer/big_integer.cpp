@@ -1,5 +1,16 @@
 #include "big_integer.hpp"
 
+int HelpLoop(int x, std::string s) {
+  int n = 0;
+  for (int k = 0; k < x; ++k) {
+    n += (s[k] - '0');
+    if (k != x - 1) {
+      n *= 10;
+    }
+  }
+  return n;
+}
+
 BigInt::BigInt(std::string& str) {
   int i = 0;
   if (str[0] == '-') {
@@ -13,27 +24,13 @@ BigInt::BigInt(std::string& str) {
     std::string s = str.substr(i, kNumDigs);
     std::reverse(s.begin(), s.end());
     i += kNumDigs;
-    int n = 0;
-    for (int k = 0; k < kNumDigs; ++k) {
-      n += (s[k] - '0');
-      if (k != kNumDigs - 1) {
-        n *= 10;
-      }
-    }
-    numbers_.emplace_back(n);
+    numbers_.emplace_back(HelpLoop(kNumDigs, s));
   }
   int last = (str.size() - minus_) % kNumDigs;
   if (last != 0) {
     std::string s = str.substr(i, last);
     std::reverse(s.begin(), s.end());
-    int n = 0;
-    for (int k = 0; k < last; ++k) {
-      n += (s[k] - '0');
-      if (k != last - 1) {
-        n *= 10;
-      }
-    }
-    numbers_.emplace_back(n);
+    numbers_.emplace_back(HelpLoop(last, s));
   }
   RemoveZeros();
 }
@@ -257,7 +254,7 @@ BigInt BigInt::operator-() {
   if (numbers_.size() == 1 && numbers_[0] == 0) {
     return *this;
   }
-  minus_ = (int)!minus_;
+  minus_ = (int)(minus_ == 0);
   return *this;
 }
 
@@ -293,9 +290,10 @@ std::ostream& operator<<(std::ostream& out, const BigInt& obj) {
     if (n == 0) {
       n = 1;
     }
-    while (n < obj.kBase / 10) {
+    const int cf = 10;
+    while (n < obj.kBase / cf) {
       out << '0';
-      n *= 10;
+      n *= cf;
     }
     out << obj.numbers_[i];
   }
