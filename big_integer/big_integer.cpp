@@ -193,20 +193,20 @@ BigInt BigInt::operator%(BigInt obj) {
 }
 
 bool BigInt::operator==(const BigInt& k_second) const {
-  if (numbers_.size() != second.numbers_.size()) {
+  if (numbers_.size() != k_second.numbers_.size()) {
     return false;
   }
-  if (minus_ != second.minus_) {
+  if (minus_ != k_second.minus_) {
     return false;
   }
   for (size_t i = 0; i < numbers_.size(); ++i) {
-    if (numbers_[i] != second.numbers_[i]) {
+    if (numbers_[i] != k_second.numbers_[i]) {
       return false;
     }
   }
   return true;
 }
-bool BigInt::operator!=(const BigInt& k_second) const { return !(*this == second); }
+bool BigInt::operator!=(const BigInt& k_second) const { return !(*this == k_second); }
 bool BigInt::operator<=(BigInt second) {
   if (minus_ == 1 && second.minus_ == 0) {
     return true;
