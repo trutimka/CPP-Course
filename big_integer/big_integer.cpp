@@ -206,7 +206,9 @@ bool BigInt::operator==(const BigInt& k_second) const {
   }
   return true;
 }
-bool BigInt::operator!=(const BigInt& k_second) const { return !(*this == k_second); }
+bool BigInt::operator!=(const BigInt& k_second) const {
+  return !(*this == k_second);
+}
 bool BigInt::operator<=(BigInt second) {
   if (minus_ == 1 && second.minus_ == 0) {
     return true;
