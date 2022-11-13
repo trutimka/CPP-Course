@@ -12,9 +12,7 @@ int HelpLoop(int x, std::string s) {
   return n;
 }
 
-BigInt::BigInt() {
-  numbers_.resize(1);
-}
+BigInt::BigInt() { numbers_.resize(1);}
 
 BigInt::BigInt(std::string& str) {
   int i = 0;
