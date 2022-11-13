@@ -192,7 +192,7 @@ BigInt BigInt::operator%(BigInt obj) {
   return num;
 }
 
-bool BigInt::operator==(BigInt& second) {
+bool BigInt::operator==(BigInt second) {
   if (numbers_.size() != second.numbers_.size()) {
     return false;
   }
@@ -206,8 +206,8 @@ bool BigInt::operator==(BigInt& second) {
   }
   return true;
 }
-bool BigInt::operator!=(BigInt& second) { return !(*this == second); }
-bool BigInt::operator<=(BigInt& second) {
+bool BigInt::operator!=(BigInt second) { return !(*this == second); }
+bool BigInt::operator<=(BigInt second) {
   if (minus_ == 1 && second.minus_ == 0) {
     return true;
   }
@@ -227,8 +227,8 @@ bool BigInt::operator<=(BigInt& second) {
   }
   return true;
 }
-bool BigInt::operator>=(BigInt& second) { return !(*this < second); }
-bool BigInt::operator<(BigInt& second) {
+bool BigInt::operator>=(BigInt second) { return !(*this < second); }
+bool BigInt::operator<(BigInt second) {
   if (minus_ == 1 && second.minus_ == 0) {
     return true;
   }
@@ -248,7 +248,7 @@ bool BigInt::operator<(BigInt& second) {
   }
   return true;
 }
-bool BigInt::operator>(BigInt& second) { return !(*this <= second); }
+bool BigInt::operator>(BigInt second) { return !(*this <= second); }
 
 BigInt BigInt::operator-() {
   if (numbers_.size() == 1 && numbers_[0] == 0) {
