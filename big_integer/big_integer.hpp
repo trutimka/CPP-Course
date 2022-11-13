@@ -23,12 +23,12 @@ class BigInt {
   BigInt& operator/=(BigInt obj);
   BigInt& operator%=(BigInt obj);
 
-  bool operator==(BigInt& second);
-  bool operator!=(BigInt& second);
-  bool operator<=(BigInt& second);
-  bool operator>=(BigInt& second);
-  bool operator<(BigInt& second);
-  bool operator>(BigInt& second);
+  bool operator==(BigInt second);
+  bool operator!=(BigInt second);
+  bool operator<=(BigInt second);
+  bool operator>=(BigInt second);
+  bool operator<(BigInt second);
+  bool operator>(BigInt second);
 
   BigInt operator-();
   BigInt& operator++();
