@@ -35,7 +35,7 @@ BigInt::BigInt(std::string& str) {
     }
     numbers_.emplace_back(n);
   }
-  remove_zeros();
+  RemoveZeros();
 }
 BigInt::BigInt(int64_t num) {
   if (num < 0) {
@@ -85,7 +85,7 @@ BigInt& BigInt::operator+=(BigInt obj) {
   else {
     *this = (obj - (-*this));
   }
-  remove_zeros();
+  RemoveZeros();
   return *this;
 }
 BigInt BigInt::operator+(BigInt obj) {
@@ -117,7 +117,7 @@ BigInt& BigInt::operator-=(BigInt obj) {
       numbers_[i] += base_;
     }
   }
-  remove_zeros();
+  RemoveZeros();
   return *this;
 }
 BigInt BigInt::operator-(BigInt obj) {
@@ -143,7 +143,7 @@ BigInt& BigInt::operator*=(BigInt obj) {
     cst = temp / base_;
   }
   minus_ = minus_ != obj.minus_;
-  remove_zeros();
+  RemoveZeros();
   return *this;
 }
 BigInt BigInt::operator*(BigInt obj) {
@@ -173,7 +173,7 @@ BigInt& BigInt::operator/=(BigInt obj) {
   }
   --temp_min;
   *this = temp_min;
-  remove_zeros();
+  RemoveZeros();
   minus_ = minus_ != obj.minus_;
   return *this;
 }
@@ -312,7 +312,7 @@ std::istream& operator>>(std::istream& in, BigInt& obj) {
 
 size_t BigInt::Size() { return numbers_.size(); }
 
-void BigInt::remove_zeros() {
+void BigInt::RemoveZeros() {
   if (numbers_.size() == 1) {
     return;
   }
