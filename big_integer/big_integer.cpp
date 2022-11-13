@@ -98,13 +98,13 @@ BigInt& BigInt::operator-=(BigInt obj) {
   if (obj.minus_ == 1) {
     return *this += (-obj);
   }
-  else if (minus_ == 1) {
+  if (minus_ == 1) {
     *this = -*this;
     *this += obj;
     *this = -*this;
     return *this;
   }
-  else if (*this < obj) {
+  if (*this < obj) {
     *this = obj - *this;
     *this = -*this;
     return *this;
@@ -112,7 +112,7 @@ BigInt& BigInt::operator-=(BigInt obj) {
   int flag = 0;
   for (size_t i = 0; i < obj.numbers_.size() || flag != 0; ++i) {
     numbers_[i] -= flag + (i < obj.numbers_.size() ? obj.numbers_[i] : 0);
-    flag = numbers_[i] < 0;
+    flag = (int)(numbers_[i] < 0);
     if (flag != 0) {
       numbers_[i] += kBase;
     }
@@ -142,7 +142,7 @@ BigInt& BigInt::operator*=(BigInt obj) {
     numbers_[i] = temp % kBase;
     cst = temp / kBase;
   }
-  minus_ = minus_ != obj.minus_;
+  minus_ = (int)(minus_ != obj.minus_);
   RemoveZeros();
   return *this;
 }
@@ -157,7 +157,7 @@ BigInt& BigInt::operator/=(BigInt obj) {
     *this = BigInt(0);
     return *this;
   }
-  else if (*this == obj) {
+  if (*this == obj) {
     *this = 1;
     return *this;
   }
@@ -174,7 +174,7 @@ BigInt& BigInt::operator/=(BigInt obj) {
   --temp_min;
   *this = temp_min;
   RemoveZeros();
-  minus_ = minus_ != obj.minus_;
+  minus_ = (int)(minus_ != obj.minus_);
   return *this;
 }
 BigInt BigInt::operator/(BigInt obj) {
@@ -257,7 +257,7 @@ BigInt BigInt::operator-() {
   if (numbers_.size() == 1 && numbers_[0] == 0) {
     return *this;
   }
-  minus_ = !minus_;
+  minus_ = (int)!minus_;
   return *this;
 }
 
@@ -281,7 +281,7 @@ BigInt BigInt::operator--(int) {
 }
 
 std::ostream& operator<<(std::ostream& out, const BigInt& obj) {
-  if (obj.numbers_.size() == 0) {
+  if (obj.numbers_.empty()) {
     return out;
   }
   if (obj.minus_ == 1) {
@@ -295,7 +295,6 @@ std::ostream& operator<<(std::ostream& out, const BigInt& obj) {
     }
     while (n < obj.kBase / 10) {
       out << '0';
-
       n *= 10;
     }
     out << obj.numbers_[i];
