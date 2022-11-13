@@ -125,7 +125,7 @@ BigInt BigInt::operator-(BigInt obj) {
 BigInt& BigInt::operator*=(BigInt obj) {
   std::vector<long long> vec(numbers_.size() + obj.numbers_.size(), 0);
   for (size_t i = 0; i < numbers_.size(); i++) {
-    for (int j = 0; j < obj.numbers_.size(); ++j) {
+    for (size_t j = 0; j < obj.numbers_.size(); ++j) {
       vec[i + j] += (long long)(numbers_[i]) * (long long)(obj.numbers_[j]);
     }
   }
