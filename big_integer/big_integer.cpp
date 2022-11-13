@@ -76,11 +76,9 @@ BigInt& BigInt::operator+=(BigInt obj) {
       numbers_[size_max - 1] -= kBase;
       numbers_.push_back(1);
     }
-  }
-  else if (minus_ == 0) {
+  } else if (minus_ == 0) {
     (*this) -= (-(obj));
-  }
-  else {
+  } else {
     *this = (obj - (-*this));
   }
   RemoveZeros();
@@ -125,7 +123,6 @@ BigInt BigInt::operator-(BigInt obj) {
 }
 
 BigInt& BigInt::operator*=(BigInt obj) {
-
   std::vector<long long> vec(numbers_.size() + obj.numbers_.size(), 0);
   for (size_t i = 0; i < numbers_.size(); i++) {
     for (int j = 0; j < obj.numbers_.size(); ++j) {
@@ -318,8 +315,7 @@ void BigInt::RemoveZeros() {
   while (i > 0) {
     if (numbers_[i] == 0) {
       numbers_.pop_back();
-    }
-    else {
+    } else {
       break;
     }
     --i;
