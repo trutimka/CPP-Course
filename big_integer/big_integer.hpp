@@ -23,8 +23,8 @@ class BigInt {
   BigInt& operator/=(BigInt obj);
   BigInt& operator%=(BigInt obj);
 
-  bool operator==(const BigInt second) const;
-  bool operator!=(const BigInt second) const;
+  bool operator==(const BigInt kSecond) const;
+  bool operator!=(const BigInt kSecond) const;
   bool operator<=(BigInt second);
   bool operator>=(BigInt second);
   bool operator<(BigInt second);
