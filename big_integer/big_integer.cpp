@@ -38,16 +38,17 @@ BigInt::BigInt(std::string str) {
   RemoveZeros();
 }
 BigInt::BigInt(int64_t num) {
+  uint64_t temp = num;
   if (num < 0) {
     minus_ = 1;
-    num = -num;
+    temp = -num;
   }
-  if (num == 0) {
+  if (temp == 0) {
     numbers_.push_back(0);
   }
-  while (num != 0) {
-    numbers_.push_back(num % kBase);
-    num /= kBase;
+  while (temp != 0) {
+    numbers_.push_back(temp % kBase);
+    temp /= kBase;
   }
 }
 BigInt::BigInt(const BigInt& other) { *this = other; }
@@ -140,6 +141,9 @@ BigInt& BigInt::operator*=(BigInt obj) {
     cst = temp / kBase;
   }
   minus_ = (int)(minus_ != obj.minus_);
+  if (numbers_.size() == 1 && numbers_[0] == 0) {
+    minus_ = 0;
+  }
   RemoveZeros();
   return *this;
 }
