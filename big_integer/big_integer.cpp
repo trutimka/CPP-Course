@@ -8,21 +8,21 @@ BigInt::BigInt(std::string& str) {
   }
   str = str.substr(i, str.size() - i);
   std::reverse(str.begin(), str.end());
-  int num_of_strs = (str.size() - i) / num_digs_;
+  int num_of_strs = (str.size() - i) / kNumDigs;
   for (int j = 0; j < num_of_strs; ++j) {
-    std::string s = str.substr(i, num_digs_);
+    std::string s = str.substr(i, kNumDigs);
     std::reverse(s.begin(), s.end());
-    i += num_digs_;
+    i += kNumDigs;
     int n = 0;
-    for (int k = 0; k < num_digs_; ++k) {
+    for (int k = 0; k < kNumDigs; ++k) {
       n += (s[k] - '0');
-      if (k != num_digs_ - 1) {
+      if (k != kNumDigs - 1) {
         n *= 10;
       }
     }
     numbers_.emplace_back(n);
   }
-  int last = (str.size() - minus_) % num_digs_;
+  int last = (str.size() - minus_) % kNumDigs;
   if (last != 0) {
     std::string s = str.substr(i, last);
     std::reverse(s.begin(), s.end());
@@ -46,8 +46,8 @@ BigInt::BigInt(int64_t num) {
     numbers_.push_back(0);
   }
   while (num != 0) {
-    numbers_.push_back(num % base_);
-    num /= base_;
+    numbers_.push_back(num % kBase);
+    num /= kBase;
   }
 }
 BigInt::BigInt(const BigInt& other) { *this = other; }
@@ -69,13 +69,13 @@ BigInt& BigInt::operator+=(BigInt obj) {
       numbers_[i] += obj.numbers_[i];
     }
     for (int i = 0; i < size_max - 1; ++i) {
-      if (numbers_[i] >= base_) {
-        numbers_[i] -= base_;
+      if (numbers_[i] >= kBase) {
+        numbers_[i] -= kBase;
         ++numbers_[i + 1];
       }
     }
-    if (numbers_[size_max - 1] >= base_) {
-      numbers_[size_max - 1] -= base_;
+    if (numbers_[size_max - 1] >= kBase) {
+      numbers_[size_max - 1] -= kBase;
       numbers_.push_back(1);
     }
   }
@@ -114,7 +114,7 @@ BigInt& BigInt::operator-=(BigInt obj) {
     numbers_[i] -= flag + (i < obj.numbers_.size() ? obj.numbers_[i] : 0);
     flag = numbers_[i] < 0;
     if (flag != 0) {
-      numbers_[i] += base_;
+      numbers_[i] += kBase;
     }
   }
   RemoveZeros();
@@ -139,8 +139,8 @@ BigInt& BigInt::operator*=(BigInt obj) {
   size_t cst = 0;
   for (size_t i = 0; i < numbers_.size(); ++i) {
     temp = cst + vec[i];
-    numbers_[i] = temp % base_;
-    cst = temp / base_;
+    numbers_[i] = temp % kBase;
+    cst = temp / kBase;
   }
   minus_ = minus_ != obj.minus_;
   RemoveZeros();
@@ -293,7 +293,7 @@ std::ostream& operator<<(std::ostream& out, const BigInt& obj) {
     if (n == 0) {
       n = 1;
     }
-    while (n < obj.base_ / 10) {
+    while (n < obj.kBase / 10) {
       out << '0';
 
       n *= 10;
