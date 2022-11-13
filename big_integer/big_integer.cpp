@@ -192,7 +192,7 @@ BigInt BigInt::operator%(BigInt obj) {
   return num;
 }
 
-bool BigInt::operator==(const BigInt second) const {
+bool BigInt::operator==(const BigInt kSecond) const {
   if (numbers_.size() != second.numbers_.size()) {
     return false;
   }
@@ -206,7 +206,7 @@ bool BigInt::operator==(const BigInt second) const {
   }
   return true;
 }
-bool BigInt::operator!=(const BigInt second) const { return !(*this == second); }
+bool BigInt::operator!=(const BigInt kSecond) const { return !(*this == second); }
 bool BigInt::operator<=(BigInt second) {
   if (minus_ == 1 && second.minus_ == 0) {
     return true;
