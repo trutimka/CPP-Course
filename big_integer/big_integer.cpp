@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "big_integer.hpp"
 
 int HelpLoop(int x, std::string s) {
@@ -12,24 +13,26 @@ int HelpLoop(int x, std::string s) {
   return n;
 }
 
-BigInt::BigInt() { numbers_.resize(1); }
-
 BigInt::BigInt(std::string str) {
   int i = 0;
-  if (str[0] == '-') {
+  if (str.size() >= 2 && str[0] == '-') {
     minus_ = 1;
-    i = 1;
+    str = str.substr(minus_, str.size() - minus_);
+    if (str[0] == '0') {
+      minus_ = 0;
+      numbers_.emplace_back(0);
+      return;
+    }
   }
-  str = str.substr(i, str.size() - i);
   std::reverse(str.begin(), str.end());
-  int num_of_strs = (str.size() - i) / kNumDigs;
+  int num_of_strs = str.size() / kNumDigs;
   for (int j = 0; j < num_of_strs; ++j) {
     std::string s = str.substr(i, kNumDigs);
     std::reverse(s.begin(), s.end());
     i += kNumDigs;
     numbers_.emplace_back(HelpLoop(kNumDigs, s));
   }
-  int last = (str.size() - minus_) % kNumDigs;
+  int last = str.size() % kNumDigs;
   if (last != 0) {
     std::string s = str.substr(i, last);
     std::reverse(s.begin(), s.end());
@@ -79,9 +82,11 @@ BigInt& BigInt::operator+=(BigInt obj) {
       numbers_[size_max - 1] -= kBase;
       numbers_.push_back(1);
     }
-  } else if (minus_ == 0) {
+  }
+  else if (minus_ == 0) {
     (*this) -= (-(obj));
-  } else {
+  }
+  else {
     *this = (obj - (-*this));
   }
   RemoveZeros();
@@ -141,9 +146,6 @@ BigInt& BigInt::operator*=(BigInt obj) {
     cst = temp / kBase;
   }
   minus_ = (int)(minus_ != obj.minus_);
-  if (numbers_.size() == 1 && numbers_[0] == 0) {
-    minus_ = 0;
-  }
   RemoveZeros();
   return *this;
 }
@@ -152,30 +154,54 @@ BigInt BigInt::operator*(BigInt obj) {
   num *= obj;
   return num;
 }
-
+int BinSearch(int l, int r, BigInt& obj, BigInt& temp_digit) {
+  while (r - l > 1) {
+    int mid = l + (r - l) / 2;
+    if (obj * BigInt(mid) <= temp_digit) {
+      l = mid;
+    }
+    else {
+      r = mid;
+    }
+  }
+  return l;
+}
 BigInt& BigInt::operator/=(BigInt obj) {
+  int temp_minus = (int)(minus_ != obj.minus_);
+  minus_ = 0;
+  obj.minus_ = 0;
   if (*this < obj) {
     *this = BigInt(0);
     return *this;
   }
   if (*this == obj) {
-    *this = 1;
+    *this = BigInt(1);
+    minus_ = temp_minus;
     return *this;
   }
-  BigInt temp_max(2);
-  BigInt temp_min(1);
-  while (temp_max * obj <= *this) {
-    temp_min = temp_max;
-    temp_max *= 2;
-  }
+  BigInt temp_digit;
+  BigInt ans;
+  int j = 0;
+  while (temp_digit < obj) {
+    temp_digit.numbers_.insert(temp_digit.numbers_.begin(), numbers_[numbers_.size() - j - 1]);
 
-  while (temp_min * obj <= *this) {
-    ++temp_min;
+    ++j;
   }
-  --temp_min;
-  *this = temp_min;
+  while (j <= numbers_.size()) {
+    int l = BinSearch(0, kBase, obj, temp_digit);
+    if (l != 0) {
+      ans.numbers_.push_back(l);
+    }
+    temp_digit -= obj * l;
+    if (j < numbers_.size()) {
+      temp_digit.numbers_.insert(temp_digit.numbers_.begin(), numbers_[numbers_.size() - j - 1]);
+    }
+    ++j;
+  }
+  ans.Reverse();
+  *this = ans;
+  minus_ = temp_minus;
   RemoveZeros();
-  minus_ = (int)(minus_ != obj.minus_);
   return *this;
 }
 BigInt BigInt::operator/(BigInt obj) {
@@ -185,9 +211,12 @@ BigInt BigInt::operator/(BigInt obj) {
 }
 
 BigInt& BigInt::operator%=(BigInt obj) {
+  int temp_minus = minus_;
   minus_ = 0;
   obj.minus_ = 0;
   *this = *this - ((*this / obj) * obj);
+  minus_ = temp_minus;
+  RemoveZeros();
   return *this;
 }
 BigInt BigInt::operator%(BigInt obj) {
@@ -214,30 +243,19 @@ bool BigInt::operator!=(const BigInt& k_second) const {
   return !(*this == k_second);
 }
 bool BigInt::operator<=(BigInt second) {
-  if (minus_ == 1 && second.minus_ == 0) {
-    return true;
-  }
-  if (numbers_.size() < second.numbers_.size()) {
-    return true;
-  }
-  if (numbers_.size() > second.numbers_.size()) {
-    return false;
-  }
-  if (*this == second) {
-    return true;
-  }
-  for (int i = numbers_.size() - 1; i >= 0; --i) {
-    if (numbers_[i] > second.numbers_[i]) {
-      return false;
-    }
-  }
-  return true;
+  return (*this == second || *this < second);
 }
 bool BigInt::operator>=(BigInt second) { return !(*this < second); }
 bool BigInt::operator<(BigInt second) {
   if (minus_ == 1 && second.minus_ == 0) {
     return true;
   }
+  if (minus_ == 0 && second.minus_ == 1) {
+    return false;
+  }
+  if (minus_ == 1 && second.minus_ == 1) {
+    return (-second < -*this);
+  }
   if (numbers_.size() < second.numbers_.size()) {
     return true;
   }
@@ -250,6 +268,9 @@ bool BigInt::operator<(BigInt second) {
   for (int i = numbers_.size() - 1; i >= 0; --i) {
     if (numbers_[i] > second.numbers_[i]) {
       return false;
+    }
+    if (numbers_[i] < second.numbers_[i]) {
+      return true;
     }
   }
   return true;
@@ -323,9 +344,38 @@ void BigInt::RemoveZeros() {
   while (i > 0) {
     if (numbers_[i] == 0) {
       numbers_.pop_back();
-    } else {
+    }
+    else {
       break;
     }
     --i;
+  }
+  if (numbers_.size() == 1 && numbers_[0] == 0) {
+    minus_ = 0;
+    return;
+  }
+}
+
+void BigInt::Reverse() {
+  std::reverse(numbers_.begin(), numbers_.end());
+  for (int i = 0; i < numbers_.size() - 1; ++i) {
+    bool flag = false;
+    while (numbers_[i] < kBase / 10) {
+      int digit = numbers_[i + 1] % 10;
+      numbers_[i + 1] /= 10;
+      if (digit == 0) {
+        flag = true;
+        continue;
+      }
+      while (digit <= numbers_[i]) {
+        digit *= 10;
+      }
+      if (flag) {
+        digit *= 10;
+        flag = 0;
+      }
+      digit += numbers_[i];
+      numbers_[i] = digit;
+    }
   }
 }
