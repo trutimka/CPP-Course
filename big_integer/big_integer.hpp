@@ -6,8 +6,8 @@
 #include <vector>
 
 class BigInt {
- public:
-  BigInt();
+public:
+  BigInt() = default;
   explicit BigInt(std::string str);
   BigInt(int64_t num);
   BigInt(const BigInt& other);
@@ -41,10 +41,11 @@ class BigInt {
 
   size_t Size();
 
- private:
+private:
   std::vector<int> numbers_;
   int minus_ = 0;
   const int kBase = 1e9;
   const int kNumDigs = 9;
   void RemoveZeros();
+  void Reverse();
 };
