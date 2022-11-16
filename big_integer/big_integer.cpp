@@ -172,7 +172,7 @@ BigInt& BigInt::operator/=(BigInt obj) {
   }
   BigInt temp_digit;
   BigInt ans;
-  int j = 0;
+  size_t j = 0;
   while (temp_digit < obj) {
     temp_digit.numbers_.insert(temp_digit.numbers_.begin(),
                                numbers_[numbers_.size() - j - 1]);
@@ -347,7 +347,7 @@ void BigInt::RemoveZeros() {
 void BigInt::Reverse() {
   std::reverse(numbers_.begin(), numbers_.end());
   const int kCf = 10;
-  for (int i = 0; i < numbers_.size() - 1; ++i) {
+  for (size_t i = 0; i < numbers_.size() - 1; ++i) {
     bool flag = false;
     while (numbers_[i] < kBase / kCf) {
       int digit = numbers_[i + 1] % kCf;
