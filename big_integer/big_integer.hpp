@@ -6,7 +6,7 @@
 #include <vector>
 
 class BigInt {
-public:
+ public:
   BigInt() = default;
   explicit BigInt(std::string str);
   BigInt(int64_t num);
@@ -41,7 +41,7 @@ public:
 
   size_t Size();
 
-private:
+ private:
   std::vector<int> numbers_;
   int minus_ = 0;
   const int kBase = 1e9;
