@@ -177,7 +177,8 @@ BigInt& BigInt::operator/=(BigInt obj) {
   BigInt ans;
   int j = 0;
   while (temp_digit < obj) {
-    temp_digit.numbers_.insert(temp_digit.numbers_.begin(), numbers_[numbers_.size() - j - 1]);
+    temp_digit.numbers_.insert(temp_digit.numbers_.begin(),
+      numbers_[numbers_.size() - j - 1]);
     ++j;
   }
   while (j <= numbers_.size()) {
@@ -187,7 +188,8 @@ BigInt& BigInt::operator/=(BigInt obj) {
     }
     temp_digit -= obj * l;
     if (j < numbers_.size()) {
-      temp_digit.numbers_.insert(temp_digit.numbers_.begin(), numbers_[numbers_.size() - j - 1]);
+      temp_digit.numbers_.insert(temp_digit.numbers_.begin(),
+        numbers_[numbers_.size() - j - 1]);
     }
     ++j;
   }
