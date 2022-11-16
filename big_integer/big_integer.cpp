@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "big_integer.hpp"
 
 int HelpLoop(int x, std::string s) {
