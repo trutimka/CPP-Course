@@ -81,11 +81,9 @@ BigInt& BigInt::operator+=(BigInt obj) {
       numbers_[size_max - 1] -= kBase;
       numbers_.push_back(1);
     }
-  }
-  else if (minus_ == 0) {
+  } else if (minus_ == 0) {
     (*this) -= (-(obj));
-  }
-  else {
+  } else {
     *this = (obj - (-*this));
   }
   RemoveZeros();
@@ -158,8 +156,7 @@ int BinSearch(int l, int r, BigInt& obj, BigInt& temp_digit) {
     int mid = l + (r - l) / 2;
     if (obj * BigInt(mid) <= temp_digit) {
       l = mid;
-    }
-    else {
+    } else {
       r = mid;
     }
   }
@@ -178,7 +175,7 @@ BigInt& BigInt::operator/=(BigInt obj) {
   int j = 0;
   while (temp_digit < obj) {
     temp_digit.numbers_.insert(temp_digit.numbers_.begin(),
-      numbers_[numbers_.size() - j - 1]);
+                               numbers_[numbers_.size() - j - 1]);
     ++j;
   }
   while (j <= numbers_.size()) {
@@ -187,7 +184,7 @@ BigInt& BigInt::operator/=(BigInt obj) {
     temp_digit -= obj * l;
     if (j < numbers_.size()) {
       temp_digit.numbers_.insert(temp_digit.numbers_.begin(),
-        numbers_[numbers_.size() - j - 1]);
+                                 numbers_[numbers_.size() - j - 1]);
     }
     ++j;
   }
@@ -336,8 +333,7 @@ void BigInt::RemoveZeros() {
   while (i > 0) {
     if (numbers_[i] == 0) {
       numbers_.pop_back();
-    }
-    else {
+    } else {
       break;
     }
     --i;
