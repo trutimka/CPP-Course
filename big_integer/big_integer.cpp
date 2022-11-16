@@ -183,9 +183,7 @@ BigInt& BigInt::operator/=(BigInt obj) {
   }
   while (j <= numbers_.size()) {
     int l = BinSearch(0, kBase, obj, temp_digit);
-    if (l != 0) {
-      ans.numbers_.push_back(l);
-    }
+    ans.numbers_.push_back(l);
     temp_digit -= obj * l;
     if (j < numbers_.size()) {
       temp_digit.numbers_.insert(temp_digit.numbers_.begin(),
