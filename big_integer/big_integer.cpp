@@ -173,17 +173,11 @@ BigInt& BigInt::operator/=(BigInt obj) {
     *this = BigInt(0);
     return *this;
   }
-  if (*this == obj) {
-    *this = BigInt(1);
-    minus_ = temp_minus;
-    return *this;
-  }
   BigInt temp_digit;
   BigInt ans;
   int j = 0;
   while (temp_digit < obj) {
     temp_digit.numbers_.insert(temp_digit.numbers_.begin(), numbers_[numbers_.size() - j - 1]);
-
     ++j;
   }
   while (j <= numbers_.size()) {
@@ -200,7 +194,6 @@ BigInt& BigInt::operator/=(BigInt obj) {
   ans.Reverse();
   *this = ans;
   minus_ = temp_minus;
-  RemoveZeros();
   return *this;
 }
 BigInt BigInt::operator/(BigInt obj) {
@@ -357,24 +350,26 @@ void BigInt::RemoveZeros() {
 
 void BigInt::Reverse() {
   std::reverse(numbers_.begin(), numbers_.end());
+  const int kCf = 10;
   for (int i = 0; i < numbers_.size() - 1; ++i) {
     bool flag = false;
-    while (numbers_[i] < kBase / 10) {
-      int digit = numbers_[i + 1] % 10;
-      numbers_[i + 1] /= 10;
+    while (numbers_[i] < kBase / kCf) {
+      int digit = numbers_[i + 1] % kCf;
+      numbers_[i + 1] /= kCf;
       if (digit == 0) {
         flag = true;
         continue;
       }
       while (digit <= numbers_[i]) {
-        digit *= 10;
+        digit *= kCf;
       }
       if (flag) {
-        digit *= 10;
-        flag = 0;
+        digit *= kCf;
+        flag = false;
       }
       digit += numbers_[i];
       numbers_[i] = digit;
     }
   }
+  RemoveZeros();
 }
