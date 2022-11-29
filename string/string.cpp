@@ -146,6 +146,7 @@ bool String::Empty() const { return size_ == 0; }
 size_t String::Size() const { return size_; }
 size_t String::Capacity() const { return capacity_; }
 const char* String::Data() const { return data_; }
+char* String::Data() { return data_; }
 
 bool String::operator<(const String& right) const {
   return strcmp(data_, right.data_) < 0;
