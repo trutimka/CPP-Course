@@ -147,6 +147,44 @@ size_t String::Size() const { return size_; }
 size_t String::Capacity() const { return capacity_; }
 const char* String::Data() const { return data_; }
 
+bool String::operator<(const String& right) const {
+  return strcmp(data_, right.data_) < 0;
+}
+bool String::operator<=(const String& right) const {
+  return strcmp(data_, right.data_) <= 0;
+}
+bool String::operator>(const String& right) const { return !(*this <= right); }
+bool String::operator>=(const String& right) const { return !(*this < right); }
+bool String::operator==(const String& right) const {
+  if (size_ == right.size_) {
+    for (size_t i = 0; i < size_; ++i) {
+      if (data_[i] != right[i]) {
+        return false;
+      }
+    }
+    return true;
+  }
+  return false;
+}
+bool String::operator!=(const String& right) const { return !(*this == right); }
+
+String& String::operator+=(String k_second) {
+  size_t temp_size = size_;
+  size_ += k_second.size_;
+  if (size_ >= capacity_) {
+    char* temp_data = data_;
+    data_ = new char[size_ + 1];
+    capacity_ = size_;
+    memcpy(data_, temp_data, temp_size);
+    delete[] temp_data;
+  }
+  for (size_t i = 0; i < k_second.size_; ++i) {
+    data_[i + temp_size] = k_second.data_[i];
+  }
+  data_[size_] = '\0';
+  return *this;
+}
+
 String operator+(String k_first, String k_second) {
   String str;
   str.size_ = k_first.size_ + k_second.size_;
