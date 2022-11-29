@@ -32,6 +32,7 @@ class String {
   size_t Size() const;
   size_t Capacity() const;
   const char* Data() const;
+  char* Data();
   bool operator<(const String& right) const;
   bool operator<=(const String& right) const;
   bool operator>(const String& right) const;
