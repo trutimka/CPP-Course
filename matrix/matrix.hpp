@@ -162,7 +162,6 @@ class Matrix<N, N, T> {
   std::vector<std::vector<T>> mat_;
 };
 
-
 template <size_t N, typename T>
 Matrix<N, N, T>::Matrix() {
   mat_.resize(N, std::vector<T>(N, T()));
