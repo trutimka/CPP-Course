@@ -13,7 +13,7 @@ class Matrix {
   Matrix(const Matrix<N, M, T>& copy);
   Matrix<N, M, T> operator=(const Matrix<N, M, T>& copy);
   T& operator()(size_t i, size_t j);
-  const T operator()(size_t i, size_t j) const;
+  T operator()(size_t i, size_t j) const;
   Matrix<N, M, T> operator+(const Matrix<N, M, T>& obj);
   Matrix<N, M, T> operator-(const Matrix<N, M, T>& obj);
   Matrix<N, M, T>& operator+=(const Matrix<N, M, T>& obj);
@@ -59,7 +59,7 @@ T& Matrix<N, M, T>::operator()(size_t i, size_t j) {
 }
 
 template<size_t N, size_t M, typename T>
-const T Matrix<N, M, T>::operator()(size_t i, size_t j) const {
+T Matrix<N, M, T>::operator()(size_t i, size_t j) const {
   return mat_[i][j];
 }
 
@@ -147,7 +147,7 @@ class Matrix<N, N, T> {
   Matrix(const Matrix<N, N, T>& copy);
   Matrix<N, N, T> operator=(const Matrix<N, N, T>& copy);
   T& operator()(size_t i, size_t j);
-  const T operator()(size_t i, size_t j) const;
+  T operator()(size_t i, size_t j) const;
   Matrix<N, N, T> operator+(const Matrix<N, N, T>& obj);
   Matrix<N, N, T> operator-(const Matrix<N, N, T>& obj);
   Matrix<N, N, T>& operator+=(const Matrix<N, N, T>& obj);
@@ -194,7 +194,7 @@ T& Matrix<N, N, T>::operator()(size_t i, size_t j) {
 }
 
 template<size_t N, typename T>
-const T Matrix<N, N, T>::operator()(size_t i, size_t j) const {
+T Matrix<N, N, T>::operator()(size_t i, size_t j) const {
   return mat_[i][j];
 }
 
