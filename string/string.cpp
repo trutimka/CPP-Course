@@ -33,6 +33,9 @@ String::String(const String& obj) {
   data_[capacity_] = '\0';
 }
 String& String::operator=(const String& obj) {
+  if (*this == obj && capacity_ == obj.capacity_) {
+    return *this;
+  }
   size_ = obj.size_;
   capacity_ = obj.capacity_;
   delete[] data_;
@@ -148,18 +151,18 @@ size_t String::Capacity() const { return capacity_; }
 const char* String::Data() const { return data_; }
 char* String::Data() { return data_; }
 
-bool String::operator<(const String& right) const {
-  return strcmp(data_, right.data_) < 0;
+bool operator<(const String& left, const String& right) {
+  return strcmp(left.data_, right.data_) < 0;
 }
-bool String::operator<=(const String& right) const {
-  return strcmp(data_, right.data_) <= 0;
+bool operator<=(const String& left, const String& right) {
+  return strcmp(left.data_, right.data_) <= 0;
 }
-bool String::operator>(const String& right) const { return !(*this <= right); }
-bool String::operator>=(const String& right) const { return !(*this < right); }
-bool String::operator==(const String& right) const {
-  if (size_ == right.size_) {
-    for (size_t i = 0; i < size_; ++i) {
-      if (data_[i] != right[i]) {
+bool operator>(const String& left, const String& right) { return !(left <= right); }
+bool operator>=(const String& left, const String& right) { return !(left < right); }
+bool operator==(const String& left, const String& right) {
+  if (left.size_ == right.size_) {
+    for (size_t i = 0; i < left.size_; ++i) {
+      if (left.data_[i] != right[i]) {
         return false;
       }
     }
@@ -167,7 +170,7 @@ bool String::operator==(const String& right) const {
   }
   return false;
 }
-bool String::operator!=(const String& right) const { return !(*this == right); }
+bool operator!=(const String& left, const String& right) { return !(left == right); }
 
 String& String::operator+=(String k_second) {
   size_t temp_size = size_;
@@ -256,7 +259,7 @@ String operator*=(String& k_first, int n) {
 
 std::vector<String> String::Split(const String& delim) {
   if (this->Empty()) {
-    return {""};
+    return { "" };
   }
   std::vector<String> vec;
   size_t start = 0;
