@@ -157,8 +157,12 @@ bool operator<(const String& left, const String& right) {
 bool operator<=(const String& left, const String& right) {
   return strcmp(left.data_, right.data_) <= 0;
 }
-bool operator>(const String& left, const String& right) { return !(left <= right); }
-bool operator>=(const String& left, const String& right) { return !(left < right); }
+bool operator>(const String& left, const String& right) {
+  return !(left <= right);
+}
+bool operator>=(const String& left, const String& right) {
+  return !(left < right);
+}
 bool operator==(const String& left, const String& right) {
   if (left.size_ == right.size_) {
     for (size_t i = 0; i < left.size_; ++i) {
@@ -170,7 +174,9 @@ bool operator==(const String& left, const String& right) {
   }
   return false;
 }
-bool operator!=(const String& left, const String& right) { return !(left == right); }
+bool operator!=(const String& left, const String& right) {
+  return !(left == right);
+}
 
 String& String::operator+=(String k_second) {
   size_t temp_size = size_;
@@ -259,7 +265,7 @@ String operator*=(String& k_first, int num) {
 
 std::vector<String> String::Split(const String& delim) {
   if (this->Empty()) {
-    return { "" };
+    return {""};
   }
   std::vector<String> vec;
   size_t start = 0;
