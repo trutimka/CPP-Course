@@ -9,16 +9,16 @@
 class String {
  public:
   String();
-  explicit String(size_t size, char c);
+  explicit String(size_t size, char chr);
   String(const char* str);
   String(const String& obj);
   String& operator=(const String& obj);
   ~String();
   void Clear();
-  void PushBack(char c);
+  void PushBack(char chr);
   void PopBack();
   void Resize(size_t new_size);
-  void Resize(size_t new_size, char c);
+  void Resize(size_t new_size, char chr);
   void Reserve(size_t new_cap);
   void ShrinkToFit();
   void Swap(String& other);
@@ -42,10 +42,10 @@ class String {
 
   friend String operator+(String k_first, String k_second);
   String& operator+=(String k_second);
-  friend String operator*(String k_first, int n);
-  friend String operator*=(String& k_first, int n);
+  friend String operator*(String k_first, int num);
+  friend String operator*=(String& k_first, int num);
   friend std::ostream& operator<<(std::ostream& out, const String& str);
-  friend std::istream& operator>>(std::istream& in, String& str);
+  friend std::istream& operator>>(std::istream& vin, String& str);
   std::vector<String> Split(const String& delim = " ");
   String Join(const std::vector<String>& strings);
 
