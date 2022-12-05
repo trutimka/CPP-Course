@@ -1,19 +1,19 @@
 #include "big_integer.hpp"
 
-int HelpLoop(int x, std::string s) {
-  int n = 0;
+int HelpLoop(int num, std::string str) {
+  int tmp = 0;
   const int kCf = 10;
-  for (int k = 0; k < x; ++k) {
-    n += (s[k] - '0');
-    if (k != x - 1) {
-      n *= kCf;
+  for (int k = 0; k < num; ++k) {
+    tmp += (str[k] - '0');
+    if (k != num - 1) {
+      tmp *= kCf;
     }
   }
-  return n;
+  return tmp;
 }
 
 BigInt::BigInt(std::string str) {
-  int i = 0;
+  int iii = 0;
   if (str.size() >= 2 && str[0] == '-') {
     minus_ = 1;
     str = str.substr(minus_, str.size() - minus_);
@@ -26,16 +26,16 @@ BigInt::BigInt(std::string str) {
   std::reverse(str.begin(), str.end());
   int num_of_strs = str.size() / kNumDigs;
   for (int j = 0; j < num_of_strs; ++j) {
-    std::string s = str.substr(i, kNumDigs);
-    std::reverse(s.begin(), s.end());
+    std::string tmp_s = str.substr(iii, kNumDigs);
+    std::reverse(tmp_s.begin(), tmp_s.end());
     i += kNumDigs;
-    numbers_.emplace_back(HelpLoop(kNumDigs, s));
+    numbers_.emplace_back(HelpLoop(kNumDigs, tmp_s));
   }
   int last = str.size() % kNumDigs;
   if (last != 0) {
-    std::string s = str.substr(i, last);
-    std::reverse(s.begin(), s.end());
-    numbers_.emplace_back(HelpLoop(last, s));
+    std::string tmp_s = str.substr(iii, last);
+    std::reverse(tmp_s.begin(), tmp_s.end());
+    numbers_.emplace_back(HelpLoop(last, tmp_s));
   }
   RemoveZeros();
 }
@@ -148,16 +148,16 @@ BigInt operator*(BigInt first, BigInt second) {
   first *= second;
   return first;
 }
-int BinSearch(int l, int r, BigInt& obj, BigInt& temp_digit) {
-  while (r - l > 1) {
-    int mid = l + (r - l) / 2;
+int BinSearch(int left, int right, BigInt& obj, BigInt& temp_digit) {
+  while (right - left > 1) {
+    int mid = l + (right - left) / 2;
     if (obj * BigInt(mid) <= temp_digit) {
-      l = mid;
+      left = mid;
     } else {
-      r = mid;
+      right = mid;
     }
   }
-  return l;
+  return left;
 }
 BigInt& BigInt::operator/=(BigInt obj) {
   int temp_minus = (int)(minus_ != obj.minus_);
@@ -169,21 +169,21 @@ BigInt& BigInt::operator/=(BigInt obj) {
   }
   BigInt temp_digit;
   BigInt ans;
-  size_t j = 0;
+  size_t jjj = 0;
   while (temp_digit < obj) {
     temp_digit.numbers_.insert(temp_digit.numbers_.begin(),
-                               numbers_[numbers_.size() - j - 1]);
-    ++j;
+                               numbers_[numbers_.size() - jjj - 1]);
+    ++jjj;
   }
-  while (j <= numbers_.size()) {
-    int l = BinSearch(0, kBase, obj, temp_digit);
-    ans.numbers_.push_back(l);
-    temp_digit -= obj * l;
+  while (jjj <= numbers_.size()) {
+    int tmp = BinSearch(0, kBase, obj, temp_digit);
+    ans.numbers_.push_back(tmp);
+    temp_digit -= obj * tmp;
     if (j < numbers_.size()) {
       temp_digit.numbers_.insert(temp_digit.numbers_.begin(),
-                                 numbers_[numbers_.size() - j - 1]);
+                                 numbers_[numbers_.size() - jjj - 1]);
     }
-    ++j;
+    ++jjj;
   }
   ans.Reverse();
   *this = ans;
@@ -226,7 +226,7 @@ bool operator==(const BigInt& k_first, const BigInt& k_second) {
 bool operator!=(const BigInt& k_first, const BigInt& k_second) {
   return !(k_first == k_second);
 }
-bool BigInt::operator<=(BigInt first, BigInt second) {
+bool operator<=(BigInt first, BigInt second) {
   return (first == second || first < second);
 }
 bool operator>=(BigInt first, BigInt second) { return !(first < second); }
@@ -238,7 +238,7 @@ bool operator<(BigInt first, BigInt second) {
     return false;
   }
   if (first.minus_ == 1 && second.minus_ == 1) {
-    return (-second < -*this);
+    return (-second < -first);
   }
   if (first.numbers_.size() < second.numbers_.size()) {
     return true;
@@ -297,14 +297,14 @@ std::ostream& operator<<(std::ostream& out, const BigInt& obj) {
   }
   out << obj.numbers_[obj.numbers_.size() - 1];
   for (int i = obj.numbers_.size() - 2; i >= 0; --i) {
-    int n = obj.numbers_[i];
-    if (n == 0) {
-      n = 1;
+    int num = obj.numbers_[i];
+    if (num == 0) {
+      num = 1;
     }
     const int kCf = 10;
-    while (n < obj.kBase / kCf) {
+    while (num < obj.kBase / kCf) {
       out << '0';
-      n *= kCf;
+      num *= kCf;
     }
     out << obj.numbers_[i];
   }
@@ -324,14 +324,14 @@ void BigInt::RemoveZeros() {
   if (numbers_.size() == 1) {
     return;
   }
-  int i = numbers_.size() - 1;
-  while (i > 0) {
+  int tmp = numbers_.size() - 1;
+  while (tmp > 0) {
     if (numbers_[i] == 0) {
       numbers_.pop_back();
     } else {
       break;
     }
-    --i;
+    --tmp;
   }
   if (numbers_.size() == 1 && numbers_[0] == 0) {
     minus_ = 0;
