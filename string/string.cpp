@@ -48,7 +48,7 @@ String& String::operator=(const String& obj) {
 }
 String::~String() { delete[] data_; }
 void String::Clear() { size_ = 0; }
-void String::PushBack(char c) {
+void String::PushBack(char chr) {
   if (size_ >= capacity_) {
     capacity_ *= 2;
     if (capacity_ == 0) {
@@ -61,10 +61,10 @@ void String::PushBack(char c) {
     }
 
     delete[] temp;
-    data_[size_] = c;
+    data_[size_] = chr;
     ++size_;
   } else {
-    data_[size_] = c;
+    data_[size_] = chr;
     ++size_;
   }
   data_[size_] = '\0';
@@ -210,22 +210,22 @@ std::ostream& operator<<(std::ostream& out, const String& str) {
 }
 
 std::istream& operator>>(std::istream& vin, String& str) {
-  char c;
-  while (in.get(c)) {
-    str.PushBack(c);
+  char chr;
+  while (vin.get(chr)) {
+    str.PushBack(chr);
   }
-  return in;
+  return vin;
 }
 
 String operator*(String k_first, int num) {
-  if (n != 0) {
+  if (num != 0) {
     String str;
-    str.size_ = k_first.size_ * n;
+    str.size_ = k_first.size_ * num;
     str.capacity_ = str.size_;
     delete[] str.data_;
     str.data_ = new char[str.size_ + 1];
     memcpy(str.data_, k_first.data_, k_first.size_);
-    for (int i = 0; i < n - 1; ++i) {
+    for (int i = 0; i < num - 1; ++i) {
       for (size_t j = 0; j < k_first.size_; ++j) {
         str.data_[k_first.size_ * (i + 1) + j] = k_first.data_[j];
       }
@@ -240,14 +240,14 @@ String operator*=(String& k_first, int num) {
   char* temp_data = new char[k_first.size_];
   memcpy(temp_data, k_first.data_, k_first.size_);
   size_t temp_size = k_first.size_;
-  k_first.size_ *= n;
+  k_first.size_ *= num;
   if (k_first.size_ >= k_first.capacity_) {
     delete[] k_first.data_;
     k_first.data_ = new char[k_first.size_ + 1];
     memcpy(k_first.data_, temp_data, temp_size);
     k_first.capacity_ = k_first.size_;
   }
-  for (int i = 0; i < n; ++i) {
+  for (int i = 0; i < num; ++i) {
     for (size_t j = 0; j < temp_size; ++j) {
       k_first.data_[temp_size * (i + 1) + j] = temp_data[j];
     }
@@ -264,13 +264,13 @@ std::vector<String> String::Split(const String& delim) {
   std::vector<String> vec;
   size_t start = 0;
   for (size_t i = start; i < size_; ++i) {
-    size_t j = 0;
-    for (; j < delim.size_; ++j) {
-      if ((i + j) >= size_ || data_[i + j] != delim.data_[j]) {
+    size_t jjj = 0;
+    for (; jjj < delim.size_; ++jjj) {
+      if ((i + jjj) >= size_ || data_[i + jjj] != delim.data_[jjj]) {
         break;
       }
     }
-    if (j == delim.size_) {
+    if (jjj == delim.size_) {
       char* temp_data = new char[i - start + 1];
       for (size_t k = start; k < i; ++k) {
         temp_data[k - start] = data_[k];
@@ -278,7 +278,7 @@ std::vector<String> String::Split(const String& delim) {
       temp_data[i - start] = '\0';
       vec.push_back(String(temp_data));
       delete[] temp_data;
-      start = i + j;
+      start = i + jjj;
     }
   }
   if (this->ChangeEnd(start) != "-1") {
