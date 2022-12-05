@@ -6,10 +6,10 @@ String::String() {
   data_ = new char[1];
   data_[0] = '\0';
 }
-String::String(size_t size, char c) : size_(size), capacity_(size) {
+String::String(size_t size, char chr) : size_(size), capacity_(size) {
   data_ = new char[size + 1];
   for (size_t i = 0; i < size; ++i) {
-    data_[i] = c;
+    data_[i] = chr;
   }
   data_[size] = '\0';
 }
@@ -89,7 +89,7 @@ void String::Resize(size_t new_size) {
   size_ = new_size;
   data_[size_] = '\0';
 }
-void String::Resize(size_t new_size, char c) {
+void String::Resize(size_t new_size, char chr) {
   if (new_size >= capacity_) {
     char* temp = data_;
     data_ = new char[new_size + 1];
@@ -98,7 +98,7 @@ void String::Resize(size_t new_size, char c) {
     capacity_ = new_size;
   }
   for (size_t i = size_; i < new_size; ++i) {
-    data_[i] = c;
+    data_[i] = chr;
   }
   size_ = new_size;
   data_[new_size] = '\0';
@@ -209,7 +209,7 @@ std::ostream& operator<<(std::ostream& out, const String& str) {
   return out;
 }
 
-std::istream& operator>>(std::istream& in, String& str) {
+std::istream& operator>>(std::istream& vin, String& str) {
   char c;
   while (in.get(c)) {
     str.PushBack(c);
@@ -217,7 +217,7 @@ std::istream& operator>>(std::istream& in, String& str) {
   return in;
 }
 
-String operator*(String k_first, int n) {
+String operator*(String k_first, int num) {
   if (n != 0) {
     String str;
     str.size_ = k_first.size_ * n;
@@ -236,7 +236,7 @@ String operator*(String k_first, int n) {
   return String("");
 }
 
-String operator*=(String& k_first, int n) {
+String operator*=(String& k_first, int num) {
   char* temp_data = new char[k_first.size_];
   memcpy(temp_data, k_first.data_, k_first.size_);
   size_t temp_size = k_first.size_;
