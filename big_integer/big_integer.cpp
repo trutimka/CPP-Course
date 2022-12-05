@@ -28,7 +28,7 @@ BigInt::BigInt(std::string str) {
   for (int j = 0; j < num_of_strs; ++j) {
     std::string tmp_s = str.substr(iii, kNumDigs);
     std::reverse(tmp_s.begin(), tmp_s.end());
-    i += kNumDigs;
+    iii += kNumDigs;
     numbers_.emplace_back(HelpLoop(kNumDigs, tmp_s));
   }
   int last = str.size() % kNumDigs;
@@ -150,7 +150,7 @@ BigInt operator*(BigInt first, BigInt second) {
 }
 int BinSearch(int left, int right, BigInt& obj, BigInt& temp_digit) {
   while (right - left > 1) {
-    int mid = l + (right - left) / 2;
+    int mid = left + (right - left) / 2;
     if (obj * BigInt(mid) <= temp_digit) {
       left = mid;
     } else {
@@ -179,7 +179,7 @@ BigInt& BigInt::operator/=(BigInt obj) {
     int tmp = BinSearch(0, kBase, obj, temp_digit);
     ans.numbers_.push_back(tmp);
     temp_digit -= obj * tmp;
-    if (j < numbers_.size()) {
+    if (jjj < numbers_.size()) {
       temp_digit.numbers_.insert(temp_digit.numbers_.begin(),
                                  numbers_[numbers_.size() - jjj - 1]);
     }
@@ -326,7 +326,7 @@ void BigInt::RemoveZeros() {
   }
   int tmp = numbers_.size() - 1;
   while (tmp > 0) {
-    if (numbers_[i] == 0) {
+    if (numbers_[tmp] == 0) {
       numbers_.pop_back();
     } else {
       break;
