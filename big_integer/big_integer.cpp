@@ -89,10 +89,9 @@ BigInt& BigInt::operator+=(BigInt obj) {
   RemoveZeros();
   return *this;
 }
-BigInt BigInt::operator+(BigInt obj) {
-  BigInt num = *this;
-  num += obj;
-  return num;
+BigInt operator+(BigInt first, BigInt second) {
+  first += second;
+  return first;
 }
 
 BigInt& BigInt::operator-=(BigInt obj) {
@@ -121,10 +120,9 @@ BigInt& BigInt::operator-=(BigInt obj) {
   RemoveZeros();
   return *this;
 }
-BigInt BigInt::operator-(BigInt obj) {
-  BigInt num = *this;
-  num -= obj;
-  return num;
+BigInt operator-(BigInt first, BigInt second) {
+  first -= second;
+  return first;
 }
 
 BigInt& BigInt::operator*=(BigInt obj) {
@@ -146,10 +144,9 @@ BigInt& BigInt::operator*=(BigInt obj) {
   RemoveZeros();
   return *this;
 }
-BigInt BigInt::operator*(BigInt obj) {
-  BigInt num = *this;
-  num *= obj;
-  return num;
+BigInt operator*(BigInt first, BigInt second) {
+  first *= second;
+  return first;
 }
 int BinSearch(int l, int r, BigInt& obj, BigInt& temp_digit) {
   while (r - l > 1) {
@@ -193,10 +190,9 @@ BigInt& BigInt::operator/=(BigInt obj) {
   minus_ = temp_minus;
   return *this;
 }
-BigInt BigInt::operator/(BigInt obj) {
-  BigInt num = *this;
-  num /= obj;
-  return num;
+BigInt operator/(BigInt first, BigInt second) {
+  first /= second;
+  return first;
 }
 
 BigInt& BigInt::operator%=(BigInt obj) {
@@ -208,63 +204,62 @@ BigInt& BigInt::operator%=(BigInt obj) {
   RemoveZeros();
   return *this;
 }
-BigInt BigInt::operator%(BigInt obj) {
-  BigInt num = *this;
-  num %= obj;
-  return num;
+BigInt operator%(BigInt first, BigInt second) {
+  first %= second;
+  return first;
 }
 
-bool BigInt::operator==(const BigInt& k_second) const {
-  if (numbers_.size() != k_second.numbers_.size()) {
+bool operator==(const BigInt& k_first, const BigInt& k_second) const {
+  if (k_first.numbers_.size() != k_second.numbers_.size()) {
     return false;
   }
-  if (minus_ != k_second.minus_) {
+  if (k_first.minus_ != k_second.minus_) {
     return false;
   }
-  for (size_t i = 0; i < numbers_.size(); ++i) {
-    if (numbers_[i] != k_second.numbers_[i]) {
+  for (size_t i = 0; i < k_first.numbers_.size(); ++i) {
+    if (k_first.numbers_[i] != k_second.numbers_[i]) {
       return false;
     }
   }
   return true;
 }
-bool BigInt::operator!=(const BigInt& k_second) const {
-  return !(*this == k_second);
+bool operator!=(const BigInt& k_first, const BigInt& k_second) const {
+  return !(k_first == k_second);
 }
-bool BigInt::operator<=(BigInt second) {
-  return (*this == second || *this < second);
+bool BigInt::operator<=(BigInt first, BigInt second) {
+  return (first == second || first < second);
 }
-bool BigInt::operator>=(BigInt second) { return !(*this < second); }
-bool BigInt::operator<(BigInt second) {
-  if (minus_ == 1 && second.minus_ == 0) {
+bool operator>=(BigInt first, BigInt second) { return !(first < second); }
+bool operator<(BigInt first, BigInt second) {
+  if (first.minus_ == 1 && second.minus_ == 0) {
     return true;
   }
-  if (minus_ == 0 && second.minus_ == 1) {
+  if (first.minus_ == 0 && second.minus_ == 1) {
     return false;
   }
-  if (minus_ == 1 && second.minus_ == 1) {
+  if (first.minus_ == 1 && second.minus_ == 1) {
     return (-second < -*this);
   }
-  if (numbers_.size() < second.numbers_.size()) {
+  if (first.numbers_.size() < second.numbers_.size()) {
     return true;
   }
-  if (numbers_.size() > second.numbers_.size()) {
+  if (first.numbers_.size() > second.numbers_.size()) {
     return false;
   }
-  if (*this == second) {
+  if (first == second) {
     return false;
   }
-  for (int i = numbers_.size() - 1; i >= 0; --i) {
-    if (numbers_[i] > second.numbers_[i]) {
+  for (int i = first.numbers_.size() - 1; i >= 0; --i) {
+    if (first.numbers_[i] > second.numbers_[i]) {
       return false;
     }
-    if (numbers_[i] < second.numbers_[i]) {
+    if (first.numbers_[i] < second.numbers_[i]) {
       return true;
     }
   }
   return true;
 }
-bool BigInt::operator>(BigInt second) { return !(*this <= second); }
+bool operator>(BigInt first, BigInt second) { return !(first <= second); }
 
 BigInt BigInt::operator-() {
   if (numbers_.size() == 1 && numbers_[0] == 0) {
