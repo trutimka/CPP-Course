@@ -33,12 +33,12 @@ class String {
   size_t Capacity() const;
   const char* Data() const;
   char* Data();
-  bool operator<(const String& right) const;
-  bool operator<=(const String& right) const;
-  bool operator>(const String& right) const;
-  bool operator>=(const String& right) const;
-  bool operator==(const String& right) const;
-  bool operator!=(const String& right) const;
+  friend bool operator<(const String& left, const String& right);
+  friend bool operator<=(const String& left, const String& right);
+  friend bool operator>(const String& left, const String& right);
+  friend bool operator>=(const String& left, const String& right);
+  friend bool operator==(const String& left, const String& right);
+  friend bool operator!=(const String& left, const String& right);
 
   friend String operator+(String k_first, String k_second);
   String& operator+=(String k_second);
