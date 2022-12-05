@@ -12,23 +12,23 @@ class BigInt {
   BigInt(int64_t num);
   BigInt(const BigInt& other);
   BigInt& operator=(const BigInt& other);
-  BigInt operator+(BigInt obj);
-  BigInt operator-(BigInt obj);
-  BigInt operator*(BigInt obj);
-  BigInt operator/(BigInt obj);
-  BigInt operator%(BigInt obj);
+  friend BigInt operator+(BigInt first, BigInt second);
+  friend BigInt operator-(BigInt first, BigInt second);
+  friend BigInt operator*(BigInt first, BigInt second);
+  friend BigInt operator/(BigInt first, BigInt second);
+  friend BigInt operator%(BigInt first, BigInt second);
   BigInt& operator+=(BigInt obj);
   BigInt& operator-=(BigInt obj);
   BigInt& operator*=(BigInt obj);
   BigInt& operator/=(BigInt obj);
   BigInt& operator%=(BigInt obj);
 
-  bool operator==(const BigInt& k_second) const;
-  bool operator!=(const BigInt& k_second) const;
-  bool operator<=(BigInt second);
-  bool operator>=(BigInt second);
-  bool operator<(BigInt second);
-  bool operator>(BigInt second);
+  friend bool operator==(const BigInt& k_first, const BigInt& k_second) const;
+  friend bool operator!=(const BigInt& k_first, const BigInt& k_second) const;
+  friend bool operator<=(BigInt first, BigInt second);
+  friend bool operator>=(BigInt first, BigInt second);
+  friend bool operator<(BigInt first, BigInt second);
+  friend bool operator>(BigInt first, BigInt second);
 
   BigInt operator-();
   BigInt& operator++();
