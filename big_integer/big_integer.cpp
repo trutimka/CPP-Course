@@ -209,7 +209,7 @@ BigInt operator%(BigInt first, BigInt second) {
   return first;
 }
 
-bool operator==(const BigInt& k_first, const BigInt& k_second) const {
+bool operator==(const BigInt& k_first, const BigInt& k_second) {
   if (k_first.numbers_.size() != k_second.numbers_.size()) {
     return false;
   }
@@ -223,7 +223,7 @@ bool operator==(const BigInt& k_first, const BigInt& k_second) const {
   }
   return true;
 }
-bool operator!=(const BigInt& k_first, const BigInt& k_second) const {
+bool operator!=(const BigInt& k_first, const BigInt& k_second) {
   return !(k_first == k_second);
 }
 bool BigInt::operator<=(BigInt first, BigInt second) {
@@ -310,12 +310,12 @@ std::ostream& operator<<(std::ostream& out, const BigInt& obj) {
   }
   return out;
 }
-std::istream& operator>>(std::istream& in, BigInt& obj) {
+std::istream& operator>>(std::istream& vin, BigInt& obj) {
   std::string str;
-  in >> str;
+  vin >> str;
   BigInt num(str);
   obj = num;
-  return in;
+  return vin;
 }
 
 size_t BigInt::Size() { return numbers_.size(); }
