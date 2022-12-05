@@ -23,8 +23,8 @@ class BigInt {
   BigInt& operator/=(BigInt obj);
   BigInt& operator%=(BigInt obj);
 
-  friend bool operator==(const BigInt& k_first, const BigInt& k_second) const;
-  friend bool operator!=(const BigInt& k_first, const BigInt& k_second) const;
+  friend bool operator==(const BigInt& k_first, const BigInt& k_second);
+  friend bool operator!=(const BigInt& k_first, const BigInt& k_second);
   friend bool operator<=(BigInt first, BigInt second);
   friend bool operator>=(BigInt first, BigInt second);
   friend bool operator<(BigInt first, BigInt second);
@@ -37,7 +37,7 @@ class BigInt {
   BigInt operator--(int);
 
   friend std::ostream& operator<<(std::ostream& out, const BigInt& obj);
-  friend std::istream& operator>>(std::istream& in, BigInt& obj);
+  friend std::istream& operator>>(std::istream& vin, BigInt& obj);
 
   size_t Size();
 
