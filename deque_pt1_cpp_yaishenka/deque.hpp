@@ -284,7 +284,9 @@ void Deque<T>::push_back(const T& value) {
     try {
       arr_.push_back(reinterpret_cast<T*>(new int8_t[kConstCnt * sizeof(T)]));
       temp_fnsh_ = 0;
-      ++temp_vec_fnsh_;
+      if (capacity_ != 0) {
+        ++temp_vec_fnsh_;
+      }
       new (arr_[temp_vec_fnsh_] + temp_fnsh_) T(value);
     } catch (...) {
       delete[] reinterpret_cast<int8_t*>(arr_[temp_vec_fnsh_]);
@@ -365,6 +367,10 @@ void Deque<T>::pop_front() {
 
 template <typename T>
 void Deque<T>::insert(iterator iter, const T& value) {
+  if (size_ == 0 || iter == this->end()) {
+    this->push_back(value);
+    return;
+  }
   this->push_back(arr_[temp_vec_fnsh_][temp_fnsh_ - 1]);
   if (iter.temp_vec_ == temp_vec_fnsh_) {
     for (size_t i = temp_fnsh_ - 2; i > iter.temp_item_; --i) {
