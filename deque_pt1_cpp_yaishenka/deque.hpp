@@ -120,8 +120,6 @@ Deque<T>::Deque(size_t count, const T& value) {
           (arr_[i] + j)->~T();
         }
       }
-    }
-    for (size_t i = 0; i < arr_.size(); ++i) {
       delete[] reinterpret_cast<int8_t*>(arr_[i]);
     }
     throw;
