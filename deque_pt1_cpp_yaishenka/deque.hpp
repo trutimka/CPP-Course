@@ -420,6 +420,7 @@ class Deque<T>::common_iterator {
   using reference = value_type&;
   using difference_type = ptrdiff_t;
 
+  common_iterator() = default;
   common_iterator(type_vec* arr, size_t temp_vec, size_t temp_item) {
     arr_ = arr;
     temp_vec_ = temp_vec;
@@ -531,7 +532,8 @@ class Deque<T>::common_iterator {
     return !(*this < other);
   }
 
-  difference_type operator-(const Deque<T>::common_iterator<IsConst>& other) {
+  difference_type operator-(
+      const Deque<T>::common_iterator<IsConst>& other) const {
     if (*this == other) {
       return 0;
     }
@@ -547,7 +549,7 @@ class Deque<T>::common_iterator {
   }
 
  private:
-  type_vec* arr_;
+  type_vec* arr_ = nullptr;
   size_t temp_vec_ = 0;
   size_t temp_item_ = 0;
 };
