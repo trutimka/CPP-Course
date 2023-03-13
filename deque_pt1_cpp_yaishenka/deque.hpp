@@ -432,7 +432,7 @@ class Deque<T>::common_iterator {
   reference operator*() { return (*arr_)[temp_vec_][temp_item_]; }
   const T& operator*() const { return (*arr_)[temp_vec_][temp_item_]; }
   pointer operator->() { return &((*arr_)[temp_vec_][temp_item_]); }
-  const T* operator->() const { return &((*arr_)[temp_vec_][temp_item_];
+  const T* operator->() const { return &((*arr_)[temp_vec_][temp_item_]);
   }
 
   common_iterator<IsConst>& operator++() {
