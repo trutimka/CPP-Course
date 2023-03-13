@@ -76,6 +76,7 @@ Deque<T>::Deque(size_t count) {
     capacity_ = kConstCnt * arr_.size();
     temp_vec_str_ = arr_.size() / 2;
     temp_vec_fnsh_ = arr_.size() / 2;
+    size_ = count;
   } catch (...) {
     for (size_t i = 0; i < arr_.size(); ++i) {
       delete[] reinterpret_cast<int8_t*>(arr_[i]);
@@ -230,7 +231,7 @@ T& Deque<T>::operator[](size_t index) {
 
 template <typename T>
 T& Deque<T>::at(size_t index) {
-  if (index >= capacity_) {
+  if (index >= size_) {
     throw std::out_of_range("");
   }
   return (*this)[index];
@@ -249,7 +250,7 @@ const T& Deque<T>::operator[](size_t index) const {
 
 template <typename T>
 const T& Deque<T>::at(size_t index) const {
-  if (index >= capacity_) {
+  if (index >= size_) {
     throw std::out_of_range("");
   }
   return (*this)[index];
@@ -510,8 +511,7 @@ class Deque<T>::common_iterator {
   }
 
   bool operator==(const common_iterator<IsConst>& other) const {
-    return (arr_ == other.arr_ && temp_vec_ == other.temp_vec_ &&
-            temp_item_ == other.temp_item_);
+    return (temp_vec_ == other.temp_vec_ && temp_item_ == other.temp_item_);
   }
   bool operator!=(const common_iterator<IsConst>& other) const {
     return !(*this == other);
