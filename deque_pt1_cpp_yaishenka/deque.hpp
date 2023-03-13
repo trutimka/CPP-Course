@@ -87,10 +87,9 @@ Deque<T>::Deque(size_t count) {
 template <typename T>
 Deque<T>::Deque(size_t count, const T& value) {
   try {
-    size_t cnt = count / kConstCnt;
-    if (count % kConstCnt != 0 || cnt == 0) {
-      ++cnt;
-    }
+    size_t cnt = (count % kConstCnt != 0 || (count / kConstCnt) == 0)
+                     ? (count / kConstCnt + 1)
+                     : (count / kConstCnt);
     arr_.resize(cnt + 2);
     for (size_t i = 0; i < arr_.size(); ++i) {
       arr_[i] = reinterpret_cast<T*>(new int8_t[kConstCnt * sizeof(T)]);
