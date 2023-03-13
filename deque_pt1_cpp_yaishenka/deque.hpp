@@ -17,8 +17,8 @@ class Deque {
   const T& operator[](size_t index) const;
   T& at(size_t index);
   const T& at(size_t index) const;
-  void push_back(T& value);
-  void push_front(T& value);
+  void push_back(const T& value);
+  void push_front(const T& value);
   void pop_back();
   void pop_front();
 
@@ -255,7 +255,7 @@ const T& Deque<T>::at(size_t index) const {
 }
 
 template <typename T>
-void Deque<T>::push_back(T& value) {
+void Deque<T>::push_back(const T& value) {
   if (size_ < capacity_ &&
       (temp_vec_fnsh_ != arr_.size() - 1 || temp_fnsh_ != kConstCnt)) {
     bool is_transfered = false;
@@ -295,7 +295,7 @@ void Deque<T>::push_back(T& value) {
 }
 
 template <typename T>
-void Deque<T>::push_front(T& value) {
+void Deque<T>::push_front(const T& value) {
   if (size_ < capacity_ && (temp_str_ != 0 || temp_vec_str_ != 0)) {
     bool is_transfered = false;
     if (temp_str_ == 0) {
