@@ -72,13 +72,14 @@ Deque<T>::Deque(size_t count) {
     arr_.resize(cnt + 2);
     for (size_t i = 0; i < arr_.size(); ++i) {
       arr_[i] = reinterpret_cast<T*>(new int8_t[kConstCnt * sizeof(T)]);
+      memset(arr_[i], 0, kConstCnt * sizeof(T));
     }
     capacity_ = kConstCnt * arr_.size();
-    temp_vec_str_ = arr_.size() / 2;
-    temp_vec_fnsh_ = arr_.size() / 2;
+    temp_vec_str_ = 1;
+    temp_vec_fnsh_ = arr_.size() - 2;
     size_ = count;
     temp_str_ = 0;
-    temp_fnsh_ = 1;
+    temp_fnsh_ = count % kConstCnt;
   } catch (...) {
     for (size_t i = 0; i < arr_.size(); ++i) {
       delete[] reinterpret_cast<int8_t*>(arr_[i]);
