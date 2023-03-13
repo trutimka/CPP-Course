@@ -204,6 +204,7 @@ Deque<T>& Deque<T>::operator=(const Deque<T>& other) {
   for (size_t i = 0; i < arr_.size(); ++i) {
     arr_[i] = new_arr[i];
   }
+  return *this;
 }
 
 template <typename T>
@@ -362,7 +363,7 @@ template <typename T>
 void Deque<T>::insert(iterator iter, const T& value) {
   this->push_back(arr_[temp_vec_fnsh_][temp_fnsh_ - 1]);
   if (iter.temp_vec_ == temp_vec_fnsh_) {
-    for (int i = temp_fnsh_ - 2; i > iter.temp_item_; --i) {
+    for (size_t i = temp_fnsh_ - 2; i > iter.temp_item_; --i) {
       arr_[temp_vec_fnsh_][i] = arr_[temp_vec_fnsh_][i - 1];
     }
     arr_[temp_vec_fnsh_][iter.temp_item_] = value;
@@ -372,13 +373,13 @@ void Deque<T>::insert(iterator iter, const T& value) {
     arr_[temp_vec_fnsh_][i] = arr_[temp_vec_fnsh_][i - 1];
   }
   arr_[temp_vec_fnsh_][0] = arr_[temp_vec_fnsh_ - 1][kConstCnt - 1];
-  for (int i = temp_vec_fnsh_ - 1; i > iter.temp_vec_; --i) {
+  for (size_t i = temp_vec_fnsh_ - 1; i > iter.temp_vec_; --i) {
     for (int j = kConstCnt - 1; j > 0; --j) {
       arr_[i][j] = arr_[i][j - 1];
     }
     arr_[i][0] = arr_[i - 1][kConstCnt - 1];
   }
-  for (int j = kConstCnt - 1; j > iter.temp_item_; --j) {
+  for (size_t j = kConstCnt - 1; j > iter.temp_item_; --j) {
     arr_[iter.temp_vec_][j] = arr_[iter.temp_vec_][j - 1];
   }
   arr_[iter.temp_vec_][iter.temp_item_] = value;
