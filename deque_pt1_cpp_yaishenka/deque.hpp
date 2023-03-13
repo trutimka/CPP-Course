@@ -493,7 +493,7 @@ class Deque<T>::common_iterator {
     }
     size_t item = temp_item_;
     size_t vec = temp_vec_;
-    if (temp_item_ - num >= 0) {
+    if ((int)temp_item_ - (int)num >= 0) {
       item = temp_item_ - num;
       return common_iterator<IsConst>(arr_, vec, item);
     }
