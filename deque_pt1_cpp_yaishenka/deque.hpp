@@ -11,8 +11,8 @@ class Deque {
   ~Deque();
   Deque(const Deque<T>& other);
   Deque<T>& operator=(const Deque<T>& other);
-  size_t size() noexcept;
-  bool empty() noexcept;
+  size_t size() const noexcept;
+  bool empty() const noexcept;
   T& operator[](size_t index);
   const T& operator[](size_t index) const;
   T& at(size_t index);
@@ -207,12 +207,12 @@ Deque<T>& Deque<T>::operator=(const Deque<T>& other) {
 }
 
 template <typename T>
-bool Deque<T>::empty() noexcept {
+bool Deque<T>::empty() const noexcept {
   return size_ == 0;
 }
 
 template <typename T>
-size_t Deque<T>::size() noexcept {
+size_t Deque<T>::size() const noexcept {
   return size_;
 }
 
@@ -232,7 +232,7 @@ T& Deque<T>::at(size_t index) {
   if (index >= capacity_) {
     throw std::out_of_range("");
   }
-  return *this[index];
+  return (*this)[index];
 }
 
 template <typename T>
@@ -251,7 +251,7 @@ const T& Deque<T>::at(size_t index) const {
   if (index >= capacity_) {
     throw std::out_of_range("");
   }
-  return *this[index];
+  return (*this)[index];
 }
 
 template <typename T>
@@ -429,10 +429,11 @@ class Deque<T>::common_iterator {
   common_iterator& operator=(const common_iterator& other) = default;
   ~common_iterator() = default;
 
-  reference operator*() { return ((*arr_)[temp_vec_] + temp_item_); }
-  const T& operator*() const { return ((*arr_)[temp_vec_] + temp_item_); }
-  pointer operator->() { return &((*arr_)[temp_vec_] + temp_item_); }
-  const T* operator->() const { return &((*arr_)[temp_vec_] + temp_item_); }
+  reference operator*() { return (*arr_)[temp_vec_][temp_item_]; }
+  const T& operator*() const { return (*arr_)[temp_vec_][temp_item_]; }
+  pointer operator->() { return &((*arr_)[temp_vec_][temp_item_]); }
+  const T* operator->() const { return &((*arr_)[temp_vec_][temp_item_];
+  }
 
   common_iterator<IsConst>& operator++() {
     if (temp_item_ < kConstCnt - 1) {
@@ -531,7 +532,7 @@ class Deque<T>::common_iterator {
     return !(*this < other);
   }
 
-  difference_type operator-(const common_iterator<IsConst>& other) {
+  difference_type operator-(const Deque<T>::common_iterator<IsConst>& other) {
     if (*this == other) {
       return 0;
     }
@@ -562,7 +563,7 @@ class Deque<T>::rev_iterator {
   using difference_type = typename Iter::difference_type;
   using reference = typename Iter::reference;
   using pointer = typename Iter::pointer;
-  rev_iterator(Iter iter) { iter_ = iter; }
+  explicit rev_iterator(Iter iter) { iter_ = iter; }
   rev_iterator(const rev_iterator& other) = default;
   rev_iterator& operator=(const rev_iterator& other) = default;
   ~rev_iterator() = default;
