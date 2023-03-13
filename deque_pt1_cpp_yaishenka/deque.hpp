@@ -52,7 +52,7 @@ class Deque {
 
  private:
   std::vector<T*> arr_;
-  static const size_t kConstCnt = 1e3;
+  static const size_t kConstCnt = 1e5;
   size_t size_ = 0;
   size_t capacity_ = 0;
   size_t temp_vec_str_ = 0;  // первый вектор, в котором есть элементы
