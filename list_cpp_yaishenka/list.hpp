@@ -165,7 +165,6 @@ public:
       fakeNode_ = tempFakeNode;
     }
     catch (...) {
-      // дописать удаление
 
       throw;
     }
