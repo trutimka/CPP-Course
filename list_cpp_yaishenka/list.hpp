@@ -1,13 +1,9 @@
-//
-// pch.h
-//
-
 #pragma once
 #include <memory>
 
 template <typename T, typename Allocator = std::allocator<T>>
 class List {
-private:
+ private:
   struct BaseNode {
     BaseNode* prev = nullptr;
     BaseNode* next = nullptr;
@@ -17,7 +13,7 @@ private:
   };
 
   using node_allocator =
-    typename std::allocator_traits<Allocator>::template rebind_alloc<Node>;
+      typename std::allocator_traits<Allocator>::template rebind_alloc<Node>;
   using node_traits = std::allocator_traits<node_allocator>;
 
   BaseNode fake_node_;
@@ -49,15 +45,15 @@ private:
     node_traits::deallocate(alloc_, node, 1);
   }
 
-public:
+ public:
   using valuetype = T;
   using allocator_type = Allocator;
   using different_type = std::ptrdiff_t;
   using reference = T&;
 
-  List() : fake_node_{ &fake_node_, &fake_node_ } {}
+  List() : fake_node_{&fake_node_, &fake_node_ } {}
   List(size_t count, const T& value = T(), const Allocator& alloc = Allocator())
-    : size_(count), alloc_(alloc) {
+      : size_(count), alloc_(alloc) {
     Node* node = create_node(value);
     fake_node_.next = static_cast<BaseNode*>(node);
     node->prev = &fake_node_;
@@ -71,7 +67,7 @@ public:
     fake_node_.prev = static_cast<BaseNode*>(node);
   }
   explicit List(size_t count, const Allocator& alloc)
-    : size_(count), alloc_(alloc) {
+      : size_(count), alloc_(alloc) {
     Node* head = create_node();
     fake_node_.next = static_cast<BaseNode*>(head);
     head->prev = &fake_node_;
@@ -99,7 +95,7 @@ public:
       for (auto i = 0; i < size_ - 1; ++i) {
         Node* tmp = create_node();
         Node* tmp_other =
-          static_cast<Node*>(static_cast<BaseNode*>(temp_other)->next);
+            static_cast<Node*>(static_cast<BaseNode*>(temp_other)->next);
         tmp->value = tmp_other->value;
         temp_other = tmp_other;
         temp->next = static_cast<BaseNode*>(tmp);
@@ -111,7 +107,7 @@ public:
     }
   }
   List(std::initializer_list<T> init, const Allocator& alloc = Allocator())
-    : alloc_(alloc) {
+      : alloc_(alloc) {
     size_ = init.size();
     if (size_ != 0) {
       auto iter = init.begin();
@@ -153,7 +149,7 @@ public:
       head->prev = &temp_fake_node;
       Node* temp = head;
       Node* temp_other =
-        static_cast<Node*>(static_cast<BaseNode*>(head_other)->next);
+          static_cast<Node*>(static_cast<BaseNode*>(head_other)->next);
       for (int i = 0; i < other.size_ - 1; ++i) {
         Node* tmp = create_node((*temp_other).value);
         // tmp->value = std::move(temp_other->value);
@@ -162,7 +158,7 @@ public:
         temp->next = static_cast<BaseNode*>(tmp);
         temp = tmp;
         temp_other =
-          static_cast<Node*>(static_cast<BaseNode*>(temp_other)->next);
+            static_cast<Node*>(static_cast<BaseNode*>(temp_other)->next);
       }
       temp->next = &temp_fake_node;
       temp_fake_node.prev = static_cast<BaseNode*>(temp);
@@ -174,8 +170,7 @@ public:
         head = static_cast<Node*>(tmp);
       }
       fake_node_ = temp_fake_node;
-    }
-    catch (...) {
+    } catch (...) {
       throw;
     }
     size_ = other.size_;
@@ -211,8 +206,7 @@ public:
       node->prev = static_cast<BaseNode*>(tail);
       node->next = &fake_node_;
       fake_node_.prev = static_cast<BaseNode*>(node);
-    }
-    catch (...) {
+    } catch (...) {
       destroy_node(node);
       throw;
     }
@@ -227,8 +221,7 @@ public:
       node->next = static_cast<BaseNode*>(head);
       node->prev = &fake_node_;
       fake_node_.next = static_cast<BaseNode*>(node);
-    }
-    catch (...) {
+    } catch (...) {
       destroy_node(node);
       throw;
     }
@@ -243,8 +236,7 @@ public:
       node->prev = static_cast<BaseNode*>(tail);
       node->next = &fake_node_;
       fake_node_.prev = static_cast<BaseNode*>(node);
-    }
-    catch (...) {
+    } catch (...) {
       destroy_node(node);
       throw;
     }
@@ -259,8 +251,7 @@ public:
       node->next = static_cast<BaseNode*>(head);
       node->prev = &fake_node_;
       fake_node_.next = static_cast<BaseNode*>(node);
-    }
-    catch (...) {
+    } catch (...) {
       destroy_node(node);
       throw;
     }
@@ -286,7 +277,7 @@ public:
 
   template <bool IsConst>
   class CommonIterator {
-  public:
+   public:
     using valuetype = std::conditional_t<IsConst, const T, T>;
 
     using pointer = valuetype*;
@@ -327,7 +318,7 @@ public:
       return !(*this == other);
     }
 
-  private:
+   private:
     Node* node_ = nullptr;
   };
 
