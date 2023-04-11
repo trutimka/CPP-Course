@@ -46,7 +46,7 @@ class List {
   }
 
  public:
-  using valuetype = T;
+  using value_type = T;
   using allocator_type = Allocator;
   using different_type = std::ptrdiff_t;
   using reference = T&;
@@ -57,7 +57,7 @@ class List {
     Node* node = create_node(value);
     fake_node_.next = static_cast<BaseNode*>(node);
     node->prev = &fake_node_;
-    for (auto i = 0; i < count - 1; ++i) {
+    for (size_t i = 0; i < count - 1; ++i) {
       Node* tmp = create_node(value);
       node->next = static_cast<BaseNode*>(tmp);
       tmp->prev = static_cast<BaseNode*>(node);
@@ -72,7 +72,7 @@ class List {
     fake_node_.next = static_cast<BaseNode*>(head);
     head->prev = &fake_node_;
     Node* temp = head;
-    for (auto i = 0; i < count - 1; ++i) {
+    for (size_t i = 0; i < count - 1; ++i) {
       Node* tmp = create_node();
       temp->next = static_cast<BaseNode*>(tmp);
       tmp->prev = static_cast<BaseNode*>(temp);
@@ -92,7 +92,7 @@ class List {
       head->prev = &fake_node_;
       Node* temp = head;
       Node* temp_other = head_other;
-      for (auto i = 0; i < size_ - 1; ++i) {
+      for (size_t i = 0; i < size_ - 1; ++i) {
         Node* tmp = create_node();
         Node* tmp_other =
             static_cast<Node*>(static_cast<BaseNode*>(temp_other)->next);
@@ -119,7 +119,7 @@ class List {
       head->prev = &fake_node_;
       Node* temp = head;
 
-      for (auto i = 0; i < size_ - 1; ++i) {
+      for (size_t i = 0; i < size_ - 1; ++i) {
         Node* tmp = create_node(*iter);
         // tmp->value = std::move(*iter);
         ++iter;
@@ -150,7 +150,7 @@ class List {
       Node* temp = head;
       Node* temp_other =
           static_cast<Node*>(static_cast<BaseNode*>(head_other)->next);
-      for (int i = 0; i < other.size_ - 1; ++i) {
+      for (size_t i = 0; i < other.size_ - 1; ++i) {
         Node* tmp = create_node((*temp_other).value);
         // tmp->value = std::move(temp_other->value);
         // tmp->value = temp_other->value;
@@ -164,7 +164,7 @@ class List {
       temp_fake_node.prev = static_cast<BaseNode*>(temp);
 
       head = static_cast<Node*>(fake_node_.next);
-      for (int i = 0; i < size_; ++i) {
+      for (size_t i = 0; i < size_; ++i) {
         BaseNode* tmp = static_cast<BaseNode*>(head)->next;
         destroy_node(head);
         head = static_cast<Node*>(tmp);
@@ -179,7 +179,7 @@ class List {
   ~List() {
     if (size_ != 0) {
       Node* temp = static_cast<Node*>(fake_node_.next);
-      for (auto i = 0; i < size_; ++i) {
+      for (size_t i = 0; i < size_; ++i) {
         BaseNode* tmp = static_cast<BaseNode*>(temp)->next;
         destroy_node(temp);
         temp = static_cast<Node*>(tmp);
@@ -312,7 +312,7 @@ class List {
     }
 
     bool operator==(const CommonIterator<IsConst>& other) {
-      return node_ == other.node_;
+      return node_->value == other.node_->value;
     }
     bool operator!=(const CommonIterator<IsConst>& other) {
       return !(*this == other);
@@ -327,17 +327,17 @@ class List {
   iterator begin() noexcept {
     return iterator(static_cast<Node*>(fake_node_.next));
   }
-  iterator end() noexcept { return iterator(&fake_node_); }
+  iterator end() noexcept { return iterator(static_cast<Node*>(&fake_node_)); }
   const_iterator cbegin() const noexcept {
     return const_iterator(static_cast<Node*>(fake_node_.next));
   }
-  const_iterator cend() const noexcept { return const_iterator(&fake_node_); }
+  const_iterator cend() const noexcept { return const_iterator(static_cast<Node*>(&fake_node_)); }
   iterator rbegin() noexcept {
-    return iterator(static_cast<Node*>(fake_node_.prev));
+    return iterator(static_cast<Node*>static_cast<Node*>((fake_node_.prev)));
   }
-  iterator rend() noexcept { return iterator(&fake_node_); }
+  iterator rend() noexcept { return iterator(static_cast<Node*>(&fake_node_)); }
   const_iterator rcbegin() const noexcept {
     return const_iterator(static_cast<Node*>(fake_node_.prev));
   }
-  const_iterator rcend() const noexcept { return const_iterator(&fake_node_); }
+  const_iterator rcend() const noexcept { return const_iterator(static_cast<Node*>(&fake_node_)); }
 };
