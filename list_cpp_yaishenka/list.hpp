@@ -20,7 +20,7 @@ private:
   using node_allocator = typename std::allocator_traits<Allocator>::template rebind_alloc<Node>;
   using node_traits = std::allocator_traits<node_allocator>;
 
-  BaseNode fake_node;
+  BaseNode fake_node_;
   node_allocator alloc_;
   size_t size_ = 0;
   Node* create_node() {
@@ -56,24 +56,24 @@ public:
   using reference = T&;
 
 
-  List() : fake_node{ &fake_node, &fake_node } {}
+  List() : fake_node_{ &fake_node_, &fake_node_ } {}
   List(size_t count, const T& value = T(), const Allocator& alloc = Allocator()) : size_(count), alloc_(alloc) {
     Node* node = create_node(value);
-    fake_node.next = static_cast<BaseNode*>(node);
-    node->prev = &fake_node;
+    fake_node_.next = static_cast<BaseNode*>(node);
+    node->prev = &fake_node_;
     for (auto i = 0; i < count - 1; ++i) {
       Node* tmp = create_node(value);
       node->next = static_cast<BaseNode*>(tmp);
       tmp->prev = static_cast<BaseNode*>(node);
       node = tmp;
     }
-    node->next = &fake_node;
-    fake_node.prev = static_cast<BaseNode*>(node);
+    node->next = &fake_node_;
+    fake_node_.prev = static_cast<BaseNode*>(node);
   }
   explicit List(size_t count, const Allocator& alloc) : size_(count), alloc_(alloc) {
     Node* head = create_node();
-    fake_node.next = static_cast<BaseNode*>(head);
-    head->prev = &fake_node;
+    fake_node_.next = static_cast<BaseNode*>(head);
+    head->prev = &fake_node_;
     Node* temp = head;
     for (auto i = 0; i < count - 1; ++i) {
       Node* tmp = create_node();
@@ -81,19 +81,19 @@ public:
       tmp->prev = static_cast<BaseNode*>(temp);
       temp = tmp;
     }
-    temp->next = &fake_node;
-    fake_node.prev = static_cast<BaseNode*>(temp);
+    temp->next = &fake_node_;
+    fake_node_.prev = static_cast<BaseNode*>(temp);
   }
   List(const List& other) {
     size_ = other.size_;
     alloc_ = node_traits::select_on_container_copy_construction(other.alloc_);
     if (size_ != 0) {
       Node* head = create_node();
-      fake_node.next = static_cast<BaseNode*>(head);
-      Node* head_other = static_cast<Node*>(other.fake_node.next);
+      fake_node_.next = static_cast<BaseNode*>(head);
+      Node* head_other = static_cast<Node*>(other.fake_node_.next);
       //head->value = std::move(head_other->value);
       head->value = head_other->value;
-      head->prev = &fake_node;
+      head->prev = &fake_node_;
       Node* temp = head;
       Node* temp_other = head_other;
       for (auto i = 0; i < size_ - 1; ++i) {
@@ -106,8 +106,8 @@ public:
         tmp->prev = static_cast<BaseNode*>(temp);
         temp = tmp;
       }
-      temp->next = &fake_node;
-      fake_node.prev = static_cast<BaseNode*>(temp);
+      temp->next = &fake_node_;
+      fake_node_.prev = static_cast<BaseNode*>(temp);
     }
   }
   List(std::initializer_list<T> init, const Allocator& alloc = Allocator()) : alloc_(alloc) {
@@ -115,11 +115,11 @@ public:
     if (size_ != 0) {
       auto iter = init.begin();
       Node* head = create_node(*iter);
-      fake_node.next = static_cast<BaseNode*>(head);
+      fake_node_.next = static_cast<BaseNode*>(head);
 
       //head->value = std::move(*iter);
       ++iter;
-      head->prev = &fake_node;
+      head->prev = &fake_node_;
       Node* temp = head;
 
       for (auto i = 0; i < size_ - 1; ++i) {
@@ -130,8 +130,8 @@ public:
         tmp->prev = static_cast<BaseNode*>(temp);
         temp = tmp;
       }
-      temp->next = &fake_node;
-      fake_node.prev = static_cast<BaseNode*>(temp);
+      temp->next = &fake_node_;
+      fake_node_.prev = static_cast<BaseNode*>(temp);
     }
   }
   List& operator=(const List& other) {
@@ -139,14 +139,14 @@ public:
     if (node_traits::propagate_on_container_copy_assignment::value && alloc_ != other.alloc_) {
       alloc_ = other.alloc_;
     }
-    BaseNode tempFakeNode;
+    BaseNode temp_fake_node_;
     try {
-      Node* head_other = static_cast<Node*>(other.fake_node.next);
+      Node* head_other = static_cast<Node*>(other.fake_node_.next);
       Node* head = create_node((*head_other).value);
       //head->value = std::move(head_other->value);
       //head->value = head_other->value;
-      tempFakeNode.next = static_cast<BaseNode*>(head);
-      head->prev = &tempFakeNode;
+      temp_fake_node_.next = static_cast<BaseNode*>(head);
+      head->prev = &temp_fake_node_;
       Node* temp = head;
       Node* temp_other = static_cast<Node*>(static_cast<BaseNode*>(head_other)->next);
       for (int i = 0; i < other.size_ - 1; ++i) {
@@ -158,16 +158,16 @@ public:
         temp = tmp;
         temp_other = static_cast<Node*>(static_cast<BaseNode*>(temp_other)->next);
       }
-      temp->next = &tempFakeNode;
-      tempFakeNode.prev = static_cast<BaseNode*>(temp);
+      temp->next = &temp_fake_node_;
+      temp_fake_node_.prev = static_cast<BaseNode*>(temp);
 
-      head = static_cast<Node*>(fake_node.next);
+      head = static_cast<Node*>(fake_node_.next);
       for (int i = 0; i < size_; ++i) {
         BaseNode* tmp = static_cast<BaseNode*>(head)->next;
         destroy_node(head);
         head = static_cast<Node*>(tmp);
       }
-      fake_node = tempFakeNode;
+      fake_node_ = temp_fake_node_;
     }
     catch (...) {
 
@@ -178,7 +178,7 @@ public:
   }
   ~List() {
     if (size_ != 0) {
-      Node* temp = static_cast<Node*>(fake_node.next);
+      Node* temp = static_cast<Node*>(fake_node_.next);
       for (auto i = 0; i < size_; ++i) {
         BaseNode* tmp = static_cast<BaseNode*>(temp)->next;
         destroy_node(temp);
@@ -194,26 +194,26 @@ public:
     return size_ == 0;
   }
   T& front() {
-    return *(static_cast<Node*>(fake_node.next)->value);
+    return *(static_cast<Node*>(fake_node_.next)->value);
   }
   const T& front() const {
-    return *(static_cast<Node*>(fake_node.next)->value);
+    return *(static_cast<Node*>(fake_node_.next)->value);
   }
   T& back() {
-    return *(static_cast<Node*>(fake_node.prev)->value);
+    return *(static_cast<Node*>(fake_node_.prev)->value);
   }
   const T& back() const {
-    return *(static_cast<Node*>(fake_node.prev)->value);
+    return *(static_cast<Node*>(fake_node_.prev)->value);
   }
   void push_back(const T& value) {
     Node* node;
     try {
       node = create_node(value);
-      Node* tail = static_cast<Node*>(fake_node.prev);
+      Node* tail = static_cast<Node*>(fake_node_.prev);
       tail->next = static_cast<BaseNode*>(node);
       node->prev = static_cast<BaseNode*>(tail);
-      node->next = &fake_node;
-      fake_node.prev = static_cast<BaseNode*>(node);
+      node->next = &fake_node_;
+      fake_node_.prev = static_cast<BaseNode*>(node);
     }
     catch (...) {
       destroy_node(node);
@@ -225,11 +225,11 @@ public:
     Node* node;
     try {
       node = create_node(value);
-      Node* head = static_cast<Node*>(fake_node.next);
+      Node* head = static_cast<Node*>(fake_node_.next);
       head->prev = static_cast<BaseNode*>(node);
       node->next = static_cast<BaseNode*>(head);
-      node->prev = &fake_node;
-      fake_node.next = static_cast<BaseNode*>(node);
+      node->prev = &fake_node_;
+      fake_node_.next = static_cast<BaseNode*>(node);
     }
     catch (...) {
       destroy_node(node);
@@ -241,11 +241,11 @@ public:
     Node* node;
     try {
       node = create_node(value);
-      Node* tail = static_cast<Node*>(fake_node.prev);
+      Node* tail = static_cast<Node*>(fake_node_.prev);
       tail->next = static_cast<BaseNode*>(node);
       node->prev = static_cast<BaseNode*>(tail);
-      node->next = &fake_node;
-      fake_node.prev = static_cast<BaseNode*>(node);
+      node->next = &fake_node_;
+      fake_node_.prev = static_cast<BaseNode*>(node);
     }
     catch (...) {
       destroy_node(node);
@@ -257,11 +257,11 @@ public:
     Node* node;
     try {
       node = create_node(value);
-      Node* head = static_cast<Node*>(fake_node.next);
+      Node* head = static_cast<Node*>(fake_node_.next);
       head->prev = static_cast<BaseNode*>(node);
       node->next = static_cast<BaseNode*>(head);
-      node->prev = &fake_node;
-      fake_node.next = static_cast<BaseNode*>(node);
+      node->prev = &fake_node_;
+      fake_node_.next = static_cast<BaseNode*>(node);
     }
     catch (...) {
       destroy_node(node);
@@ -270,19 +270,19 @@ public:
     ++size_;
   }
   void pop_back() {
-    Node* node = static_cast<Node*>(fake_node.prev);
+    Node* node = static_cast<Node*>(fake_node_.prev);
     Node* tail = static_cast<Node*>(static_cast<BaseNode*>(node)->prev);
     destroy_node(node);
-    tail->next = &fake_node;
-    fake_node.prev = static_cast<BaseNode*>(tail);
+    tail->next = &fake_node_;
+    fake_node_.prev = static_cast<BaseNode*>(tail);
     --size_;
   }
   void pop_front() {
-    Node* node = static_cast<Node*>(fake_node.next);
+    Node* node = static_cast<Node*>(fake_node_.next);
     Node* head = static_cast<Node*>(static_cast<BaseNode*>(node)->next);
     destroy_node(node);
-    head->prev = &fake_node;
-    fake_node.next = static_cast<BaseNode*>(head);
+    head->prev = &fake_node_;
+    fake_node_.next = static_cast<BaseNode*>(head);
     --size_;
   }
   node_allocator get_allocator() {
@@ -347,27 +347,27 @@ public:
   using iterator = CommonIterator<false>;
   using const_iterator = CommonIterator<true>;
   iterator begin() noexcept {
-    return iterator(static_cast<Node*>(fake_node.next));
+    return iterator(static_cast<Node*>(fake_node_.next));
   }
   iterator end() noexcept {
-    return iterator(&fake_node);
+    return iterator(&fake_node_);
   }
   const_iterator cbegin() const noexcept {
-    return const_iterator(static_cast<Node*>(fake_node.next));
+    return const_iterator(static_cast<Node*>(fake_node_.next));
   }
   const_iterator cend() const noexcept {
-    return const_iterator(&fake_node);
+    return const_iterator(&fake_node_);
   }
   iterator rbegin() noexcept {
-    return iterator(static_cast<Node*>(fake_node.prev));
+    return iterator(static_cast<Node*>(fake_node_.prev));
   }
   iterator rend() noexcept {
-    return iterator(&fake_node);
+    return iterator(&fake_node_);
   }
   const_iterator rcbegin() const noexcept {
-    return const_iterator(static_cast<Node*>(fake_node.prev));
+    return const_iterator(static_cast<Node*>(fake_node_.prev));
   }
   const_iterator rcend() const noexcept {
-    return const_iterator(&fake_node);
+    return const_iterator(&fake_node_);
   }
 };
