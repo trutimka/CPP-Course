@@ -293,11 +293,11 @@ class List {
     const T* operator->() const { return &(static_cast<Node*>(node_)->value); }
     const T& operator*() const { return (static_cast<Node*>(node_)->value); }
     CommonIterator& operator++() {
-      node_ = node_->next);
+      node_ = node_->next;
       return *this;
     }
     CommonIterator& operator--() {
-      node_ = node_->prev);
+      node_ = node_->prev;
       return *this;
     }
     CommonIterator operator++(int) {
