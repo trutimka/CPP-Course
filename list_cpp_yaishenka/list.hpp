@@ -312,9 +312,9 @@ class List {
     }
 
     bool operator==(const CommonIterator& other) {
-      return node_->value == other.node_->value;
+      return ((node_->value) == (other.node_->value));
     }
-    bool operator!=(const CommonIterator& other) { return !(*this == other); }
+    bool operator!=(const CommonIterator& other) { return !((*this) == other); }
 
    private:
     Node* node_ = nullptr;
