@@ -284,20 +284,20 @@ class List {
     using iterator_category = std::bidirectional_iterator_tag;
     using reference = value_type&;
     CommonIterator() = default;
-    CommonIterator(Node* node) : node_(node) {}
+    CommonIterator(BaseNode* node) : node_(node) {}
     CommonIterator(const CommonIterator& other) = default;
     CommonIterator& operator=(const CommonIterator& other) = default;
     ~CommonIterator() = default;
-    pointer operator->() { return &(node_->value); }
-    reference operator*() { return (node_->value); }
-    const T* operator->() const { return &(node_->value); }
-    const T& operator*() const { return (node_->value); }
+    pointer operator->() { return &(static_cast<Node*>(node_)->value); }
+    reference operator*() { return (static_cast<Node*>(node_)->value); }
+    const T* operator->() const { return &(static_cast<Node*>(node_)->value); }
+    const T& operator*() const { return (static_cast<Node*>(node_)->value); }
     CommonIterator& operator++() {
-      node_ = static_cast<Node*>(static_cast<BaseNode*>(node_)->next);
+      node_ = node_->next);
       return *this;
     }
     CommonIterator& operator--() {
-      node_ = static_cast<Node*>(static_cast<BaseNode*>(node_)->prev);
+      node_ = node_->prev);
       return *this;
     }
     CommonIterator operator++(int) {
@@ -319,33 +319,33 @@ class List {
     }
 
    private:
-    Node* node_ = nullptr;
+    BaseNode* node_ = nullptr;
   };
 
   using iterator = CommonIterator<false>;
   using const_iterator = CommonIterator<true>;
   iterator begin() const noexcept {
-    return iterator(static_cast<Node*>(fake_node_.next));
+    return iterator((fake_node_.next));
   }
   iterator end() const noexcept {
-    return iterator(static_cast<Node*>(&fake_node_));
+    return iterator((&fake_node_));
   }
   const_iterator cbegin() const noexcept {
-    return const_iterator(static_cast<Node*>(fake_node_.next));
+    return const_iterator((fake_node_.next));
   }
   const_iterator cend() const noexcept {
-    return const_iterator(static_cast<Node*>(&fake_node_));
+    return const_iterator((&fake_node_));
   }
   iterator rbegin() const noexcept {
-    return iterator(static_cast<Node*>(fake_node_.prev));
+    return iterator((fake_node_.prev));
   }
   iterator rend() const noexcept {
-    return iterator(static_cast<Node*>(&fake_node_));
+    return iterator((&fake_node_));
   }
   const_iterator rcbegin() const noexcept {
-    return const_iterator(static_cast<Node*>(fake_node_.prev));
+    return const_iterator((fake_node_.prev));
   }
   const_iterator rcend() const noexcept {
-    return const_iterator(static_cast<Node*>(&fake_node_));
+    return const_iterator((&fake_node_));
   }
 };
