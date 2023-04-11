@@ -293,7 +293,7 @@ class List {
     const T* operator->() const { return &(node_->value); }
     const T& operator*() const { return (node_->value); }
     CommonIterator& operator++() {
-      node_ = static_cast<Node*>(static_cast<BaseNode*>(node_)->prev);
+      node_ = static_cast<Node*>(static_cast<BaseNode*>(node_)->next);
       return *this;
     }
     CommonIterator& operator--() {
@@ -311,10 +311,10 @@ class List {
       return copy;
     }
 
-    bool operator==(const CommonIterator& other) {
-      return ((node_->value) == (other.node_->value));
+    bool operator==(const CommonIterator& other) const {
+      return (node_ == other.node_);
     }
-    bool operator!=(const CommonIterator& other) { return !((*this) == other); }
+    bool operator!=(const CommonIterator& other) const { return !((*this) == other); }
 
    private:
     Node* node_ = nullptr;
