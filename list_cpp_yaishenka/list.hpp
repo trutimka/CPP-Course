@@ -324,20 +324,24 @@ class List {
 
   using iterator = CommonIterator<false>;
   using const_iterator = CommonIterator<true>;
-  iterator begin() noexcept {
+  iterator begin() const noexcept {
     return iterator(static_cast<Node*>(fake_node_.next));
   }
-  iterator end() noexcept { return iterator(static_cast<Node*>(&fake_node_)); }
+  iterator end() const noexcept {
+    return iterator(static_cast<Node*>(&fake_node_));
+  }
   const_iterator cbegin() const noexcept {
     return const_iterator(static_cast<Node*>(fake_node_.next));
   }
   const_iterator cend() const noexcept {
     return const_iterator(static_cast<Node*>(&fake_node_));
   }
-  iterator rbegin() noexcept {
+  iterator rbegin() const noexcept {
     return iterator(static_cast<Node*>(fake_node_.prev));
   }
-  iterator rend() noexcept { return iterator(static_cast<Node*>(&fake_node_)); }
+  iterator rend() const noexcept {
+    return iterator(static_cast<Node*>(&fake_node_));
+  }
   const_iterator rcbegin() const noexcept {
     return const_iterator(static_cast<Node*>(fake_node_.prev));
   }
