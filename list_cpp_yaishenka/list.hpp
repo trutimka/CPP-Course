@@ -139,14 +139,14 @@ public:
     if (node_traits::propagate_on_container_copy_assignment::value && alloc_ != other.alloc_) {
       alloc_ = other.alloc_;
     }
-    BaseNode temp_fake_node_;
+    BaseNode temp_fake_node;
     try {
       Node* head_other = static_cast<Node*>(other.fake_node_.next);
       Node* head = create_node((*head_other).value);
       //head->value = std::move(head_other->value);
       //head->value = head_other->value;
-      temp_fake_node_.next = static_cast<BaseNode*>(head);
-      head->prev = &temp_fake_node_;
+      temp_fake_node.next = static_cast<BaseNode*>(head);
+      head->prev = &temp_fake_node;
       Node* temp = head;
       Node* temp_other = static_cast<Node*>(static_cast<BaseNode*>(head_other)->next);
       for (int i = 0; i < other.size_ - 1; ++i) {
@@ -158,8 +158,8 @@ public:
         temp = tmp;
         temp_other = static_cast<Node*>(static_cast<BaseNode*>(temp_other)->next);
       }
-      temp->next = &temp_fake_node_;
-      temp_fake_node_.prev = static_cast<BaseNode*>(temp);
+      temp->next = &temp_fake_node;
+      temp_fake_node.prev = static_cast<BaseNode*>(temp);
 
       head = static_cast<Node*>(fake_node_.next);
       for (int i = 0; i < size_; ++i) {
@@ -167,7 +167,7 @@ public:
         destroy_node(head);
         head = static_cast<Node*>(tmp);
       }
-      fake_node_ = temp_fake_node_;
+      fake_node_ = temp_fake_node;
     }
     catch (...) {
 
