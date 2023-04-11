@@ -51,7 +51,7 @@ class List {
   using different_type = std::ptrdiff_t;
   using reference = T&;
 
-  List() : fake_node_{&fake_node_, &fake_node_ } {}
+  List() : fake_node_{&fake_node_, &fake_node_} {}
   List(size_t count, const T& value = T(), const Allocator& alloc = Allocator())
       : size_(count), alloc_(alloc) {
     Node* node = create_node(value);
@@ -136,7 +136,7 @@ class List {
       return *this;
     }
     if (node_traits::propagate_on_container_copy_assignment::value &&
-      alloc_ != other.alloc_) {
+        alloc_ != other.alloc_) {
       alloc_ = other.alloc_;
     }
     BaseNode temp_fake_node;
