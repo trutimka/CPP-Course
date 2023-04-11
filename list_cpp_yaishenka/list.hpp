@@ -327,17 +327,25 @@ class List {
   iterator begin() noexcept {
     return iterator(static_cast<Node*>(fake_node_.next));
   }
-  iterator end() noexcept { return iterator(static_cast<Node*>(&fake_node_)); }
+  iterator end() noexcept {
+    return iterator(static_cast<Node*>(&fake_node_));
+  }
   const_iterator cbegin() const noexcept {
     return const_iterator(static_cast<Node*>(fake_node_.next));
   }
-  const_iterator cend() const noexcept { return const_iterator(static_cast<Node*>(&fake_node_)); }
+  const_iterator cend() const noexcept {
+    return const_iterator(static_cast<Node*>(&fake_node_));
+  }
   iterator rbegin() noexcept {
     return iterator(static_cast<Node*>(fake_node_.prev));
   }
-  iterator rend() noexcept { return iterator(static_cast<Node*>(&fake_node_)); }
+  iterator rend() noexcept {
+    return iterator(static_cast<Node*>(&fake_node_));
+  }
   const_iterator rcbegin() const noexcept {
     return const_iterator(static_cast<Node*>(fake_node_.prev));
   }
-  const_iterator rcend() const noexcept { return const_iterator(static_cast<Node*>(&fake_node_)); }
+  const_iterator rcend() const noexcept {
+    return const_iterator(static_cast<Node*>(&fake_node_));
+  }
 };
