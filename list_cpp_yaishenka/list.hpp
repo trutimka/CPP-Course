@@ -288,10 +288,10 @@ class List {
     CommonIterator(const CommonIterator& other) = default;
     CommonIterator& operator=(const CommonIterator& other) = default;
     ~CommonIterator() = default;
-    pointer operator->() { return (node_->value); }
-    reference operator*() { return *(node_->value); }
-    const T* operator->() const { return (node_->value); }
-    const T& operator*() const { return *(node_->value); }
+    pointer operator->() { return &(node_->value); }
+    reference operator*() { return (node_->value); }
+    const T* operator->() const { return &(node_->value); }
+    const T& operator*() const { return (node_->value); }
     CommonIterator& operator++() {
       node_ = static_cast<Node*>(static_cast<BaseNode*>(node_)->prev);
       return *this;
