@@ -314,7 +314,9 @@ class List {
     bool operator==(const CommonIterator& other) const {
       return (node_ == other.node_);
     }
-    bool operator!=(const CommonIterator& other) const { return !((*this) == other); }
+    bool operator!=(const CommonIterator& other) const {
+      return !((*this) == other);
+    }
 
    private:
     Node* node_ = nullptr;
