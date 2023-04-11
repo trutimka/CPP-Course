@@ -335,7 +335,5 @@ class List {
   const_iterator rcbegin() const noexcept {
     return const_iterator(fake_node_.prev);
   }
-  const_iterator rcend() const noexcept {
-    return const_iterator(&fake_node_);
-  }
+  const_iterator rcend() const noexcept { return const_iterator(&fake_node_); }
 };
