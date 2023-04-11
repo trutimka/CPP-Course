@@ -278,11 +278,11 @@ class List {
   template <bool IsConst>
   class CommonIterator {
    public:
-    using valuetype = std::conditional_t<IsConst, const T, T>;
+    using value_type = std::conditional_t<IsConst, const T, T>;
 
-    using pointer = valuetype*;
+    using pointer = value_type*;
     using iterator_category = std::bidirectional_iterator_tag;
-    using reference = valuetype&;
+    using reference = value_type&;
     CommonIterator() = default;
     CommonIterator(Node* node) : node_(node) {}
     CommonIterator(const CommonIterator& other) = default;
