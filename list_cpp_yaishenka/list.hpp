@@ -324,18 +324,18 @@ class List {
 
   using iterator = CommonIterator<false>;
   using const_iterator = CommonIterator<true>;
-  iterator begin() const noexcept { return iterator((fake_node_.next)); }
-  iterator end() const noexcept { return iterator((&fake_node_)); }
+  iterator begin() const noexcept { return iterator(fake_node_.next); }
+  iterator end() const noexcept { return iterator(&fake_node_); }
   const_iterator cbegin() const noexcept {
-    return const_iterator((fake_node_.next));
+    return const_iterator(fake_node_.next);
   }
-  const_iterator cend() const noexcept { return const_iterator((&fake_node_)); }
-  iterator rbegin() const noexcept { return iterator((fake_node_.prev)); }
-  iterator rend() const noexcept { return iterator((&fake_node_)); }
+  const_iterator cend() const noexcept { return const_iterator(&fake_node_); }
+  iterator rbegin() const noexcept { return iterator(fake_node_.prev); }
+  iterator rend() const noexcept { return iterator(&fake_node_); }
   const_iterator rcbegin() const noexcept {
-    return const_iterator((fake_node_.prev));
+    return const_iterator(fake_node_.prev);
   }
   const_iterator rcend() const noexcept {
-    return const_iterator((&fake_node_));
+    return const_iterator(&fake_node_);
   }
 };
