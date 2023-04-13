@@ -40,8 +40,8 @@ class List {
         push_back(std::move(value));
       }
     } catch (...) {
-      for (size_t i = 0; i < size_; ++i) {
-        pop_back();
+      while (size_ != 0) {
+        pop_front();
       }
       throw;
     }
@@ -52,16 +52,27 @@ class List {
     size_t temp_size = 0;
     Node* node;
     try {
-      node = node_traits::allocate(alloc_, 1);
-      // node_traits::construct(alloc_, &node->value);
-      node_traits::construct(alloc_, node);
+      try {
+        node = node_traits::allocate(alloc_, 1);
+        node_traits::construct(alloc_, node);
+      } catch (...) {
+        node_traits::destroy(alloc_, node);
+        node_traits::deallocate(alloc_, node, 1);
+        throw;
+      }
+      
       static_cast<BaseNode*>(node)->prev = &fake_node_;
       fake_node_.next = static_cast<BaseNode*>(node);
-      ++temp_size;
       for (temp_size = 1; temp_size < count; ++temp_size) {
-        Node* temp = node_traits::allocate(alloc_, 1);
-        // node_traits::construct(alloc_, &temp->value);
-        node_traits::construct(alloc_, temp);
+        Node* temp;
+        try {
+          temp = node_traits::allocate(alloc_, 1);
+          node_traits::construct(alloc_, temp);
+        } catch (...) {
+          node_traits::destroy(alloc_, temp);
+          node_traits::deallocate(alloc_, temp, 1);
+          throw;
+        }
         static_cast<BaseNode*>(temp)->prev = static_cast<BaseNode*>(node);
         static_cast<BaseNode*>(node)->next = static_cast<BaseNode*>(temp);
         node = temp;
@@ -72,7 +83,6 @@ class List {
       while (temp_size != 0) {
         --temp_size;
         Node* temp = static_cast<Node*>(static_cast<BaseNode*>(node)->prev);
-        // node_traits::destroy(alloc_, &node->value);
         node_traits::destroy(alloc_, node);
         node_traits::deallocate(alloc_, node, 1);
         node = temp;
@@ -89,8 +99,8 @@ class List {
         ++iter;
       }
     } catch (...) {
-      for (size_t i = 0; i < size_; ++i) {
-        pop_back();
+      while (size_ != 0) {
+        pop_front();
       }
       throw;
     }
@@ -105,7 +115,7 @@ class List {
       }
     } catch (...) {
       while (size_ != 0) {
-        pop_back();
+        pop_front();
       }
       throw;
     }
@@ -125,11 +135,17 @@ class List {
     try {
       auto iter = other.cbegin();
       for (size_t i = 0; i < other.size_; ++i) {
-        Node* node = node_traits::allocate(alloc_, 1);
-        // node_traits::construct(alloc_, &node->value, *iter);
-        node_traits::construct(alloc_, node, *iter);
-        ++iter;
+        Node* node;
+        try {
+          node = node_traits::allocate(alloc_, 1);
+          node_traits::construct(alloc_, node, *iter);
+        } catch (...) {
+          node_traits::destroy(alloc_, node);
+          node_traits::deallocate(alloc_, node, 1);
+          throw;
+        }
         ++temp_size;
+        ++iter;
         temp_base_node->next = static_cast<BaseNode*>(node);
         static_cast<BaseNode*>(node)->prev = temp_base_node;
         temp_base_node = static_cast<BaseNode*>(node);
@@ -138,7 +154,7 @@ class List {
       temp_base_node->next = &base_node;
 
       while (size_ != 0) {
-        pop_back();
+        pop_front();
       }
       fake_node_ = base_node;
     } catch (...) {
@@ -146,7 +162,6 @@ class List {
       for (size_t i = 0; i < temp_size; ++i) {
         Node* node = static_cast<Node*>(temp_base_node);
         temp_base_node = temp_base_node->next;
-        // node_traits::destroy(alloc_, &node->value);
         node_traits::destroy(alloc_, node);
         node_traits::deallocate(alloc_, node, 1);
       }
@@ -157,7 +172,7 @@ class List {
   }
   ~List() {
     while (size_ != 0) {
-      pop_back();
+      pop_front();
     }
   }
 
@@ -176,7 +191,6 @@ class List {
       Node* node;
       try {
         node = node_traits::allocate(alloc_, 1);
-        // node_traits::construct(alloc_, &node->value, std::move(value));
         node_traits::construct(alloc_, node, std::move(value));
         static_cast<BaseNode*>(node)->prev = &fake_node_;
         static_cast<BaseNode*>(node)->next = &fake_node_;
@@ -184,7 +198,6 @@ class List {
         fake_node_.prev = static_cast<BaseNode*>(node);
         size_ = 1;
       } catch (...) {
-        // node_traits::destroy(alloc_, &node->value);
         node_traits::destroy(alloc_, node);
         node_traits::deallocate(alloc_, node, 1);
         throw;
@@ -194,7 +207,6 @@ class List {
       Node* temp;
       try {
         temp = node_traits::allocate(alloc_, 1);
-        // node_traits::construct(alloc_, &temp->value, std::move(value));
         node_traits::construct(alloc_, temp, std::move(value));
         static_cast<BaseNode*>(temp)->prev = static_cast<BaseNode*>(node);
         static_cast<BaseNode*>(temp)->next = &fake_node_;
@@ -202,7 +214,6 @@ class List {
         static_cast<BaseNode*>(node)->next = static_cast<BaseNode*>(temp);
         ++size_;
       } catch (...) {
-        // node_traits::destroy(alloc_, &temp->value);
         node_traits::destroy(alloc_, temp);
         node_traits::deallocate(alloc_, temp, 1);
         throw;
@@ -214,7 +225,6 @@ class List {
       Node* node;
       try {
         node = node_traits::allocate(alloc_, 1);
-        // node_traits::construct(alloc_, &node->value, std::move(value));
         node_traits::construct(alloc_, node, std::move(value));
         static_cast<BaseNode*>(node)->prev = &fake_node_;
         static_cast<BaseNode*>(node)->next = &fake_node_;
@@ -222,7 +232,6 @@ class List {
         fake_node_.prev = static_cast<BaseNode*>(node);
         size_ = 1;
       } catch (...) {
-        // node_traits::destroy(alloc_, &node->value);
         node_traits::destroy(alloc_, node);
         node_traits::deallocate(alloc_, node, 1);
         throw;
@@ -232,7 +241,6 @@ class List {
       Node* temp;
       try {
         temp = node_traits::allocate(alloc_, 1);
-        // node_traits::construct(alloc_, &temp->value, std::move(value));
         node_traits::construct(alloc_, temp, std::move(value));
         static_cast<BaseNode*>(temp)->next = static_cast<BaseNode*>(node);
         static_cast<BaseNode*>(temp)->prev = &fake_node_;
@@ -240,7 +248,6 @@ class List {
         static_cast<BaseNode*>(node)->prev = static_cast<BaseNode*>(temp);
         ++size_;
       } catch (...) {
-        // node_traits::destroy(alloc_, &temp->value);
         node_traits::destroy(alloc_, temp);
         node_traits::deallocate(alloc_, temp, 1);
         throw;
@@ -252,7 +259,6 @@ class List {
       Node* node;
       try {
         node = node_traits::allocate(alloc_, 1);
-        // node_traits::construct(alloc_, &node->value, std::move(value));
         node_traits::construct(alloc_, node, std::move(value));
         static_cast<BaseNode*>(node)->prev = &fake_node_;
         static_cast<BaseNode*>(node)->next = &fake_node_;
@@ -260,7 +266,6 @@ class List {
         fake_node_.prev = static_cast<BaseNode*>(node);
         size_ = 1;
       } catch (...) {
-        // node_traits::destroy(alloc_, &node->value);
         node_traits::destroy(alloc_, node);
         node_traits::deallocate(alloc_, node, 1);
         throw;
@@ -270,7 +275,6 @@ class List {
       Node* temp;
       try {
         temp = node_traits::allocate(alloc_, 1);
-        // node_traits::construct(alloc_, &temp->value, std::move(value));
         node_traits::construct(alloc_, temp, std::move(value));
         static_cast<BaseNode*>(temp)->prev = static_cast<BaseNode*>(node);
         static_cast<BaseNode*>(temp)->next = &fake_node_;
@@ -278,7 +282,6 @@ class List {
         static_cast<BaseNode*>(node)->next = static_cast<BaseNode*>(temp);
         ++size_;
       } catch (...) {
-        // node_traits::destroy(alloc_, &temp->value);
         node_traits::destroy(alloc_, temp);
         node_traits::deallocate(alloc_, temp, 1);
         throw;
@@ -290,7 +293,6 @@ class List {
       Node* node;
       try {
         node = node_traits::allocate(alloc_, 1);
-        // node_traits::construct(alloc_, &node->value, std::move(value));
         node_traits::construct(alloc_, node, std::move(value));
         static_cast<BaseNode*>(node)->prev = &fake_node_;
         static_cast<BaseNode*>(node)->next = &fake_node_;
@@ -298,7 +300,6 @@ class List {
         fake_node_.prev = static_cast<BaseNode*>(node);
         size_ = 1;
       } catch (...) {
-        // node_traits::destroy(alloc_, &node->value);
         node_traits::destroy(alloc_, node);
         node_traits::deallocate(alloc_, node, 1);
         throw;
@@ -308,7 +309,6 @@ class List {
       Node* temp;
       try {
         temp = node_traits::allocate(alloc_, 1);
-        // node_traits::construct(alloc_, &temp->value, std::move(value));
         node_traits::construct(alloc_, temp, std::move(value));
         static_cast<BaseNode*>(temp)->next = static_cast<BaseNode*>(node);
         static_cast<BaseNode*>(temp)->prev = &fake_node_;
@@ -316,7 +316,6 @@ class List {
         static_cast<BaseNode*>(node)->prev = static_cast<BaseNode*>(temp);
         ++size_;
       } catch (...) {
-        // node_traits::destroy(alloc_, &temp->value);
         node_traits::destroy(alloc_, temp);
         node_traits::deallocate(alloc_, temp, 1);
         throw;
@@ -327,7 +326,6 @@ class List {
     if (size_ != 0) {
       Node* node = static_cast<Node*>(fake_node_.prev);
       Node* temp = static_cast<Node*>(static_cast<BaseNode*>(node)->prev);
-      // node_traits::destroy(alloc_, &node->value);
       node_traits::destroy(alloc_, node);
       node_traits::deallocate(alloc_, node, 1);
       static_cast<BaseNode*>(temp)->next = &fake_node_;
@@ -339,7 +337,6 @@ class List {
     if (size_ != 0) {
       Node* node = static_cast<Node*>(fake_node_.next);
       Node* temp = static_cast<Node*>(static_cast<BaseNode*>(node)->next);
-      // node_traits::destroy(alloc_, &node->value);
       node_traits::destroy(alloc_, node);
       node_traits::deallocate(alloc_, node, 1);
       static_cast<BaseNode*>(temp)->prev = &fake_node_;
