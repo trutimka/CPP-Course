@@ -101,7 +101,7 @@ class List {
         ++iter;
       }
     } catch (...) {
-      for (int i = 0; i < size_; ++i) {
+      while (size_ != 0) {
         pop_back();
       }
       throw;
@@ -121,7 +121,7 @@ class List {
     BaseNode* temp_base_node = &base_node;
     try {
       auto iter = other.cbegin();
-      for (int i = 0; i < other.size_; ++i) {
+      for (size_t i = 0; i < other.size_; ++i) {
         Node* node = node_traits::allocate(alloc_, 1);
         node_traits::construct(alloc_, &node->value, *iter);
         ++iter;
@@ -417,8 +417,8 @@ class List {
   using reverse_iterator = ReverseIterator<CommonIterator<false>>;
   using const_reverse_iterator = ReverseIterator<CommonIterator<true>>;
 
-  iterator begin() const { return iterator(fake_node_.next); }
-  iterator end() const { return iterator(&fake_node_); }
+  // iterator begin() const { return iterator(fake_node_.next); }
+  // iterator end() const { return iterator(&fake_node_); }
   iterator begin() { return iterator(fake_node_.next); }
   iterator end() { return iterator(&fake_node_); }
   const_iterator cbegin() const { return const_iterator(fake_node_.next); }
