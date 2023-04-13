@@ -60,7 +60,6 @@ class List {
         node_traits::deallocate(alloc_, node, 1);
         throw;
       }
-      
       static_cast<BaseNode*>(node)->prev = &fake_node_;
       fake_node_.next = static_cast<BaseNode*>(node);
       for (temp_size = 1; temp_size < count; ++temp_size) {
