@@ -417,8 +417,8 @@ class List {
   using reverse_iterator = ReverseIterator<CommonIterator<false>>;
   using const_reverse_iterator = ReverseIterator<CommonIterator<true>>;
 
-  iterator begin() const { return iterator(fake_node_.next); }
-  iterator end() const { return iterator(&fake_node_); }
+  const_iterator begin() const { return const_iterator(fake_node_.next); }
+  const_iterator end() const { return const_iterator(&fake_node_); }
   iterator begin() { return iterator(fake_node_.next); }
   iterator end() { return iterator(&fake_node_); }
   const_iterator cbegin() const { return const_iterator(fake_node_.next); }
