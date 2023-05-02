@@ -90,15 +90,15 @@ void Deque<T>::set_array(std::vector<T*>& new_vec, const Deque<T>& other,
                          size_t vec, size_t ind) {
   try {
     if (other.temp_vec_str_ == other.temp_vec_fnsh_) {
-      for (ind; ind < other.temp_fnsh_; ++ind) {
+      for (; ind < other.temp_fnsh_; ++ind) {
         new (new_vec[vec] + ind) T(other.arr_[vec][ind]);
       }
     } else {
-      for (ind; ind < kConstCnt; ++ind) {
+      for (; ind < kConstCnt; ++ind) {
         new (new_vec[vec] + ind) T(other.arr_[vec][ind]);
       }
       ++vec;
-      for (vec; vec < other.temp_vec_fnsh_; ++vec) {
+      for (; vec < other.temp_vec_fnsh_; ++vec) {
         for (ind = 0; ind < kConstCnt; ++ind) {
           new (new_vec[vec] + ind) T(other.arr_[vec][ind]);
         }
