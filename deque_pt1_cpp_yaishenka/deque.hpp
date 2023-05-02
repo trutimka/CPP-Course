@@ -4,7 +4,8 @@
 #include <iostream>
 #include <vector>
 
-template <typename T> class Deque {
+template <typename T>
+class Deque {
  public:
   Deque() = default;
   Deque(size_t count);
@@ -23,8 +24,10 @@ template <typename T> class Deque {
   void pop_back();
   void pop_front();
 
-  template <bool IsConst> class common_iterator;
-  template <typename Iter> class rev_iterator;
+  template <bool IsConst>
+  class common_iterator;
+  template <typename Iter>
+  class rev_iterator;
   using iterator = common_iterator<false>;
   using const_iterator = common_iterator<true>;
   using reverse_iterator = rev_iterator<common_iterator<false>>;
@@ -60,11 +63,11 @@ template <typename T> class Deque {
   static const size_t kConstCnt = 1e5;
   size_t size_ = 0;
   size_t capacity_ = 0;
-  size_t temp_vec_str_ = 0; // первый вектор, в котором есть элементы
-  size_t temp_vec_fnsh_ = 0; // последний вектор, в котором есть элементы
-  size_t temp_str_ = 0; // первый элемент (указывает на элемент)
+  size_t temp_vec_str_ = 0;  // первый вектор, в котором есть элементы
+  size_t temp_vec_fnsh_ = 0;  // последний вектор, в котором есть элементы
+  size_t temp_str_ = 0;  // первый элемент (указывает на элемент)
   size_t temp_fnsh_ =
-      0; // последний элемент (указывает на следующую ячейку после всего дека)
+      0;  // последний элемент (указывает на следующую ячейку после всего дека)
 };
 
 template <typename T>
@@ -147,7 +150,8 @@ void Deque<T>::set_array(std::vector<T*>& new_vec, size_t count, const T& value,
     throw;
   }
 }
-template <typename T> Deque<T>::Deque(size_t count) {
+template <typename T>
+Deque<T>::Deque(size_t count) {
   size_t cnt = count / kConstCnt;
   if (count % kConstCnt != 0 || cnt == 0) {
     ++cnt;
@@ -172,8 +176,8 @@ template <typename T> Deque<T>::Deque(size_t count) {
   temp_fnsh_ = count % kConstCnt;
 }
 
-template <typename T> Deque<T>::Deque(size_t count, const T& value) {
-
+template <typename T>
+Deque<T>::Deque(size_t count, const T& value) {
   size_t cnt = (count % kConstCnt != 0 || (count / kConstCnt) == 0)
                    ? (count / kConstCnt + 1)
                    : (count / kConstCnt);
@@ -196,7 +200,8 @@ template <typename T> Deque<T>::Deque(size_t count, const T& value) {
   size_ = count;
 }
 
-template <typename T> Deque<T>::~Deque() {
+template <typename T>
+Deque<T>::~Deque() {
   if (temp_vec_fnsh_ == temp_vec_str_) {
     for (size_t i = temp_str_; i < temp_fnsh_; ++i) {
       (arr_[temp_vec_str_] + i)->~T();
@@ -219,7 +224,8 @@ template <typename T> Deque<T>::~Deque() {
   }
 }
 
-template <typename T> Deque<T>::Deque(const Deque<T>& other) {
+template <typename T>
+Deque<T>::Deque(const Deque<T>& other) {
   size_ = other.size_;
   capacity_ = other.capacity_;
   temp_str_ = other.temp_str_;
@@ -240,7 +246,8 @@ template <typename T> Deque<T>::Deque(const Deque<T>& other) {
   }
 }
 
-template <typename T> Deque<T>& Deque<T>::operator=(const Deque<T>& other) {
+template <typename T>
+Deque<T>& Deque<T>::operator=(const Deque<T>& other) {
   if (&other == this) {
     return *this;
   }
@@ -278,13 +285,16 @@ template <typename T> Deque<T>& Deque<T>::operator=(const Deque<T>& other) {
   return *this;
 }
 
-template <typename T> bool Deque<T>::empty() const noexcept {
+template <typename T>
+bool Deque<T>::empty() const noexcept {
   return size_ == 0;
 }
 
-template <typename T> size_t Deque<T>::size() const noexcept { return size_; }
+template <typename T>
+size_t Deque<T>::size() const noexcept { return size_; }
 
-template <typename T> T& Deque<T>::operator[](size_t index) {
+template <typename T>
+T& Deque<T>::operator[](size_t index) {
   size_t full_vec = index / kConstCnt;
   if (index % kConstCnt + temp_str_ >= kConstCnt) {
     ++full_vec;
@@ -294,14 +304,16 @@ template <typename T> T& Deque<T>::operator[](size_t index) {
   return (arr_[temp_vec_str_ + full_vec][index % kConstCnt + temp_str_]);
 }
 
-template <typename T> T& Deque<T>::at(size_t index) {
+template <typename T>
+T& Deque<T>::at(size_t index) {
   if (index >= size_) {
     throw std::out_of_range("");
   }
   return (*this)[index];
 }
 
-template <typename T> const T& Deque<T>::operator[](size_t index) const {
+template <typename T>
+const T& Deque<T>::operator[](size_t index) const {
   size_t full_vec = index / kConstCnt;
   if (index % kConstCnt + temp_str_ >= kConstCnt) {
     ++full_vec;
@@ -311,14 +323,16 @@ template <typename T> const T& Deque<T>::operator[](size_t index) const {
   return (arr_[temp_vec_str_ + full_vec][index % kConstCnt + temp_str_]);
 }
 
-template <typename T> const T& Deque<T>::at(size_t index) const {
+template <typename T>
+const T& Deque<T>::at(size_t index) const {
   if (index >= size_) {
     throw std::out_of_range("");
   }
   return (*this)[index];
 }
 
-template <typename T> void Deque<T>::push_back(const T& value) {
+template <typename T>
+void Deque<T>::push_back(const T& value) {
   if (size_ < capacity_ &&
       (temp_vec_fnsh_ != arr_.size() - 1 || temp_fnsh_ != kConstCnt)) {
     bool is_transfered = false;
@@ -359,7 +373,8 @@ template <typename T> void Deque<T>::push_back(const T& value) {
   }
 }
 
-template <typename T> void Deque<T>::push_front(const T& value) {
+template <typename T>
+void Deque<T>::push_front(const T& value) {
   if (size_ < capacity_ && (temp_str_ != 0 || temp_vec_str_ != 0)) {
     bool is_transfered = false;
     if (temp_str_ == 0) {
@@ -396,7 +411,8 @@ template <typename T> void Deque<T>::push_front(const T& value) {
   }
 }
 
-template <typename T> void Deque<T>::pop_back() {
+template <typename T>
+void Deque<T>::pop_back() {
   if (size_ != 0) {
     (arr_[temp_vec_fnsh_] + temp_fnsh_ - 1)->~T();
     --temp_fnsh_;
@@ -408,7 +424,8 @@ template <typename T> void Deque<T>::pop_back() {
   }
 }
 
-template <typename T> void Deque<T>::pop_front() {
+template <typename T>
+void Deque<T>::pop_front() {
   if (size_ != 0) {
     (arr_[temp_vec_str_] + temp_str_)->~T();
     ++temp_str_;
@@ -420,7 +437,8 @@ template <typename T> void Deque<T>::pop_front() {
   }
 }
 
-template <typename T> void Deque<T>::insert(iterator iter, const T& value) {
+template <typename T>
+void Deque<T>::insert(iterator iter, const T& value) {
   if (size_ == 0 || iter == this->end()) {
     this->push_back(value);
     return;
@@ -445,7 +463,8 @@ template <typename T> void Deque<T>::insert(iterator iter, const T& value) {
     throw;
   }
 }
-template <typename T> void Deque<T>::erase(iterator iter) {
+template <typename T>
+void Deque<T>::erase(iterator iter) {
   Deque<T> deq;
   iterator temp_it = begin();
   try {
@@ -464,7 +483,9 @@ template <typename T> void Deque<T>::erase(iterator iter) {
   }
 }
 
-template <typename T> template <bool IsConst> class Deque<T>::common_iterator {
+template <typename T>
+template <bool IsConst>
+class Deque<T>::common_iterator {
  public:
   using value_type = std::conditional_t<IsConst, const T, T>;
   using type_vec =
@@ -585,8 +606,8 @@ template <typename T> template <bool IsConst> class Deque<T>::common_iterator {
     return !(*this < other);
   }
 
-  difference_type
-  operator-(const Deque<T>::common_iterator<IsConst>& other) const {
+  difference_type operator-(
+      const Deque<T>::common_iterator<IsConst>& other) const {
     if (*this == other) {
       return 0;
     }
@@ -607,9 +628,10 @@ template <typename T> template <bool IsConst> class Deque<T>::common_iterator {
   size_t temp_item_ = 0;
 };
 
-template <typename T> template <typename Iter> class Deque<T>::rev_iterator {
+template <typename T>
+template <typename Iter>
+class Deque<T>::rev_iterator {
  public:
-  friend class Deque;
   using value_type = typename Iter::value_type;
   using iterator_category = std::random_access_iterator_tag;
   using difference_type = typename Iter::difference_type;
