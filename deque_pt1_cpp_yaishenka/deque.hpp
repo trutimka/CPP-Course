@@ -442,16 +442,16 @@ template <typename T> void Deque<T>::insert(iterator iter, const T& value) {
     return;
   }
   Deque<T> deq;
-  iterator it = begin();
+  iterator temp_it = begin();
   try {
     for (size_t i = 0; i < size_; ++i) {
-      if (it != iter) {
+      if (temp_it != iter) {
         deq.push_back((*this)[i]);
       } else {
         deq.push_back(value);
         --i;
       }
-      ++it;
+      ++temp_it;
     }
     *this = deq;
   } catch (...) {
@@ -463,13 +463,13 @@ template <typename T> void Deque<T>::insert(iterator iter, const T& value) {
 }
 template <typename T> void Deque<T>::erase(iterator iter) {
   Deque<T> deq;
-  iterator it = begin();
+  iterator temp_it = begin();
   try {
     for (size_t i = 0; i < size_; ++i) {
-      if (it != iter) {
+      if (temp_it != iter) {
         deq.push_back((*this)[i]);
       }
-      ++it;
+      ++temp_it;
     }
     *this = deq;
   } catch (...) {
