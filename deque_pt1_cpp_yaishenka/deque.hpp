@@ -419,7 +419,7 @@ void Deque<T>::pop_back() {
     (arr_[temp_vec_fnsh_] + temp_fnsh_ - 1)->~T();
     --temp_fnsh_;
     --size_;
-    if (temp_fnsh_ == 0) {
+    if (temp_fnsh_ == 0 && size_ != 0) {
       --temp_vec_fnsh_;
       temp_fnsh_ = kConstCnt;
     }
