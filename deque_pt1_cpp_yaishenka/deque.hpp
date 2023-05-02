@@ -291,7 +291,9 @@ bool Deque<T>::empty() const noexcept {
 }
 
 template <typename T>
-size_t Deque<T>::size() const noexcept { return size_; }
+size_t Deque<T>::size() const noexcept {
+  return size_;
+}
 
 template <typename T>
 T& Deque<T>::operator[](size_t index) {
