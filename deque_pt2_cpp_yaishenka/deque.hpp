@@ -46,7 +46,7 @@ class Deque {
     }
   }
   ~Deque() { clean_array(); }
-  Deque(const Deque &other) {
+  Deque(const Deque& other) {
     allocator_ = allocator_traits::select_on_container_copy_construction(
         other.allocator_);
     auto iter = other.cbegin();
@@ -80,7 +80,7 @@ class Deque {
     other.fin_ind_ = 0;
     other.fin_vec_ = 0;
   }
-  Deque &operator=(const Deque& other) {
+  Deque& operator=(const Deque& other) {
     if (&other == this) {
       return *this;
     }
@@ -91,7 +91,7 @@ class Deque {
     }
     return *this;
   }
-  Deque &operator=(Deque&& other) {
+  Deque& operator=(Deque&& other) {
     if (allocator_traits::propagate_on_container_move_assignment::value) {
       allocator_ = other.allocator_;
     }
@@ -541,7 +541,7 @@ class Deque {
     using pointer = typename Iter::pointer;
     explicit RevIterator(Iter iter) : iter_(iter) {}
     RevIterator(const RevIterator& other) = default;
-    RevIterator &operator=(const RevIterator& other) = default;
+    RevIterator& operator=(const RevIterator& other) = default;
     ~RevIterator() = default;
 
     reference operator*() { return *iter_; }
