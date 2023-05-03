@@ -9,8 +9,8 @@ class Deque {
  public:
   using allocator_traits = std::allocator_traits<Allocator>;
   Deque() = default;
-  Deque(const Allocator &allocator) : allocator_(allocator) {}
-  Deque(size_t count, const Allocator &allocator = Allocator())
+  Deque(const Allocator& allocator) : allocator_(allocator) {}
+  Deque(size_t count, const Allocator& allocator = Allocator())
       : allocator_(allocator) {
     try {
       while (size_ != count) {
@@ -21,7 +21,7 @@ class Deque {
       throw;
     }
   }
-  Deque(size_t count, const T &value, const Allocator &allocator = Allocator())
+  Deque(size_t count, const T& value, const Allocator& allocator = Allocator())
       : allocator_(allocator) {
     try {
       while (size_ != count) {
@@ -32,7 +32,7 @@ class Deque {
       throw;
     }
   }
-  Deque(std::initializer_list<T> init, const Allocator &allocator = Allocator())
+  Deque(std::initializer_list<T> init, const Allocator& allocator = Allocator())
       : allocator_(allocator) {
     auto iter = init.begin();
     try {
@@ -60,7 +60,7 @@ class Deque {
       throw;
     }
   }
-  Deque(Deque &&other) {
+  Deque(Deque&& other) {
     allocator_ = other.allocator_;
     arr_.resize(other.arr_.size());
     for (size_t i = 0; i < arr_.size(); ++i) {
@@ -80,7 +80,7 @@ class Deque {
     other.fin_ind_ = 0;
     other.fin_vec_ = 0;
   }
-  Deque &operator=(const Deque &other) {
+  Deque &operator=(const Deque& other) {
     if (&other == this) {
       return *this;
     }
@@ -91,7 +91,7 @@ class Deque {
     }
     return *this;
   }
-  Deque &operator=(Deque &&other) {
+  Deque &operator=(Deque&& other) {
     if (allocator_traits::propagate_on_container_move_assignment::value) {
       allocator_ = other.allocator_;
     }
@@ -117,7 +117,7 @@ class Deque {
   }
   size_t size() const noexcept { return size_; }
   bool empty() const noexcept { return size_ == 0; }
-  T &operator[](size_t index) {
+  T& operator[](size_t index) {
     size_t full_vec = index / kConstCnt;
     if (index % kConstCnt + init_ind_ >= kConstCnt) {
       ++full_vec;
@@ -126,7 +126,7 @@ class Deque {
     }
     return (arr_[init_vec_ + full_vec][index % kConstCnt + init_ind_]);
   }
-  const T &operator[](size_t index) const {
+  const T& operator[](size_t index) const {
     size_t full_vec = index / kConstCnt;
     if (index % kConstCnt + init_ind_ >= kConstCnt) {
       ++full_vec;
@@ -135,19 +135,19 @@ class Deque {
     }
     return (arr_[init_vec_ + full_vec][index % kConstCnt + init_ind_]);
   }
-  T &at(size_t index) {
+  T& at(size_t index) {
     if (index >= size_) {
       throw std::out_of_range("out_of_range");
     }
     return (*this)[index];
   }
-  const T &at(size_t index) const {
+  const T& at(size_t index) const {
     if (index >= size_) {
       throw std::out_of_range("out_of_range");
     }
     return (*this)[index];
   }
-  void push_back(const T &value) {
+  void push_back(const T& value) {
     if (capacity_ == 0) {
       arr_.resize(3);
       for (size_t i = 0; i < 3; ++i) {
@@ -188,7 +188,7 @@ class Deque {
       ++size_;
       return;
     }
-    T *new_block =
+    T* new_block =
         allocator_traits::allocate(allocator_, kConstCnt * sizeof(T));
     try {
       allocator_traits::construct(allocator_, new_block, value);
@@ -203,7 +203,7 @@ class Deque {
     ++fin_vec_;
     fin_ind_ = 1;
   }
-  void push_front(const T &value) {
+  void push_front(const T& value) {
     if (capacity_ == 0) {
       arr_.resize(3);
       for (size_t i = 0; i < 3; ++i) {
@@ -245,7 +245,7 @@ class Deque {
       ++size_;
       return;
     }
-    T *new_block =
+    T* new_block =
         allocator_traits::allocate(allocator_, kConstCnt * sizeof(T));
     try {
       allocator_traits::construct(allocator_, (new_block + kConstCnt - 1),
@@ -260,7 +260,7 @@ class Deque {
     ++size_;
     init_ind_ = kConstCnt - 1;
   }
-  void push_back(T &&value) {
+  void push_back(T&& value) {
     if (capacity_ == 0) {
       arr_.resize(3);
       for (size_t i = 0; i < 3; ++i) {
@@ -301,7 +301,7 @@ class Deque {
       ++size_;
       return;
     }
-    T *new_block =
+    T* new_block =
         allocator_traits::allocate(allocator_, kConstCnt * sizeof(T));
     try {
       allocator_traits::construct(allocator_, new_block, std::move(value));
@@ -316,7 +316,7 @@ class Deque {
     ++fin_vec_;
     fin_ind_ = 1;
   }
-  void push_front(T &&value) {
+  void push_front(T&& value) {
     if (capacity_ == 0) {
       arr_.resize(3);
       for (size_t i = 0; i < 3; ++i) {
@@ -358,7 +358,7 @@ class Deque {
       ++size_;
       return;
     }
-    T *new_block =
+    T* new_block =
         allocator_traits::allocate(allocator_, kConstCnt * sizeof(T));
     try {
       allocator_traits::construct(allocator_, (new_block + kConstCnt - 1),
@@ -397,25 +397,25 @@ class Deque {
    public:
     using value_type = std::conditional_t<IsConst, const T, T>;
     using type_vec =
-        std::conditional_t<IsConst, const std::vector<T *>, std::vector<T *>>;
-    using pointer = value_type *;
+        std::conditional_t<IsConst, const std::vector<T*>, std::vector<T*>>;
+    using pointer = value_type*;
     using iterator_category = std::random_access_iterator_tag;
-    using reference = value_type &;
+    using reference = value_type&;
     using difference_type = ptrdiff_t;
 
     CommonIterator() = default;
-    CommonIterator(type_vec *arr, size_t temp_vec, size_t temp_item)
+    CommonIterator(type_vec* arr, size_t temp_vec, size_t temp_item)
         : arr_(arr), vec_(temp_vec), ind_(temp_item) {}
-    CommonIterator(const CommonIterator &other) = default;
-    CommonIterator &operator=(const CommonIterator &other) = default;
+    CommonIterator(const CommonIterator& other) = default;
+    CommonIterator& operator=(const CommonIterator& other) = default;
     ~CommonIterator() = default;
 
     reference operator*() { return (*arr_)[vec_][ind_]; }
-    const T &operator*() const { return (*arr_)[vec_][ind_]; }
+    const T& operator*() const { return (*arr_)[vec_][ind_]; }
     pointer operator->() { return &((*arr_)[vec_][ind_]); }
-    const T *operator->() const { return &((*arr_)[vec_][ind_]); }
+    const T* operator->() const { return &((*arr_)[vec_][ind_]); }
 
-    CommonIterator<IsConst> &operator++() {
+    CommonIterator<IsConst>& operator++() {
       if (ind_ < kConstCnt - 1) {
         ++ind_;
         return *this;
@@ -424,7 +424,7 @@ class Deque {
       ind_ = 0;
       return *this;
     }
-    CommonIterator<IsConst> &operator--() {
+    CommonIterator<IsConst>& operator--() {
       if (ind_ > 0) {
         --ind_;
         return *this;
@@ -458,7 +458,7 @@ class Deque {
       item = ind_ + num - kConstCnt;
       return CommonIterator<IsConst>(arr_, vec, item);
     }
-    CommonIterator<IsConst> &operator+=(int num) {
+    CommonIterator<IsConst>& operator+=(int num) {
       if (num < 0) {
         return *this -= (-num);
       }
@@ -480,7 +480,7 @@ class Deque {
       item = ind_ - num + kConstCnt;
       return CommonIterator<IsConst>(arr_, vec, item);
     }
-    CommonIterator<IsConst> &operator-=(int num) {
+    CommonIterator<IsConst>& operator-=(int num) {
       if (num < 0) {
         return *this += (-num);
       }
@@ -488,30 +488,30 @@ class Deque {
       return *this;
     }
 
-    bool operator==(const CommonIterator<IsConst> &other) const {
+    bool operator==(const CommonIterator<IsConst>& other) const {
       return (vec_ == other.vec_ && ind_ == other.ind_);
     }
-    bool operator!=(const CommonIterator<IsConst> &other) const {
+    bool operator!=(const CommonIterator<IsConst>& other) const {
       return !(*this == other);
     }
-    bool operator<(const CommonIterator<IsConst> &other) const {
+    bool operator<(const CommonIterator<IsConst>& other) const {
       if (*this == other || arr_ != other.arr_) {
         return false;
       }
       return ((vec_ < other.vec_) || (vec_ == other.vec_ && ind_ < other.ind_));
     }
-    bool operator>(const CommonIterator<IsConst> &other) const {
+    bool operator>(const CommonIterator<IsConst>& other) const {
       return (!(*this == other) && !(*this < other));
     }
-    bool operator<=(const CommonIterator<IsConst> &other) const {
+    bool operator<=(const CommonIterator<IsConst>& other) const {
       return !(*this > other);
     }
-    bool operator>=(const CommonIterator<IsConst> &other) const {
+    bool operator>=(const CommonIterator<IsConst>& other) const {
       return !(*this < other);
     }
 
     difference_type operator-(
-        const Deque<T, Allocator>::CommonIterator<IsConst> &other) const {
+        const Deque<T, Allocator>::CommonIterator<IsConst>& other) const {
       if (*this == other) {
         return 0;
       }
@@ -527,7 +527,7 @@ class Deque {
     }
 
    private:
-    type_vec *arr_ = nullptr;
+    type_vec* arr_ = nullptr;
     size_t vec_ = 0;
     size_t ind_ = 0;
   };
@@ -540,20 +540,20 @@ class Deque {
     using reference = typename Iter::reference;
     using pointer = typename Iter::pointer;
     explicit RevIterator(Iter iter) : iter_(iter) {}
-    RevIterator(const RevIterator &other) = default;
-    RevIterator &operator=(const RevIterator &other) = default;
+    RevIterator(const RevIterator& other) = default;
+    RevIterator &operator=(const RevIterator& other) = default;
     ~RevIterator() = default;
 
     reference operator*() { return *iter_; }
-    const T &operator*() const { return *iter_; }
+    const T& operator*() const { return *iter_; }
     pointer operator->() { return &(*iter_); }
-    const T *operator->() const { return &(*iter_); }
+    const T* operator->() const { return &(*iter_); }
 
-    RevIterator &operator++() {
+    RevIterator& operator++() {
       --iter_;
       return *this;
     }
-    RevIterator &operator--() {
+    RevIterator& operator--() {
       ++iter_;
       return *this;
     }
@@ -576,7 +576,7 @@ class Deque {
       tmp -= num;
       return RevIterator(tmp);
     }
-    RevIterator &operator+=(int num) {
+    RevIterator& operator+=(int num) {
       iter_ -= num;
       return *this;
     }
@@ -589,31 +589,27 @@ class Deque {
       tmp += num;
       return RevIterator(tmp);
     }
-    RevIterator &operator-=(int num) {
+    RevIterator& operator-=(int num) {
       iter_ += num;
       return *this;
     }
 
-    bool operator==(const RevIterator &other) const {
+    bool operator==(const RevIterator& other) const {
       return (iter_ == other.iter_);
     }
-    bool operator!=(const RevIterator &other) const {
+    bool operator!=(const RevIterator& other) const {
       return !(*this == other);
     }
-    bool operator<(const RevIterator &other) const {
+    bool operator<(const RevIterator& other) const {
       return (iter_ > other.iter_);
     }
-    bool operator>(const RevIterator &other) const {
+    bool operator>(const RevIterator& other) const {
       return (!(*this == other) && !(*this < other));
     }
-    bool operator<=(const RevIterator &other) const {
-      return !(*this > other);
-    }
-    bool operator>=(const RevIterator &other) const {
-      return !(*this < other);
-    }
+    bool operator<=(const RevIterator& other) const { return !(*this > other); }
+    bool operator>=(const RevIterator& other) const { return !(*this < other); }
 
-    difference_type operator-(const RevIterator &other) {
+    difference_type operator-(const RevIterator& other) {
       return other.iter_ - iter_;
     }
 
@@ -641,7 +637,7 @@ class Deque {
   const_reverse_iterator crend() const {
     return const_reverse_iterator(cbegin() - 1);
   }
-  void insert(iterator iter, const T &value) {
+  void insert(iterator iter, const T& value) {
     Deque<T, Allocator> deq(allocator_);
     iterator itt = begin();
     try {
@@ -678,7 +674,8 @@ class Deque {
     }
   }
 
-  template <typename... Args> void emplace_back(Args &&... args) {
+  template <typename... Args>
+  void emplace_back(Args&&... args) {
     if (capacity_ == 0) {
       arr_.resize(3);
       for (size_t i = 0; i < 3; ++i) {
@@ -721,7 +718,7 @@ class Deque {
       ++size_;
       return;
     }
-    T *new_block =
+    T* new_block =
         allocator_traits::allocate(allocator_, kConstCnt * sizeof(T));
     try {
       allocator_traits::construct(allocator_, new_block,
@@ -738,7 +735,8 @@ class Deque {
     fin_ind_ = 1;
   }
 
-  template <typename... Args> void emplace_front(Args &&... args) {
+  template <typename... Args>
+  void emplace_front(Args&&... args) {
     if (capacity_ == 0) {
       arr_.resize(3);
       for (size_t i = 0; i < 3; ++i) {
@@ -781,7 +779,7 @@ class Deque {
       ++size_;
       return;
     }
-    T *new_block =
+    T* new_block =
         allocator_traits::allocate(allocator_, kConstCnt * sizeof(T));
     try {
       allocator_traits::construct(allocator_, (new_block + kConstCnt - 1),
@@ -797,7 +795,8 @@ class Deque {
     init_ind_ = kConstCnt - 1;
   }
 
-  template <typename... Args> void emplace(iterator iter, Args &&... args) {
+  template <typename... Args>
+  void emplace(iterator iter, Args&&... args) {
     Deque<T, Allocator> deq(allocator_);
     iterator itt = begin();
     try {
@@ -858,7 +857,7 @@ class Deque {
       ++size_;
       return;
     }
-    T *new_block =
+    T* new_block =
         allocator_traits::allocate(allocator_, kConstCnt * sizeof(T));
     try {
       allocator_traits::construct(allocator_, new_block);
@@ -899,7 +898,7 @@ class Deque {
     }
   }
 
-  std::vector<T *> arr_;
+  std::vector<T*> arr_;
   Allocator allocator_;
   static const size_t kConstCnt = 1e5;
   size_t size_ = 0;
