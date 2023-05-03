@@ -169,7 +169,8 @@ class Deque {
       fin_ind_ = 1;
       return;
     }
-    if (size_ < capacity_ && !(fin_ind_ == kConstCnt && fin_vec_ == arr_.size() - 1)) {
+    if (size_ < capacity_ &&
+        !(fin_ind_ == kConstCnt && fin_vec_ == arr_.size() - 1)) {
       if (fin_ind_ == kConstCnt) {
         ++fin_vec_;
         fin_ind_ = 0;
@@ -283,7 +284,8 @@ class Deque {
       fin_ind_ = 1;
       return;
     }
-    if (size_ < capacity_ && !(fin_ind_ == kConstCnt && fin_vec_ == arr_.size() - 1)) {
+    if (size_ < capacity_ &&
+        !(fin_ind_ == kConstCnt && fin_vec_ == arr_.size() - 1)) {
       if (fin_ind_ == kConstCnt) {
         ++fin_vec_;
         fin_ind_ = 0;
@@ -701,7 +703,8 @@ class Deque {
       fin_ind_ = 1;
       return;
     }
-    if (size_ < capacity_ && !(fin_ind_ == kConstCnt && fin_vec_ == arr_.size() - 1)) {
+    if (size_ < capacity_ &&
+        !(fin_ind_ == kConstCnt && fin_vec_ == arr_.size() - 1)) {
       if (fin_ind_ == kConstCnt) {
         ++fin_vec_;
         fin_ind_ = 0;
@@ -842,7 +845,8 @@ class Deque {
       fin_ind_ = 1;
       return;
     }
-    if (size_ < capacity_ && !(fin_ind_ == kConstCnt && fin_vec_ == arr_.size() - 1)) {
+    if (size_ < capacity_ &&
+        !(fin_ind_ == kConstCnt && fin_vec_ == arr_.size() - 1)) {
       if (fin_ind_ == kConstCnt) {
         ++fin_vec_;
         fin_ind_ = 1;
