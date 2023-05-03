@@ -17,7 +17,7 @@ class Deque {
         push_back_default_constr();
       }
     } catch (...) {
-      cleanArray();
+      clean_array();
       throw;
     }
   }
@@ -28,7 +28,7 @@ class Deque {
         this->push_back(value);
       }
     } catch (...) {
-      cleanArray();
+      clean_array();
       throw;
     }
   }
@@ -41,11 +41,11 @@ class Deque {
         ++iter;
       }
     } catch (...) {
-      cleanArray();
+      clean_array();
       throw;
     }
   }
-  ~Deque() { cleanArray(); }
+  ~Deque() { clean_array(); }
   Deque(const Deque &other) {
     allocator_ = allocator_traits::select_on_container_copy_construction(
         other.allocator_);
@@ -56,7 +56,7 @@ class Deque {
         ++iter;
       }
     } catch (...) {
-      cleanArray();
+      clean_array();
       throw;
     }
   }
@@ -95,7 +95,7 @@ class Deque {
     if (allocator_traits::propagate_on_container_move_assignment::value) {
       allocator_ = other.allocator_;
     }
-    cleanArray();
+    clean_array();
     arr_.resize(other.arr_.size());
     for (size_t i = 0; i < arr_.size(); ++i) {
       arr_[i] = other.arr_[i];
@@ -393,7 +393,7 @@ class Deque {
   }
 
   template <bool IsConst>
-  class common_iterator {
+  class CommonIterator {
    public:
     using value_type = std::conditional_t<IsConst, const T, T>;
     using type_vec =
@@ -403,19 +403,19 @@ class Deque {
     using reference = value_type &;
     using difference_type = ptrdiff_t;
 
-    common_iterator() = default;
-    common_iterator(type_vec *arr, size_t temp_vec, size_t temp_item)
+    CommonIterator() = default;
+    CommonIterator(type_vec *arr, size_t temp_vec, size_t temp_item)
         : arr_(arr), vec_(temp_vec), ind_(temp_item) {}
-    common_iterator(const common_iterator &other) = default;
-    common_iterator &operator=(const common_iterator &other) = default;
-    ~common_iterator() = default;
+    CommonIterator(const CommonIterator &other) = default;
+    CommonIterator &operator=(const CommonIterator &other) = default;
+    ~CommonIterator() = default;
 
     reference operator*() { return (*arr_)[vec_][ind_]; }
     const T &operator*() const { return (*arr_)[vec_][ind_]; }
     pointer operator->() { return &((*arr_)[vec_][ind_]); }
     const T *operator->() const { return &((*arr_)[vec_][ind_]); }
 
-    common_iterator<IsConst> &operator++() {
+    CommonIterator<IsConst> &operator++() {
       if (ind_ < kConstCnt - 1) {
         ++ind_;
         return *this;
@@ -424,7 +424,7 @@ class Deque {
       ind_ = 0;
       return *this;
     }
-    common_iterator<IsConst> &operator--() {
+    CommonIterator<IsConst> &operator--() {
       if (ind_ > 0) {
         --ind_;
         return *this;
@@ -433,18 +433,18 @@ class Deque {
       ind_ = kConstCnt - 1;
       return *this;
     }
-    common_iterator<IsConst> operator++(int) {
-      common_iterator<IsConst> temp = *this;
+    CommonIterator<IsConst> operator++(int) {
+      CommonIterator<IsConst> temp = *this;
       ++(*this);
       return temp;
     }
-    common_iterator<IsConst> operator--(int) {
-      common_iterator<IsConst> temp = *this;
+    CommonIterator<IsConst> operator--(int) {
+      CommonIterator<IsConst> temp = *this;
       --(*this);
       return temp;
     }
 
-    common_iterator<IsConst> operator+(int num) const {
+    CommonIterator<IsConst> operator+(int num) const {
       if (num < 0) {
         return *this - (-num);
       }
@@ -452,13 +452,13 @@ class Deque {
       size_t item = ind_;
       if (num + ind_ < kConstCnt) {
         item = num + ind_;
-        return common_iterator<IsConst>(arr_, vec, item);
+        return CommonIterator<IsConst>(arr_, vec, item);
       }
       ++vec;
       item = ind_ + num - kConstCnt;
-      return common_iterator<IsConst>(arr_, vec, item);
+      return CommonIterator<IsConst>(arr_, vec, item);
     }
-    common_iterator<IsConst> &operator+=(int num) {
+    CommonIterator<IsConst> &operator+=(int num) {
       if (num < 0) {
         return *this -= (-num);
       }
@@ -466,7 +466,7 @@ class Deque {
       return *this;
     }
 
-    common_iterator<IsConst> operator-(int num) const {
+    CommonIterator<IsConst> operator-(int num) const {
       if (num < 0) {
         return *this + (-num);
       }
@@ -474,13 +474,13 @@ class Deque {
       size_t vec = vec_;
       if ((int)ind_ - (int)num >= 0) {
         item = ind_ - num;
-        return common_iterator<IsConst>(arr_, vec, item);
+        return CommonIterator<IsConst>(arr_, vec, item);
       }
       --vec;
       item = ind_ - num + kConstCnt;
-      return common_iterator<IsConst>(arr_, vec, item);
+      return CommonIterator<IsConst>(arr_, vec, item);
     }
-    common_iterator<IsConst> &operator-=(int num) {
+    CommonIterator<IsConst> &operator-=(int num) {
       if (num < 0) {
         return *this += (-num);
       }
@@ -488,30 +488,30 @@ class Deque {
       return *this;
     }
 
-    bool operator==(const common_iterator<IsConst> &other) const {
+    bool operator==(const CommonIterator<IsConst> &other) const {
       return (vec_ == other.vec_ && ind_ == other.ind_);
     }
-    bool operator!=(const common_iterator<IsConst> &other) const {
+    bool operator!=(const CommonIterator<IsConst> &other) const {
       return !(*this == other);
     }
-    bool operator<(const common_iterator<IsConst> &other) const {
+    bool operator<(const CommonIterator<IsConst> &other) const {
       if (*this == other || arr_ != other.arr_) {
         return false;
       }
       return ((vec_ < other.vec_) || (vec_ == other.vec_ && ind_ < other.ind_));
     }
-    bool operator>(const common_iterator<IsConst> &other) const {
+    bool operator>(const CommonIterator<IsConst> &other) const {
       return (!(*this == other) && !(*this < other));
     }
-    bool operator<=(const common_iterator<IsConst> &other) const {
+    bool operator<=(const CommonIterator<IsConst> &other) const {
       return !(*this > other);
     }
-    bool operator>=(const common_iterator<IsConst> &other) const {
+    bool operator>=(const CommonIterator<IsConst> &other) const {
       return !(*this < other);
     }
 
     difference_type operator-(
-        const Deque<T, Allocator>::common_iterator<IsConst> &other) const {
+        const Deque<T, Allocator>::CommonIterator<IsConst> &other) const {
       if (*this == other) {
         return 0;
       }
@@ -532,98 +532,98 @@ class Deque {
     size_t ind_ = 0;
   };
   template <typename Iter>
-  class rev_iterator {
+  class RevIterator {
    public:
     using value_type = typename Iter::value_type;
     using iterator_category = std::random_access_iterator_tag;
     using difference_type = typename Iter::difference_type;
     using reference = typename Iter::reference;
     using pointer = typename Iter::pointer;
-    explicit rev_iterator(Iter iter) : iter_(iter) {}
-    rev_iterator(const rev_iterator &other) = default;
-    rev_iterator &operator=(const rev_iterator &other) = default;
-    ~rev_iterator() = default;
+    explicit RevIterator(Iter iter) : iter_(iter) {}
+    RevIterator(const RevIterator &other) = default;
+    RevIterator &operator=(const RevIterator &other) = default;
+    ~RevIterator() = default;
 
     reference operator*() { return *iter_; }
     const T &operator*() const { return *iter_; }
     pointer operator->() { return &(*iter_); }
     const T *operator->() const { return &(*iter_); }
 
-    rev_iterator &operator++() {
+    RevIterator &operator++() {
       --iter_;
       return *this;
     }
-    rev_iterator &operator--() {
+    RevIterator &operator--() {
       ++iter_;
       return *this;
     }
-    rev_iterator operator++(int) {
-      rev_iterator temp = *this;
+    RevIterator operator++(int) {
+      RevIterator temp = *this;
       ++(*this);
       return temp;
     }
-    rev_iterator operator--(int) {
-      rev_iterator temp = *this;
+    RevIterator operator--(int) {
+      RevIterator temp = *this;
       --(*this);
       return temp;
     }
 
-    rev_iterator operator+(int num) const {
+    RevIterator operator+(int num) const {
       if (num < 0) {
         return *this - (-num);
       }
       Iter tmp = iter_;
       tmp -= num;
-      return rev_iterator(tmp);
+      return RevIterator(tmp);
     }
-    rev_iterator &operator+=(int num) {
+    RevIterator &operator+=(int num) {
       iter_ -= num;
       return *this;
     }
 
-    rev_iterator operator-(int num) const {
+    RevIterator operator-(int num) const {
       if (num < 0) {
         return *this + (-num);
       }
       Iter tmp = iter_;
       tmp += num;
-      return rev_iterator(tmp);
+      return RevIterator(tmp);
     }
-    rev_iterator &operator-=(int num) {
+    RevIterator &operator-=(int num) {
       iter_ += num;
       return *this;
     }
 
-    bool operator==(const rev_iterator &other) const {
+    bool operator==(const RevIterator &other) const {
       return (iter_ == other.iter_);
     }
-    bool operator!=(const rev_iterator &other) const {
+    bool operator!=(const RevIterator &other) const {
       return !(*this == other);
     }
-    bool operator<(const rev_iterator &other) const {
+    bool operator<(const RevIterator &other) const {
       return (iter_ > other.iter_);
     }
-    bool operator>(const rev_iterator &other) const {
+    bool operator>(const RevIterator &other) const {
       return (!(*this == other) && !(*this < other));
     }
-    bool operator<=(const rev_iterator &other) const {
+    bool operator<=(const RevIterator &other) const {
       return !(*this > other);
     }
-    bool operator>=(const rev_iterator &other) const {
+    bool operator>=(const RevIterator &other) const {
       return !(*this < other);
     }
 
-    difference_type operator-(const rev_iterator &other) {
+    difference_type operator-(const RevIterator &other) {
       return other.iter_ - iter_;
     }
 
    private:
     Iter iter_;
   };
-  using iterator = common_iterator<false>;
-  using const_iterator = common_iterator<true>;
-  using reverse_iterator = rev_iterator<common_iterator<false>>;
-  using const_reverse_iterator = rev_iterator<common_iterator<true>>;
+  using iterator = CommonIterator<false>;
+  using const_iterator = CommonIterator<true>;
+  using reverse_iterator = RevIterator<CommonIterator<false>>;
+  using const_reverse_iterator = RevIterator<CommonIterator<true>>;
 
   iterator begin() { return iterator(&arr_, init_vec_, init_ind_); }
   iterator end() { return iterator(&arr_, fin_vec_, fin_ind_); }
@@ -873,7 +873,7 @@ class Deque {
     ++fin_vec_;
     fin_ind_ = 1;
   }
-  void cleanArray() {
+  void clean_array() {
     if (init_vec_ != fin_vec_) {
       for (size_t i = init_ind_; i < kConstCnt; ++i) {
         allocator_traits::destroy(allocator_, (arr_[init_vec_] + i));
