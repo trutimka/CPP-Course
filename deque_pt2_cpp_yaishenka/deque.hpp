@@ -169,7 +169,7 @@ class Deque {
       fin_ind_ = 1;
       return;
     }
-    if (size_ < capacity_) {
+    if (size_ < capacity_ && !(fin_ind_ == kConstCnt && fin_vec_ == arr_.size() - 1)) {
       if (fin_ind_ == kConstCnt) {
         ++fin_vec_;
         fin_ind_ = 0;
@@ -225,7 +225,7 @@ class Deque {
       fin_ind_ = 1;
       return;
     }
-    if (size_ < capacity_) {
+    if (size_ < capacity_ && !(init_ind_ == 0 && init_vec_ == 0)) {
       if (init_ind_ == 0) {
         --init_vec_;
         init_ind_ = kConstCnt;
@@ -257,6 +257,7 @@ class Deque {
     }
     arr_.insert(arr_.begin(), new_block);
     capacity_ += kConstCnt;
+    ++fin_vec_;
     ++size_;
     init_ind_ = kConstCnt - 1;
   }
@@ -282,7 +283,7 @@ class Deque {
       fin_ind_ = 1;
       return;
     }
-    if (size_ < capacity_) {
+    if (size_ < capacity_ && !(fin_ind_ == kConstCnt && fin_vec_ == arr_.size() - 1)) {
       if (fin_ind_ == kConstCnt) {
         ++fin_vec_;
         fin_ind_ = 0;
@@ -338,7 +339,7 @@ class Deque {
       fin_ind_ = 1;
       return;
     }
-    if (size_ < capacity_) {
+    if (size_ < capacity_ && !(init_ind_ == 0 && init_vec_ == 0)) {
       if (init_ind_ == 0) {
         --init_vec_;
         init_ind_ = kConstCnt;
@@ -371,6 +372,7 @@ class Deque {
     arr_.insert(arr_.begin(), new_block);
     capacity_ += kConstCnt;
     ++size_;
+    ++fin_vec_;
     init_ind_ = kConstCnt - 1;
   }
   void pop_back() {
@@ -699,7 +701,7 @@ class Deque {
       fin_ind_ = 1;
       return;
     }
-    if (size_ < capacity_) {
+    if (size_ < capacity_ && !(fin_ind_ == kConstCnt && fin_vec_ == arr_.size() - 1)) {
       if (fin_ind_ == kConstCnt) {
         ++fin_vec_;
         fin_ind_ = 0;
@@ -759,7 +761,7 @@ class Deque {
       fin_ind_ = 1;
       return;
     }
-    if (size_ < capacity_) {
+    if (size_ < capacity_ && !(init_ind_ == 0 && init_vec_ == 0)) {
       if (init_ind_ == 0) {
         --init_vec_;
         init_ind_ = kConstCnt;
@@ -792,6 +794,7 @@ class Deque {
     arr_.insert(arr_.begin(), new_block);
     capacity_ += kConstCnt;
     ++size_;
+    ++fin_vec_;
     init_ind_ = kConstCnt - 1;
   }
 
@@ -839,10 +842,10 @@ class Deque {
       fin_ind_ = 1;
       return;
     }
-    if (size_ < capacity_) {
+    if (size_ < capacity_ && !(fin_ind_ == kConstCnt && fin_vec_ == arr_.size() - 1)) {
       if (fin_ind_ == kConstCnt) {
         ++fin_vec_;
-        fin_ind_ = 0;
+        fin_ind_ = 1;
       }
       try {
         allocator_traits::construct(allocator_, (arr_[fin_vec_] + fin_ind_));
