@@ -157,8 +157,7 @@ class Deque {
         allocator_traits::construct(allocator_, arr_[1], value);
       } catch (...) {
         for (size_t i = 0; i < 3; ++i) {
-          allocator_traits::deallocate(allocator_, arr_[i],
-                                       kConstCnt);
+          allocator_traits::deallocate(allocator_, arr_[i], kConstCnt);
         }
         throw;
       }
@@ -189,13 +188,11 @@ class Deque {
       ++size_;
       return;
     }
-    T* new_block =
-        allocator_traits::allocate(allocator_, kConstCnt);
+    T* new_block = allocator_traits::allocate(allocator_, kConstCnt);
     try {
       allocator_traits::construct(allocator_, new_block, value);
     } catch (...) {
-      allocator_traits::deallocate(allocator_, new_block,
-                                   kConstCnt);
+      allocator_traits::deallocate(allocator_, new_block, kConstCnt);
       throw;
     }
     arr_.push_back(new_block);
@@ -214,8 +211,7 @@ class Deque {
         allocator_traits::construct(allocator_, arr_[1], value);
       } catch (...) {
         for (size_t i = 0; i < 3; ++i) {
-          allocator_traits::deallocate(allocator_, arr_[i],
-                                       kConstCnt);
+          allocator_traits::deallocate(allocator_, arr_[i], kConstCnt);
         }
         throw;
       }
@@ -246,14 +242,12 @@ class Deque {
       ++size_;
       return;
     }
-    T* new_block =
-        allocator_traits::allocate(allocator_, kConstCnt);
+    T* new_block = allocator_traits::allocate(allocator_, kConstCnt);
     try {
       allocator_traits::construct(allocator_, (new_block + kConstCnt - 1),
                                   value);
     } catch (...) {
-      allocator_traits::deallocate(allocator_, new_block,
-                                   kConstCnt);
+      allocator_traits::deallocate(allocator_, new_block, kConstCnt);
       throw;
     }
     arr_.insert(arr_.begin(), new_block);
@@ -272,8 +266,7 @@ class Deque {
         allocator_traits::construct(allocator_, arr_[1], std::move(value));
       } catch (...) {
         for (size_t i = 0; i < 3; ++i) {
-          allocator_traits::deallocate(allocator_, arr_[i],
-                                       kConstCnt);
+          allocator_traits::deallocate(allocator_, arr_[i], kConstCnt);
         }
         throw;
       }
@@ -304,13 +297,11 @@ class Deque {
       ++size_;
       return;
     }
-    T* new_block =
-        allocator_traits::allocate(allocator_, kConstCnt);
+    T* new_block = allocator_traits::allocate(allocator_, kConstCnt);
     try {
       allocator_traits::construct(allocator_, new_block, std::move(value));
     } catch (...) {
-      allocator_traits::deallocate(allocator_, new_block,
-                                   kConstCnt);
+      allocator_traits::deallocate(allocator_, new_block, kConstCnt);
       throw;
     }
     arr_.push_back(new_block);
@@ -329,8 +320,7 @@ class Deque {
         allocator_traits::construct(allocator_, arr_[1], std::move(value));
       } catch (...) {
         for (size_t i = 0; i < 3; ++i) {
-          allocator_traits::deallocate(allocator_, arr_[i],
-                                       kConstCnt);
+          allocator_traits::deallocate(allocator_, arr_[i], kConstCnt);
         }
         throw;
       }
@@ -361,14 +351,12 @@ class Deque {
       ++size_;
       return;
     }
-    T* new_block =
-        allocator_traits::allocate(allocator_, kConstCnt);
+    T* new_block = allocator_traits::allocate(allocator_, kConstCnt);
     try {
       allocator_traits::construct(allocator_, (new_block + kConstCnt - 1),
                                   std::move(value));
     } catch (...) {
-      allocator_traits::deallocate(allocator_, new_block,
-                                   kConstCnt);
+      allocator_traits::deallocate(allocator_, new_block, kConstCnt);
       throw;
     }
     arr_.insert(arr_.begin(), new_block);
@@ -683,16 +671,14 @@ class Deque {
     if (capacity_ == 0) {
       arr_.resize(3);
       for (size_t i = 0; i < 3; ++i) {
-        arr_[i] =
-            allocator_traits ::allocate(allocator_, kConstCnt);
+        arr_[i] = allocator_traits ::allocate(allocator_, kConstCnt);
       }
       try {
         allocator_traits::construct(allocator_, arr_[1],
                                     std::forward<Args>(args)...);
       } catch (...) {
         for (size_t i = 0; i < 3; ++i) {
-          allocator_traits::deallocate(allocator_, arr_[i],
-                                       kConstCnt);
+          allocator_traits::deallocate(allocator_, arr_[i], kConstCnt);
         }
         throw;
       }
@@ -723,14 +709,12 @@ class Deque {
       ++size_;
       return;
     }
-    T* new_block =
-        allocator_traits::allocate(allocator_, kConstCnt);
+    T* new_block = allocator_traits::allocate(allocator_, kConstCnt);
     try {
       allocator_traits::construct(allocator_, new_block,
                                   std::forward<Args>(args)...);
     } catch (...) {
-      allocator_traits::deallocate(allocator_, new_block,
-                                   kConstCnt);
+      allocator_traits::deallocate(allocator_, new_block, kConstCnt);
       throw;
     }
     arr_.push_back(new_block);
@@ -752,8 +736,7 @@ class Deque {
                                     std::forward<Args>(args)...);
       } catch (...) {
         for (size_t i = 0; i < 3; ++i) {
-          allocator_traits::deallocate(allocator_, arr_[i],
-                                       kConstCnt);
+          allocator_traits::deallocate(allocator_, arr_[i], kConstCnt);
         }
         throw;
       }
@@ -784,14 +767,12 @@ class Deque {
       ++size_;
       return;
     }
-    T* new_block =
-        allocator_traits::allocate(allocator_, kConstCnt);
+    T* new_block = allocator_traits::allocate(allocator_, kConstCnt);
     try {
       allocator_traits::construct(allocator_, (new_block + kConstCnt - 1),
                                   std::forward<Args>(args)...);
     } catch (...) {
-      allocator_traits::deallocate(allocator_, new_block,
-                                   kConstCnt);
+      allocator_traits::deallocate(allocator_, new_block, kConstCnt);
       throw;
     }
     arr_.insert(arr_.begin(), new_block);
@@ -833,8 +814,7 @@ class Deque {
         allocator_traits::construct(allocator_, arr_[1]);
       } catch (...) {
         for (size_t i = 0; i < 3; ++i) {
-          allocator_traits::deallocate(allocator_, arr_[i],
-                                       kConstCnt);
+          allocator_traits::deallocate(allocator_, arr_[i], kConstCnt);
         }
         throw;
       }
@@ -864,13 +844,11 @@ class Deque {
       ++size_;
       return;
     }
-    T* new_block =
-        allocator_traits::allocate(allocator_, kConstCnt);
+    T* new_block = allocator_traits::allocate(allocator_, kConstCnt);
     try {
       allocator_traits::construct(allocator_, new_block);
     } catch (...) {
-      allocator_traits::deallocate(allocator_, new_block,
-                                   kConstCnt);
+      allocator_traits::deallocate(allocator_, new_block, kConstCnt);
       throw;
     }
     arr_.push_back(new_block);
@@ -899,8 +877,7 @@ class Deque {
     }
     if (capacity_ != 0) {
       for (size_t i = 0; i < arr_.size(); ++i) {
-        allocator_traits::deallocate(allocator_, arr_[i],
-                                     kConstCnt);
+        allocator_traits::deallocate(allocator_, arr_[i], kConstCnt);
       }
     }
   }
